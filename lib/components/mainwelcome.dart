@@ -23,9 +23,14 @@ class _mainwelcomeState extends State<mainwelcome> {
 
   addprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    user_Email = prefs.get("user_Email").toString();
-    Name = prefs.get("Name").toString();
-    User_Typ = prefs.get("User_Typ").toString();
+
+    setState(() {
+      user_Email = prefs.get("user_Email").toString();
+      Name = prefs.get("Name").toString();
+      User_Typ = prefs.get("User_Typ").toString();
+    });
+
+
   }
 
   @override
@@ -33,11 +38,9 @@ class _mainwelcomeState extends State<mainwelcome> {
     // TODO: implement initState
     super.initState();
     addprefs();
-    setState(() {
-      user_Email = user_Email;
-      Name = Name;
-      User_Typ = User_Typ;
-    });
+
+
+
   }
 
   static const List<Widget> _widgetOption = <Widget>[

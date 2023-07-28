@@ -27,7 +27,7 @@ class PageHeader extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Container(
-              child: const Column(
+              child:  Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

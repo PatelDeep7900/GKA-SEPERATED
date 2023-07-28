@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gka/components/screen/screenbusiness.dart';
 import 'package:gka/components/screen/screencontact.dart';
 import 'package:gka/components/screen/screenhome.dart';
@@ -147,7 +148,10 @@ class _mainwelcomeState extends State<mainwelcome> {
         title: const Text("GKA"),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.exit_to_app),),
+          IconButton(onPressed: () {
+            SystemNavigator.pop();
+          },
+            icon: Icon(Icons.exit_to_app),),
         ],
       ),
       body: _widgetOption[_selectedIndex],

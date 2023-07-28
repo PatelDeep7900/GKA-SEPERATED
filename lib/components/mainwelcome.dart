@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:gka/components/login_page.dart';
 import 'package:gka/components/screen/screenbusiness.dart';
 import 'package:gka/components/screen/screencontact.dart';
 import 'package:gka/components/screen/screenhome.dart';
@@ -138,7 +140,12 @@ class _mainwelcomeState extends State<mainwelcome> {
               child: ListTile(
                 leading: Icon(Icons.logout),
                 title: const Text('Logout'),
-                onTap: () { },
+                onTap: () async {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  prefs.clear();
+                },
               ),
             )
           ],
@@ -149,7 +156,10 @@ class _mainwelcomeState extends State<mainwelcome> {
         title: const Text("GKA"),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.exit_to_app),),
+          IconButton(onPressed: () {
+            SystemNavigator.pop();
+          },
+            icon: Icon(Icons.exit_to_app),),
         ],
       ),
       body: _widgetOption[_selectedIndex],

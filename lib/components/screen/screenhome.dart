@@ -114,8 +114,8 @@ class _homescreenState extends State<homescreen> {
                   contentPadding: EdgeInsets.all(5),
                   tileColor:  index % 2 == 0 ? Colors.white : Colors.white,
                   leading: CircleAvatar(
-
-                    child:Image.network("http://e-gam.com/GKA/Logo/GKA%20logo.jpg"),
+                    radius: 30,
+                    backgroundImage: NetworkImage("http://e-gam.com/GKA/Logo/GKA%20logo.jpg"),
                   ) ,
                   title: Text('${index + 1}',),
                   subtitle:Text(result[index].name),

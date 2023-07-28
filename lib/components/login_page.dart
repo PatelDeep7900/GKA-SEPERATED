@@ -6,6 +6,7 @@ import 'package:gka/components/common/custom_input_field.dart';
 import 'package:gka/components/common/page_header.dart';
 import 'package:gka/components/common/welcomepage1.dart';
 import 'package:gka/components/forget_password_page.dart';
+import 'package:gka/components/mainwelcome.dart';
 import 'package:gka/components/signup_page.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:gka/components/common/page_heading.dart';
@@ -153,14 +154,18 @@ class _LoginPageState extends State<LoginPage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if(response.statusCode==200) {
       var data=jsonDecode(response.body.toString());
-
+      print(data);
       var cond=data['result'];
       if(cond==true) {
 
 
         await prefs.setInt('id', data['id']);
         await prefs.setBool("result", true);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => welcomepage1()));
+        await prefs.setString("user_Email", data['G_username']);
+        await prefs.setString("User_Typ", data['User_Typ']);
+        await prefs.setString("Name", data['Name']);
+
+        Navigator.push(context, MaterialPageRoute(builder: (context) => mainwelcome()));
 
 
       }else{

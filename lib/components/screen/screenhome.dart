@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:gka/models/welcomejson.dart';
 import 'package:http/http.dart' as http;
 
-class welcomepage1 extends StatefulWidget {
-  const welcomepage1({super.key});
+class homescreen extends StatefulWidget {
+  const homescreen({super.key});
 
   @override
-  State<welcomepage1> createState() => _welcomepage1State();
+  State<homescreen> createState() => _homescreenState();
 }
 
-class _welcomepage1State extends State<welcomepage1> {
-
+class _homescreenState extends State<homescreen> {
   List<Result> result=[];
   bool loading=false;
   int off=0;
@@ -37,13 +36,13 @@ class _welcomepage1State extends State<welcomepage1> {
         setState(() {
           loading=true;
         });
-           fetchData(off);
+        fetchData(off);
 
       }
     });
   }
 
- Future<void>  fetchData(paraoffset) async{
+  Future<void>  fetchData(paraoffset) async{
     var url="http://e-gam.com/GKARESTAPI/welcomePage?off=${paraoffset}&lim=10";
     print(url);
     var uri=Uri.parse(url);
@@ -57,62 +56,44 @@ class _welcomepage1State extends State<welcomepage1> {
         loading=false;
         off=localOffset;
       });
-
-
     }
-
-
-
-
-
- }
-
+  }
   var status = 0;
+
+  popupMenu(id){
+    print(id);
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          height: 200,
+          color: Colors.amber,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text('Modal BottomSheet'),
+                ElevatedButton(
+                  child: const Text('Close BottomSheet'),
+                  onPressed:() {
+                    Navigator.pop(context);
+
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-       backgroundColor: Colors.black12,
-      appBar: AppBar(
-           title: const Text("GKA"),
-        centerTitle: true,
-        actions: [
-
-
-          Visibility(
-            visible: visiblebtn,
-
-            child: IconButton(
-              //if 0 then display icon list if other than zero display icon grid
-              icon: status == 0 ? const Icon(Icons.list) : Icon(Icons.grid_view),
-              tooltip:status == 0 ? "Click Here  For Grid View" : "Click Here  For List View",
-              onPressed: () {
-                //required to add state,
-                //setstate is used to change the state,
-                //when the status variable is changed, the whole page will be re-rendered automatically
-                setState(() {
-                  if (status == 0) {
-                    status = 1;
-                  } else {
-                    status = 0;
-                  }
-                });
-              },
-            ),
-          ),
-          IconButton(onPressed: () {
-
-          },icon: Icon(Icons.logout)
-          ),
-
-        ],
-
-      ),
-
-      body:
-      status == 0 ?
-
-      ListView.builder(
+    return   Scaffold(
+      body:ListView.builder(
         controller: scrollController,
         itemCount: loading ? result.length+1 : result.length,
         itemBuilder: (context, index) {
@@ -128,8 +109,8 @@ class _welcomepage1State extends State<welcomepage1> {
 
                   trailing:IconButton(icon: Icon(Icons.ads_click_sharp,),
                     onPressed: () {
-                    popupMenu(result[index].id);
-                  },),
+                      popupMenu(result[index].id);
+                    },),
                   contentPadding: EdgeInsets.all(5),
                   tileColor:  index % 2 == 0 ? Colors.white : Colors.white,
                   leading: CircleAvatar(
@@ -149,86 +130,28 @@ class _welcomepage1State extends State<welcomepage1> {
           }
 
 
-      },
+        },
 
 
-      )
-      :
-      GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        controller: scrollController,
-        itemCount: loading ? result.length+1 : result.length,
-          itemBuilder: (context, index) {
-            if(index < result.length){
-              return Card(
-                elevation: 8,
-                child: ListTile(
-                  tileColor:  index % 2 == 0 ? Colors.white : Colors.white,
-                  leading: CircleAvatar(
-                    child: Text('${index+1}'),
-                  ) ,
-                  title: Text(result[index].id),
-                  subtitle:Text(result[index].name),
-                ),
-              );
-            }else{
-              return const Center(child: CircularProgressIndicator(
-                color: Colors.deepOrange,
+      ),
+      floatingActionButton: FloatingActionButton(
 
-              ));
-            }
+        onPressed: () {
+          if (scrollController.hasClients) {
+            final position = scrollController.position.minScrollExtent;
+            scrollController.animateTo(
+              position,
+              duration: Duration(seconds: 1),
+              curve: Curves.easeOut,
+            );
+          }
+        },
+        isExtended: true,
 
-
-          },),
-
-
-
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-      if (scrollController.hasClients) {
-        final position = scrollController.position.minScrollExtent;
-        scrollController.animateTo(
-          position,
-          duration: Duration(seconds: 1),
-          curve: Curves.easeOut,
-        );
-      }
-    },
-    isExtended: true,
-
-    tooltip: "Scroll to Bottom",
-    child: Icon(Icons.arrow_circle_up),
-    ),
+        tooltip: "Scroll to Bottom",
+        child: Icon(Icons.arrow_circle_up),
+      ),
 
     );
   }
-
-    popupMenu(id){
-    print(id);
-    return showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-            height: 200,
-            color: Colors.amber,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Text('Modal BottomSheet'),
-                  ElevatedButton(
-                    child: const Text('Close BottomSheet'),
-                    onPressed:() {
-                      Navigator.pop(context);
-
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-    );
-    }
 }
-

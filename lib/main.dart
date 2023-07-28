@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:gka/components/common/welcomepage1.dart';
 import 'package:gka/components/login_page.dart';
+import 'package:gka/components/mainwelcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var a = prefs.getInt("id");
     if(a != null){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => welcomepage1()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => mainwelcome()));
     } else {
 //Navigate to another screen
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));

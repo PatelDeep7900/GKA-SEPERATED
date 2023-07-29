@@ -141,10 +141,9 @@ class _mainwelcomeState extends State<mainwelcome> {
                 leading: Icon(Icons.logout),
                 title: const Text('Logout'),
                 onTap: () async {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
                   SharedPreferences prefs = await SharedPreferences.getInstance();
                   prefs.clear();
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>LoginPage()));
                 },
               ),
             )

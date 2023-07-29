@@ -165,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
         await prefs.setString("User_Typ", data['User_Typ']);
         await prefs.setString("Name", data['Name']);
 
-        Navigator.push(context, MaterialPageRoute(builder: (context) => mainwelcome()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => mainwelcome()));
 
 
       }else{

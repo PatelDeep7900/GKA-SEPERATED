@@ -25,7 +25,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-
   checkingTheSavedData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var a = prefs.getInt("id");

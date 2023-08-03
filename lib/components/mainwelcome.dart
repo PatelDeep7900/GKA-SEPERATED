@@ -6,6 +6,7 @@ import 'package:gka/components/screen/screencontact.dart';
 import 'package:gka/components/screen/screenhome.dart';
 import 'package:gka/components/screen/screenprofile.dart';
 import 'package:gka/components/screen/screenprofilephoto.dart';
+import 'package:gka/test/test_welcomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class mainwelcome extends StatefulWidget {
@@ -16,7 +17,7 @@ class mainwelcome extends StatefulWidget {
 }
 
 class _mainwelcomeState extends State<mainwelcome> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   int status = 0;
   String? user_Email = "";
   String? Name = "";
@@ -46,7 +47,7 @@ class _mainwelcomeState extends State<mainwelcome> {
 
   static const List<Widget> _widgetOption = <Widget>[
     homescreen(),
-    profilescreen(),
+    test_welcomepage(),
     contactscreen(),
     businessscreen(),
     profilephotoscreen(),

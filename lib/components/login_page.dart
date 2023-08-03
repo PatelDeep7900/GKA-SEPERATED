@@ -7,7 +7,6 @@ import 'package:gka/components/common/page_header.dart';
 import 'package:gka/components/common/welcomepage1.dart';
 import 'package:gka/components/forget_password_page.dart';
 import 'package:gka/components/mainwelcome.dart';
-import 'package:gka/components/signup_page.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:gka/components/common/page_heading.dart';
 
@@ -118,7 +117,6 @@ class _LoginPageState extends State<LoginPage> {
                                 const Text('Don\'t have an account ? ', style: TextStyle(fontSize: 13, color: Color(0xff939393), fontWeight: FontWeight.bold),),
                                 GestureDetector(
                                   onTap: () => {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupPage()))
                                   },
                                   child: const Text('Sign-up', style: TextStyle(fontSize: 15, color: Colors.blueAccent, fontWeight: FontWeight.bold),),
                                 ),

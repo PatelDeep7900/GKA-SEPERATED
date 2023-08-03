@@ -40,7 +40,7 @@ class _homescreenState extends State<homescreen>{
   Future<void> fetchData(paraoffset) async {
 
     var url =
-        "http://e-gam.com/GKARESTAPI/welcomePage?off=${paraoffset}&lim=25";
+        "http://e-gam.com/GKARESTAPI/welcomePage?off=${paraoffset}&lim=10";
     print(url);
     var uri = Uri.parse(url);
     var response = await http.get(uri);
@@ -77,7 +77,7 @@ class _homescreenState extends State<homescreen>{
 
                   // result[index].id
                 },
-                child: ListTile(
+                child: ExpansionTile(
                   leading: CircleAvatar(
                     radius: 30,
                     backgroundImage: NetworkImage(
@@ -87,172 +87,171 @@ class _homescreenState extends State<homescreen>{
                     '${index + 1}',
                   ),
                   subtitle: Text(result[index].name.toString()),
-                  // children: [
-                  //   // ExpansionTile(
-                  //   //   title: Text("Basic Information"),
-                  //   //   children: [
-                  //   //     Card(
-                  //   //       child: Column(
-                  //   //       children: [
-                  //   //         Row(
-                  //   //           children: [
-                  //   //             Text('Address1'),
-                  //   //             Expanded(child: Text(result[index].address)),
-                  //   //           ],
-                  //   //         ),
-                  //   //         Row(
-                  //   //           children: [
-                  //   //             Text('Address2'),
-                  //   //             Expanded(child: Text(result[index].address1)),
-                  //   //           ],
-                  //   //         ),
-                  //   //         Row(
-                  //   //           children: [
-                  //   //             Text('Country'),
-                  //   //             Expanded(child: Text(result[index].country.toString())),
-                  //   //           ],
-                  //   //         ),
-                  //   //         Row(
-                  //   //           children: [
-                  //   //             Text('State'),
-                  //   //             Expanded(child: Text(result[index].state)),
-                  //   //           ],
-                  //   //         ),
-                  //   //         Row(
-                  //   //           children: [
-                  //   //             Text('City'),
-                  //   //             Expanded(child: Text(result[index].cities)),
-                  //   //           ],
-                  //   //         ),
-                  //   //         Row(
-                  //   //           children: [
-                  //   //             Text('Zip/Pin'),
-                  //   //             Expanded(child: Text(result[index].pin)),
-                  //   //           ],
-                  //   //         ),
-                  //   //
-                  //   //       ],
-                  //   //     ),)
-                  //   //   ],
-                  //   // ),
-                  //   // ExpansionTile(
-                  //   //   title: Text("Contact Information"),
-                  //   //   children: [
-                  //   //     Card(
-                  //   //       child: Column(
-                  //   //         children: [
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Country Code'),
-                  //   //               Expanded(child: Text("+1")),
-                  //   //             ],
-                  //   //           ),
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Home Phone'),
-                  //   //               Expanded(child: Text(result[index].phone)),
-                  //   //             ],
-                  //   //           ),
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Mobile'),
-                  //   //               Expanded(child: Text(result[index].mob)),
-                  //   //             ],
-                  //   //           ),
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Email'),
-                  //   //               Expanded(child: Text(result[index].email)),
-                  //   //             ],
-                  //   //           ),
-                  //   //
-                  //   //         ],
-                  //   //       ),)
-                  //   //   ],
-                  //   // ),
-                  //   // ExpansionTile(
-                  //   //   title: Text("Businees Details"),
-                  //   //   children: [
-                  //   //     Card(
-                  //   //       child: Column(
-                  //   //         children: [
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Website'),
-                  //   //               Expanded(child: Text(result[index].bWebsite.toString())),
-                  //   //             ],
-                  //   //           ),
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Type of Businees'),
-                  //   //               Expanded(child: Text(result[index].bDetail.toString())),
-                  //   //             ],
-                  //   //           ),
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Location'),
-                  //   //               Expanded(child: Text(result[index].bLocation.toString())),
-                  //   //             ],
-                  //   //           ),
-                  //   //         ],
-                  //   //       ),)
-                  //   //   ],
-                  //   // ),
-                  //   // ExpansionTile(
-                  //   //   title: Text("Family Details"),
-                  //   //   children: [
-                  //   //     Card(
-                  //   //       child: Column(
-                  //   //         children: [
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Parents'),
-                  //   //               Expanded(child: Text(result[index].parent)),
-                  //   //             ],
-                  //   //           ),
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Spouse Parents'),
-                  //   //               Expanded(child: Text(result[index].sParents)),
-                  //   //             ],
-                  //   //           ),
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Native:City/Country'),
-                  //   //               Expanded(child: Text(result[index].natCity.toString())),
-                  //   //             ],
-                  //   //           ),
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Name of Samajik Sanstha Involved'),
-                  //   //               Expanded(child: Text(result[index].sSanstha)),
-                  //   //             ],
-                  //   //           ),
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Extra1'),
-                  //   //               Expanded(child: Text(result[index].ext1.toString())),
-                  //   //             ],
-                  //   //           ),
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('Extra2'),
-                  //   //               Expanded(child: Text(result[index].ext2)),
-                  //   //             ],
-                  //   //           ),
-                  //   //           Row(
-                  //   //             children: [
-                  //   //               Text('About Family'),
-                  //   //               Expanded(child: Text(result[index].aboutFamily)),
-                  //   //             ],
-                  //   //           ),
-                  //   //
-                  //   //         ],
-                  //   //       ),)
-                  //   //   ],
-                  //   // ),
-                  //   Text('hello'),
-                  // ],
+                  children: [
+                    ExpansionTile(
+                      title: Text("Basic Information"),
+                      children: [
+                        Card(
+                          child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text('Address1'),
+                                Expanded(child: Text(result[index].address)),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text('Address2'),
+                                Expanded(child: Text(result[index].address1)),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text('Country'),
+                                Expanded(child: Text(result[index].country.toString())),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text('State'),
+                                Expanded(child: Text(result[index].state.toString())),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text('City'),
+                                Expanded(child: Text(result[index].cities.toString())),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text('Zip/Pin'),
+                                Expanded(child: Text(result[index].pin)),
+                              ],
+                            ),
+
+                          ],
+                        ),)
+                      ],
+                    ),
+                    ExpansionTile(
+                      title: Text("Contact Information"),
+                      children: [
+                        Card(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text('Country Code'),
+                                  Expanded(child: Text("+1")),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('Home Phone'),
+                                  Expanded(child: Text(result[index].phone)),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('Mobile'),
+                                  Expanded(child: Text(result[index].mob)),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('Email'),
+                                  Expanded(child: Text(result[index].email)),
+                                ],
+                              ),
+
+                            ],
+                          ),)
+                      ],
+                    ),
+                    ExpansionTile(
+                      title: Text("Businees Details"),
+                      children: [
+                        Card(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text('Website'),
+                                  Expanded(child: Text(result[index].bWebsite.toString())),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('Type of Businees'),
+                                  Expanded(child: Text(result[index].bDetail.toString())),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('Location'),
+                                  Expanded(child: Text(result[index].bLocation.toString())),
+                                ],
+                              ),
+                            ],
+                          ),)
+                      ],
+                    ),
+                    ExpansionTile(
+                      title: Text("Family Details"),
+                      children: [
+                        Card(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text('Parents'),
+                                  Expanded(child: Text(result[index].parent)),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('Spouse Parents'),
+                                  Expanded(child: Text(result[index].sParents)),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('Native:City/Country'),
+                                  Expanded(child: Text(result[index].natCity.toString())),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('Name of Samajik Sanstha Involved'),
+                                  Expanded(child: Text(result[index].sSanstha)),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('Extra1'),
+                                  Expanded(child: Text(result[index].ext1.toString())),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('Extra2'),
+                                  Expanded(child: Text(result[index].ext2)),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('About Family'),
+                                  Expanded(child: Text(result[index].aboutFamily)),
+                                ],
+                              ),
+
+                            ],
+                          ),)
+                      ],
+                    ),
+                  ],
                 ),
               ),
             );

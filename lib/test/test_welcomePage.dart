@@ -24,7 +24,6 @@ class _test_welcomepageState extends State<test_welcomepage> {
 
 
 
-  List<Result> searchresult = [];
 
   bool _hashNextPage=true;
   bool _isLoadMoreRunning=false;
@@ -47,12 +46,8 @@ class _test_welcomepageState extends State<test_welcomepage> {
 
       final response = await http.get(uri);
       setState(() {
-
         Welcome welcome = Welcome.fromJson(json.decode(response.body));
         result = result + welcome.results;
-
-
-
       });
     } catch (err) {
      print(err.toString());
@@ -62,7 +57,6 @@ class _test_welcomepageState extends State<test_welcomepage> {
       _isFirstLoadRunning = false;
     });
   }
-
 
 
   void _loadMore()async {
@@ -118,13 +112,16 @@ class _test_welcomepageState extends State<test_welcomepage> {
     }
   }
 
+
+
+
   @override
   void initState() {
     super.initState();
     _firstLoad();
     scrollController=ScrollController()..addListener(_loadMore);
-
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -135,11 +132,24 @@ class _test_welcomepageState extends State<test_welcomepage> {
               )
             : Column(
                 children: [
+                  Padding(
+                      padding: EdgeInsets.all(10),
+                      child: TextField(
+                        onChanged: (value){
+
+                        },
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.search),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                        ),
+                      ),
+                  ),
                   Expanded(child: ListView.builder(
                     controller: scrollController,
                       itemCount:result.length,
                       itemBuilder:(context, index) =>
              Card(
+               key: ValueKey(result[index].id),
         shape: Border.all(color: Colors.grey),
       elevation: 8,
       child: InkWell(

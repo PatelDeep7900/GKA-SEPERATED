@@ -157,7 +157,6 @@ class _LoginPageState extends State<LoginPage> {
       var cond=data['result'];
       if(cond==true) {
 
-
         await prefs.setInt('id', data['id']);
         await prefs.setBool("result", true);
         await prefs.setString("user_Email", data['G_username']);
@@ -179,9 +178,6 @@ class _LoginPageState extends State<LoginPage> {
         const SnackBar(content: Text("Server Not Responding")),
       );
     }
-
-
-
 
     }
 

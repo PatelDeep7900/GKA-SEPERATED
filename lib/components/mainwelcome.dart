@@ -17,7 +17,7 @@ class mainwelcome extends StatefulWidget {
 }
 
 class _mainwelcomeState extends State<mainwelcome> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   int status = 0;
   String? user_Email = "";
   String? Name = "";
@@ -25,14 +25,11 @@ class _mainwelcomeState extends State<mainwelcome> {
 
   addprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     setState(() {
       user_Email = prefs.get("user_Email").toString();
       Name = prefs.get("Name").toString();
       User_Typ = prefs.get("User_Typ").toString();
     });
-
-
   }
 
   @override
@@ -40,14 +37,11 @@ class _mainwelcomeState extends State<mainwelcome> {
     // TODO: implement initState
     super.initState();
     addprefs();
-
-
-
   }
 
   static const List<Widget> _widgetOption = <Widget>[
-    homescreen(),
     test_welcomepage(),
+    profilescreen(),
     contactscreen(),
     businessscreen(),
     profilephotoscreen(),
@@ -56,6 +50,7 @@ class _mainwelcomeState extends State<mainwelcome> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      status=index;
     });
   }
 
@@ -73,12 +68,13 @@ class _mainwelcomeState extends State<mainwelcome> {
                 child: ClipOval(
                     child:Image.network("http://e-gam.com/GKA/Logo/GKA%20logo.jpg")),
               ),
-              decoration: BoxDecoration(color: Colors.deepOrange),
+              decoration: BoxDecoration(color: Color(0xd9fd6d0c)),
             ),
             Card(
+              color: status==0?Color(0xff233743):null,
               child: ListTile(
-                leading: Icon(Icons.home),
-                title: Text('Home'),
+                leading: Icon(Icons.home,color: status==0?Colors.white:null),
+                title: Text('Home',style: TextStyle(color: status==0?Colors.white:null),),
                 onTap: () {
                   _onItemTapped(0);
                   Navigator.pop(context);
@@ -86,10 +82,11 @@ class _mainwelcomeState extends State<mainwelcome> {
               ),
             ),
             Card(
+              color: status==1?Color(0xff233743):null,
               child: ListTile(
-                leading: Icon(Icons.person),
-                trailing: Icon(Icons.share),
-                title: Text('Profile'),
+                leading: Icon(Icons.person,color: status==1?Colors.white:null),
+                trailing: Icon(Icons.share,color: status==1?Colors.white:null),
+                title: Text('Profile',style: TextStyle(color: status==1?Colors.white:null),),
                 onTap: () {
                   _onItemTapped(1);
                   Navigator.pop(context);
@@ -106,7 +103,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                     leading: Icon(Icons.info),
                     title: Text('Basic Information'),
                     onTap: () {
-                      _onItemTapped(1);
+                      _onItemTapped(2);
                       Navigator.pop(context);
                     },
                   ),
@@ -114,7 +111,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                     leading: Icon(Icons.contact_phone),
                     title: Text('Contact Information'),
                     onTap: () {
-                      _onItemTapped(1);
+                      _onItemTapped(3);
                       Navigator.pop(context);
                     },
                   ),
@@ -122,7 +119,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                     leading: Icon(Icons.family_restroom),
                     title: Text('Family Information'),
                     onTap: () {
-                      _onItemTapped(1);
+                      _onItemTapped(4);
                       Navigator.pop(context);
                     },
                   ),
@@ -130,7 +127,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                     leading: Icon(Icons.photo),
                     title: Text('Profile Image'),
                     onTap: () {
-                      _onItemTapped(1);
+                      _onItemTapped(4);
                       Navigator.pop(context);
                     },
                   ),
@@ -154,6 +151,7 @@ class _mainwelcomeState extends State<mainwelcome> {
       ),
       backgroundColor: Colors.black12,
       appBar: AppBar(
+        backgroundColor: Color(0xd9fd6d0c),
         title: const Text("GKA"),
         centerTitle: true,
         actions: [

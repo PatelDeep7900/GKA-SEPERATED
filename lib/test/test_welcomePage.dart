@@ -618,7 +618,23 @@ void _search(String searchval) async {
               ),
                   )
             ],
-        )
+        ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xd9fd6d0c),
+        onPressed: () {
+          if (scrollController.hasClients) {
+            final position = scrollController.position.minScrollExtent;
+            scrollController.animateTo(
+              position,
+              duration: Duration(seconds: 1),
+              curve: Curves.easeOut,
+            );
+          }
+        },
+        isExtended: true,
+        tooltip: "Scroll to Bottom",
+        child: Icon(Icons.arrow_upward),
+      ),
 
         );
   }

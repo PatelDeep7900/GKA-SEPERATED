@@ -9,120 +9,132 @@ Welcome welcomeFromJson(String str) => Welcome.fromJson(json.decode(str));
 String welcomeToJson(Welcome data) => json.encode(data.toJson());
 
 class Welcome {
+  bool offcheck;
+  bool limcheck;
   List<Result> results;
+  bool datafound;
 
   Welcome({
+    required this.offcheck,
+    required this.limcheck,
     required this.results,
+    required this.datafound,
   });
 
   factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
+    offcheck: json["offcheck"],
+    limcheck: json["limcheck"],
     results: List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+    datafound: json["datafound"],
   );
 
   Map<String, dynamic> toJson() => {
+    "offcheck": offcheck,
+    "limcheck": limcheck,
     "results": List<dynamic>.from(results.map((x) => x.toJson())),
+    "datafound": datafound,
   };
 }
 
 class Result {
   String userApprov;
-  Country country;
+  Strcities strcities;
   String mob;
   BDetail bDetail;
   String address;
   String email;
-  Cities cities;
   String parent;
   String address1;
   String sSanstha;
   String natCity;
+  Strstate strstate;
   String aboutFamily;
+  String strpin;
   BLocation bLocation;
   String sParents;
-  String pin;
   String phone;
   List<Familyinfo> familyinfo;
   String name;
+  Strcountry strcountry;
   BWebsite bWebsite;
   String id;
-  State1 state;
   String ext2;
   Ext1 ext1;
 
   Result({
     required this.userApprov,
-    required this.country,
+    required this.strcities,
     required this.mob,
     required this.bDetail,
     required this.address,
     required this.email,
-    required this.cities,
     required this.parent,
     required this.address1,
     required this.sSanstha,
     required this.natCity,
+    required this.strstate,
     required this.aboutFamily,
+    required this.strpin,
     required this.bLocation,
     required this.sParents,
-    required this.pin,
     required this.phone,
     required this.familyinfo,
     required this.name,
+    required this.strcountry,
     required this.bWebsite,
     required this.id,
-    required this.state,
     required this.ext2,
     required this.ext1,
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
     userApprov: json["User_Approv"],
-    country: countryValues.map[json["country"]]!,
+    strcities: strcitiesValues.map[json["strcities"]]!,
     mob: json["Mob"],
     bDetail: bDetailValues.map[json["B_Detail"]]!,
     address: json["address"],
     email: json["Email"],
-    cities: citiesValues.map[json["cities"]]!,
     parent: json["Parent"],
     address1: json["address1"],
     sSanstha: json["s_sanstha"],
     natCity: json["Nat_City"],
+    strstate: strstateValues.map[json["strstate"]]!,
     aboutFamily: json["About_Family"],
+    strpin: json["strpin"],
     bLocation: bLocationValues.map[json["B_location"]]!,
     sParents: json["S_Parents"],
-    pin: json["pin"],
     phone: json["Phone"],
     familyinfo: List<Familyinfo>.from(json["familyinfo"].map((x) => Familyinfo.fromJson(x))),
     name: json["name"],
+    strcountry: strcountryValues.map[json["strcountry"]]!,
     bWebsite: bWebsiteValues.map[json["B_Website"]]!,
     id: json["id"],
-    state: stateValues.map[json["state"]]!,
     ext2: json["ext2"],
     ext1: ext1Values.map[json["ext1"]]!,
   );
 
   Map<String, dynamic> toJson() => {
     "User_Approv": userApprov,
-    "country": countryValues.reverse[country],
+    "strcities": strcitiesValues.reverse[strcities],
     "Mob": mob,
     "B_Detail": bDetailValues.reverse[bDetail],
     "address": address,
     "Email": email,
-    "cities": citiesValues.reverse[cities],
     "Parent": parent,
     "address1": address1,
     "s_sanstha": sSanstha,
     "Nat_City": natCity,
+    "strstate": strstateValues.reverse[strstate],
     "About_Family": aboutFamily,
+    "strpin": strpin,
     "B_location": bLocationValues.reverse[bLocation],
     "S_Parents": sParents,
-    "pin": pin,
     "Phone": phone,
     "familyinfo": List<dynamic>.from(familyinfo.map((x) => x.toJson())),
     "name": name,
+    "strcountry": strcountryValues.reverse[strcountry],
     "B_Website": bWebsiteValues.reverse[bWebsite],
     "id": id,
-    "state": stateValues.reverse[state],
     "ext2": ext2,
     "ext1": ext1Values.reverse[ext1],
   };
@@ -162,46 +174,6 @@ final bWebsiteValues = EnumValues({
   "": BWebsite.EMPTY,
   "nirmalpatel0531@gmail.com": BWebsite.NIRMALPATEL0531_GMAIL_COM,
   "www.demo.org": BWebsite.WWW_DEMO_ORG
-});
-
-enum Cities {
-  BEACH,
-  BREWTON,
-  COLUMBUS,
-  CUMMING,
-  EDISON,
-  KENNER,
-  LITTLE_ROCK,
-  LYNNWOOD,
-  NEWNAN,
-  NEW_BERN,
-  SELECT,
-  WEST_COLUMBIA
-}
-
-final citiesValues = EnumValues({
-  "Beach": Cities.BEACH,
-  "Brewton": Cities.BREWTON,
-  "Columbus": Cities.COLUMBUS,
-  "Cumming": Cities.CUMMING,
-  "Edison": Cities.EDISON,
-  "Kenner": Cities.KENNER,
-  "Little Rock": Cities.LITTLE_ROCK,
-  "Lynnwood": Cities.LYNNWOOD,
-  "Newnan": Cities.NEWNAN,
-  "New Bern": Cities.NEW_BERN,
-  "SELECT": Cities.SELECT,
-  "West Columbia": Cities.WEST_COLUMBIA
-});
-
-enum Country {
-  CANADA,
-  UNITED_STATES
-}
-
-final countryValues = EnumValues({
-  "Canada": Country.CANADA,
-  "United States": Country.UNITED_STATES
 });
 
 enum Ext1 {
@@ -270,7 +242,47 @@ final occValues = EnumValues({
   "student": Occ.STUDENT
 });
 
-enum State1 {
+enum Strcities {
+  BEACH,
+  BREWTON,
+  COLUMBUS,
+  CUMMING,
+  EDISON,
+  KENNER,
+  LITTLE_ROCK,
+  LYNNWOOD,
+  NEWNAN,
+  NEW_BERN,
+  SELECT,
+  WEST_COLUMBIA
+}
+
+final strcitiesValues = EnumValues({
+  "Beach": Strcities.BEACH,
+  "Brewton": Strcities.BREWTON,
+  "Columbus": Strcities.COLUMBUS,
+  "Cumming": Strcities.CUMMING,
+  "Edison": Strcities.EDISON,
+  "Kenner": Strcities.KENNER,
+  "Little Rock": Strcities.LITTLE_ROCK,
+  "Lynnwood": Strcities.LYNNWOOD,
+  "Newnan": Strcities.NEWNAN,
+  "New Bern": Strcities.NEW_BERN,
+  "SELECT": Strcities.SELECT,
+  "West Columbia": Strcities.WEST_COLUMBIA
+});
+
+enum Strcountry {
+  CANADA,
+  UNITED_STATES
+}
+
+final strcountryValues = EnumValues({
+  "Canada": Strcountry.CANADA,
+  "United States": Strcountry.UNITED_STATES
+});
+
+enum Strstate {
   ALABAMA,
   ARKANSAS,
   FLORIDA,
@@ -284,18 +296,18 @@ enum State1 {
   WASHINGTON
 }
 
-final stateValues = EnumValues({
-  "Alabama": State1.ALABAMA,
-  "Arkansas": State1.ARKANSAS,
-  "Florida": State1.FLORIDA,
-  "Georgia": State1.GEORGIA,
-  "Louisiana": State1.LOUISIANA,
-  "New Jersey": State1.NEW_JERSEY,
-  "North Carolina": State1.NORTH_CAROLINA,
-  "Ohio": State1.OHIO,
-  "SELECT": State1.SELECT,
-  "South Carolina": State1.SOUTH_CAROLINA,
-  "Washington": State1.WASHINGTON
+final strstateValues = EnumValues({
+  "Alabama": Strstate.ALABAMA,
+  "Arkansas": Strstate.ARKANSAS,
+  "Florida": Strstate.FLORIDA,
+  "Georgia": Strstate.GEORGIA,
+  "Louisiana": Strstate.LOUISIANA,
+  "New Jersey": Strstate.NEW_JERSEY,
+  "North Carolina": Strstate.NORTH_CAROLINA,
+  "Ohio": Strstate.OHIO,
+  "SELECT": Strstate.SELECT,
+  "South Carolina": Strstate.SOUTH_CAROLINA,
+  "Washington": Strstate.WASHINGTON
 });
 
 class EnumValues<T> {

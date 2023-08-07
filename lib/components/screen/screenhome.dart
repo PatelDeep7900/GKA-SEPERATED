@@ -109,25 +109,25 @@ class _homescreenState extends State<homescreen>{
                             Row(
                               children: [
                                 Text('Country'),
-                                Expanded(child: Text(result[index].country.toString())),
+                                Expanded(child: Text(result[index].strcountry.toString())),
                               ],
                             ),
                             Row(
                               children: [
                                 Text('State'),
-                                Expanded(child: Text(result[index].state.toString())),
+                                Expanded(child: Text(result[index].strstate.toString())),
                               ],
                             ),
                             Row(
                               children: [
                                 Text('City'),
-                                Expanded(child: Text(result[index].cities.toString())),
+                                Expanded(child: Text(result[index].strcities.toString())),
                               ],
                             ),
                             Row(
                               children: [
                                 Text('Zip/Pin'),
-                                Expanded(child: Text(result[index].pin)),
+                                Expanded(child: Text(result[index].strpin)),
                               ],
                             ),
 

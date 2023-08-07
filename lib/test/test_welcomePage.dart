@@ -30,7 +30,7 @@ class _test_welcomepageState extends State<test_welcomepage> {
 
 
 
-  bool _hashNextPage=false;
+  bool _hashNextPage=true;
   bool _isLoadMoreRunning=false;
 
 
@@ -45,24 +45,25 @@ void _search(String searchval) async {
     var url =
         "http://e-gam.com/GKARESTAPI/serchbyname?nm=$searchval";
     var uri = Uri.parse(url);
-   print(uri);
     final response = await http.get(uri);
-
-  setState(() {
+    setState((){
     Welcome welcome = Welcome.fromJson(json.decode(response.body));
     searchresult =welcome.results;
-    _hashNextPage=false;
+    });
 
-  });
+    setState(() {
+      _isFirstLoadRunning = false;
+    });
+
+
   } catch (err) {
     print(err.toString());
   }
 
-  setState(() {
-    _isFirstLoadRunning = false;
-  });
 
 }
+
+
 
   void _firstLoad() async {
     setState(() {
@@ -73,12 +74,13 @@ void _search(String searchval) async {
       var url =
           "http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit";
       var uri = Uri.parse(url);
-      print(url+"base");
 
       final response = await http.get(uri);
       setState(() {
         Welcome welcome = Welcome.fromJson(json.decode(response.body));
+
         result = result + welcome.results;
+
       });
     } catch (err) {
      print(err.toString());
@@ -113,22 +115,22 @@ void _search(String searchval) async {
 
 
         final response = await http.get(uri);
-        setState(() {
+
+        var a=jsonDecode(response.body);
+        if(a['datafound']==true){
           Welcome welcome = Welcome.fromJson(json.decode(response.body));
           if(result.isNotEmpty) {
             setState(() {
               result = result + welcome.results;
             });
-          }else{
-            _hashNextPage=false;
           }
-
-
-        });
+        }else{
+         setState(() {
+           _hashNextPage=false;
+         });
+        }
       } catch (err) {
-        setState(() {
-          _hashNextPage=false;
-        });
+
         print(err.toString());
       }
 
@@ -139,7 +141,6 @@ void _search(String searchval) async {
       });
 
     }else{
-      print("le lode");
     }
   }
 
@@ -166,8 +167,6 @@ void _search(String searchval) async {
                     setState(() {
                       searchresult = [];
                     });
-
-
                     if(value.length>2) {
                       setState(() {
                         _len = value.length;
@@ -245,25 +244,25 @@ void _search(String searchval) async {
                                                 Row(
                                                   children: [
                                                     Text('Country'),
-                                                    Expanded(child: Text(result[index].country.toString())),
+                                                    Expanded(child: Text(result[index].strcountry.toString())),
                                                   ],
                                                 ),
                                                 Row(
                                                   children: [
                                                     Text('State'),
-                                                    Expanded(child: Text(result[index].state.toString())),
+                                                    Expanded(child: Text(result[index].strstate.toString())),
                                                   ],
                                                 ),
                                                 Row(
                                                   children: [
                                                     Text('City'),
-                                                    Expanded(child: Text(result[index].cities.toString())),
+                                                    Expanded(child: Text(result[index].strcities.toString())),
                                                   ],
                                                 ),
                                                 Row(
                                                   children: [
                                                     Text('Zip/Pin'),
-                                                    Expanded(child: Text(result[index].pin)),
+                                                    Expanded(child: Text(result[index].strpin)),
                                                   ],
                                                 ),
 
@@ -445,25 +444,25 @@ void _search(String searchval) async {
                                                 Row(
                                                   children: [
                                                     Text('Country'),
-                                                    Expanded(child: Text(searchresult[index].country.toString())),
+                                                    Expanded(child: Text(searchresult[index].strcountry.toString())),
                                                   ],
                                                 ),
                                                 Row(
                                                   children: [
                                                     Text('State'),
-                                                    Expanded(child: Text(searchresult[index].state.toString())),
+                                                    Expanded(child: Text(searchresult[index].strstate.toString())),
                                                   ],
                                                 ),
                                                 Row(
                                                   children: [
                                                     Text('City'),
-                                                    Expanded(child: Text(searchresult[index].cities.toString())),
+                                                    Expanded(child: Text(searchresult[index].strcities.toString())),
                                                   ],
                                                 ),
                                                 Row(
                                                   children: [
                                                     Text('Zip/Pin'),
-                                                    Expanded(child: Text(searchresult[index].pin)),
+                                                    Expanded(child: Text(searchresult[index].strpin)),
                                                   ],
                                                 ),
 
@@ -639,3 +638,4 @@ void _search(String searchval) async {
         );
   }
 }
+

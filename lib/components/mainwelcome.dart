@@ -57,111 +57,113 @@ class _mainwelcomeState extends State<mainwelcome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            UserAccountsDrawerHeader(
-              accountName: Text("$Name"),
-              accountEmail: Text("$user_Email"),
-              currentAccountPicture: CircleAvatar(
-                child: ClipOval(
-                    child:Image.network("http://e-gam.com/GKA/Logo/GKA%20logo.jpg")),
+    return SafeArea(
+      child: Scaffold(
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              UserAccountsDrawerHeader(
+                accountName: Text("$Name"),
+                accountEmail: Text("$user_Email"),
+                currentAccountPicture: CircleAvatar(
+                  child: ClipOval(
+                      child:Image.network("http://e-gam.com/GKA/Logo/GKA%20logo.jpg")),
+                ),
+                decoration: BoxDecoration(color: Color(0xd9fd6d0c)),
               ),
-              decoration: BoxDecoration(color: Color(0xd9fd6d0c)),
-            ),
-            Card(
-              color: status==0?Color(0xff233743):null,
-              child: ListTile(
-                leading: Icon(Icons.home,color: status==0?Colors.white:null),
-                title: Text('Home',style: TextStyle(color: status==0?Colors.white:null),),
-                onTap: () {
-                  _onItemTapped(0);
-                  Navigator.pop(context);
-                },
+              Card(
+                color: status==0?Color(0xff233743):null,
+                child: ListTile(
+                  leading: Icon(Icons.home,color: status==0?Colors.white:null),
+                  title: Text('Home',style: TextStyle(color: status==0?Colors.white:null),),
+                  onTap: () {
+                    _onItemTapped(0);
+                    Navigator.pop(context);
+                  },
+                ),
               ),
-            ),
-            Card(
-              color: status==1?Color(0xff233743):null,
-              child: ListTile(
-                leading: Icon(Icons.person,color: status==1?Colors.white:null),
-                trailing: Icon(Icons.share,color: status==1?Colors.white:null),
-                title: Text('Profile',style: TextStyle(color: status==1?Colors.white:null),),
-                onTap: () {
-                  _onItemTapped(1);
-                  Navigator.pop(context);
-                },
+              Card(
+                color: status==1?Color(0xff233743):null,
+                child: ListTile(
+                  leading: Icon(Icons.person,color: status==1?Colors.white:null),
+                  trailing: Icon(Icons.share,color: status==1?Colors.white:null),
+                  title: Text('Profile',style: TextStyle(color: status==1?Colors.white:null),),
+                  onTap: () {
+                    _onItemTapped(1);
+                    Navigator.pop(context);
+                  },
+                ),
               ),
-            ),
-            Card(
-              child: ExpansionTile(
-                backgroundColor: Colors.white30,
-                title: Text("Profile Edit"),
-                leading: Icon(Icons.person),
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.info),
-                    title: Text('Basic Information'),
-                    onTap: () {
-                      _onItemTapped(2);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.contact_phone),
-                    title: Text('Contact Information'),
-                    onTap: () {
-                      _onItemTapped(3);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.family_restroom),
-                    title: Text('Family Information'),
-                    onTap: () {
-                      _onItemTapped(4);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.photo),
-                    title: Text('Profile Image'),
-                    onTap: () {
-                      _onItemTapped(4);
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
+              Card(
+                child: ExpansionTile(
+                  backgroundColor: Colors.white30,
+                  title: Text("Profile Edit"),
+                  leading: Icon(Icons.person),
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.info),
+                      title: Text('Basic Information'),
+                      onTap: () {
+                        _onItemTapped(2);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.contact_phone),
+                      title: Text('Contact Information'),
+                      onTap: () {
+                        _onItemTapped(3);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.family_restroom),
+                      title: Text('Family Information'),
+                      onTap: () {
+                        _onItemTapped(4);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.photo),
+                      title: Text('Profile Image'),
+                      onTap: () {
+                        _onItemTapped(4);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const Divider(),
-            Card(
-              child: ListTile(
-                leading: Icon(Icons.logout),
-                title: const Text('Logout'),
-                onTap: () async {
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                  prefs.clear();
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>LoginPage()));
-                },
-              ),
-            )
+              const Divider(),
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.logout),
+                  title: const Text('Logout'),
+                  onTap: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.clear();
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>LoginPage()));
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
+        backgroundColor: Colors.black12,
+        appBar: AppBar(
+          backgroundColor: Color(0xd9fd6d0c),
+          title: const Text("GKA"),
+          centerTitle: true,
+          actions: [
+            IconButton(onPressed: () {
+              SystemNavigator.pop();
+            },
+              icon: Icon(Icons.exit_to_app),),
           ],
         ),
+        body: _widgetOption[_selectedIndex],
       ),
-      backgroundColor: Colors.black12,
-      appBar: AppBar(
-        backgroundColor: Color(0xd9fd6d0c),
-        title: const Text("GKA"),
-        centerTitle: true,
-        actions: [
-          IconButton(onPressed: () {
-            SystemNavigator.pop();
-          },
-            icon: Icon(Icons.exit_to_app),),
-        ],
-      ),
-      body: _widgetOption[_selectedIndex],
     );
   }
 }

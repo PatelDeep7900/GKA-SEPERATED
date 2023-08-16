@@ -40,7 +40,7 @@ class _homescreenState extends State<homescreen>{
   Future<void> fetchData(paraoffset) async {
 
     var url =
-        "http://e-gam.com/GKARESTAPI/welcomePage?off=${paraoffset}&lim=10";
+        "http://e-gam.com/GKARESTAPI/welcomePage?off=$paraoffset&lim=10";
     print(url);
     var uri = Uri.parse(url);
     var response = await http.get(uri);
@@ -78,7 +78,7 @@ class _homescreenState extends State<homescreen>{
                   // result[index].id
                 },
                 child: ExpansionTile(
-                  leading: CircleAvatar(
+                  leading: const CircleAvatar(
                     radius: 30,
                     backgroundImage: NetworkImage(
                         "http://e-gam.com/GKA/Logo/GKA%20logo.jpg"),
@@ -86,47 +86,47 @@ class _homescreenState extends State<homescreen>{
                   title: Text(
                     '${index + 1}',
                   ),
-                  subtitle: Text(result[index].name.toString()),
+                  subtitle: Text(result[index].name),
                   children: [
                     ExpansionTile(
-                      title: Text("Basic Information"),
+                      title: const Text("Basic Information"),
                       children: [
                         Card(
                           child: Column(
                           children: [
                             Row(
                               children: [
-                                Text('Address1'),
+                                const Text('Address1'),
                                 Expanded(child: Text(result[index].address)),
                               ],
                             ),
                             Row(
                               children: [
-                                Text('Address2'),
+                                const Text('Address2'),
                                 Expanded(child: Text(result[index].address1)),
                               ],
                             ),
                             Row(
                               children: [
-                                Text('Country'),
-                                Expanded(child: Text(result[index].strcountry.toString())),
+                                const Text('Country'),
+                                Expanded(child: Text(result[index].strcountry.name)),
                               ],
                             ),
                             Row(
                               children: [
-                                Text('State'),
-                                Expanded(child: Text(result[index].strstate.toString())),
+                                const Text('State'),
+                                Expanded(child: Text(result[index].strstate.name)),
                               ],
                             ),
                             Row(
                               children: [
-                                Text('City'),
-                                Expanded(child: Text(result[index].strcities.toString())),
+                                const Text('City'),
+                                Expanded(child: Text(result[index].strcities.name)),
                               ],
                             ),
                             Row(
                               children: [
-                                Text('Zip/Pin'),
+                                const Text('Zip/Pin'),
                                 Expanded(child: Text(result[index].strpin)),
                               ],
                             ),
@@ -136,12 +136,12 @@ class _homescreenState extends State<homescreen>{
                       ],
                     ),
                     ExpansionTile(
-                      title: Text("Contact Information"),
+                      title: const Text("Contact Information"),
                       children: [
                         Card(
                           child: Column(
                             children: [
-                              Row(
+                              const Row(
                                 children: [
                                   Text('Country Code'),
                                   Expanded(child: Text("+1")),
@@ -149,19 +149,19 @@ class _homescreenState extends State<homescreen>{
                               ),
                               Row(
                                 children: [
-                                  Text('Home Phone'),
+                                  const Text('Home Phone'),
                                   Expanded(child: Text(result[index].phone)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text('Mobile'),
+                                  const Text('Mobile'),
                                   Expanded(child: Text(result[index].mob)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text('Email'),
+                                  const Text('Email'),
                                   Expanded(child: Text(result[index].email)),
                                 ],
                               ),
@@ -171,27 +171,27 @@ class _homescreenState extends State<homescreen>{
                       ],
                     ),
                     ExpansionTile(
-                      title: Text("Businees Details"),
+                      title: const Text("Businees Details"),
                       children: [
                         Card(
                           child: Column(
                             children: [
                               Row(
                                 children: [
-                                  Text('Website'),
-                                  Expanded(child: Text(result[index].bWebsite.toString())),
+                                  const Text('Website'),
+                                  Expanded(child: Text(result[index].bWebsite.name)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text('Type of Businees'),
-                                  Expanded(child: Text(result[index].bDetail.toString())),
+                                  const Text('Type of Businees'),
+                                  Expanded(child: Text(result[index].bDetail.name)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text('Location'),
-                                  Expanded(child: Text(result[index].bLocation.toString())),
+                                  const Text('Location'),
+                                  Expanded(child: Text(result[index].bLocation.name)),
                                 ],
                               ),
                             ],
@@ -199,50 +199,50 @@ class _homescreenState extends State<homescreen>{
                       ],
                     ),
                     ExpansionTile(
-                      title: Text("Family Details"),
+                      title: const Text("Family Details"),
                       children: [
                         Card(
                           child: Column(
                             children: [
                               Row(
                                 children: [
-                                  Text('Parents'),
+                                  const Text('Parents'),
                                   Expanded(child: Text(result[index].parent)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text('Spouse Parents'),
+                                  const Text('Spouse Parents'),
                                   Expanded(child: Text(result[index].sParents)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text('Native:City/Country'),
-                                  Expanded(child: Text(result[index].natCity.toString())),
+                                  const Text('Native:City/Country'),
+                                  Expanded(child: Text(result[index].natCity)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text('Name of Samajik Sanstha Involved'),
+                                  const Text('Name of Samajik Sanstha Involved'),
                                   Expanded(child: Text(result[index].sSanstha)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text('Extra1'),
-                                  Expanded(child: Text(result[index].ext1.toString())),
+                                  const Text('Extra1'),
+                                  Expanded(child: Text(result[index].ext1.name)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text('Extra2'),
+                                  const Text('Extra2'),
                                   Expanded(child: Text(result[index].ext2)),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text('About Family'),
+                                  const Text('About Family'),
                                   Expanded(child: Text(result[index].aboutFamily)),
                                 ],
                               ),
@@ -269,14 +269,14 @@ class _homescreenState extends State<homescreen>{
             final position = scrollController.position.minScrollExtent;
             scrollController.animateTo(
               position,
-              duration: Duration(seconds: 1),
+              duration: const Duration(seconds: 1),
               curve: Curves.easeOut,
             );
           }
         },
         isExtended: true,
         tooltip: "Scroll to Bottom",
-        child: Icon(Icons.arrow_circle_up),
+        child: const Icon(Icons.arrow_circle_up),
       ),
     );
   }

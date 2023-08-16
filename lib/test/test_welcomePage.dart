@@ -16,7 +16,6 @@ class _test_welcomepageState extends State<test_welcomepage> {
   ScrollController scrollController = ScrollController();
 
 
-  var _baseUrl = "http://e-gam.com/GKARESTAPI/welcomePage";
   int _page = 0;
   int _len=0;
   String _searchval = "";
@@ -111,7 +110,6 @@ void _search(String searchval) async {
         var url =
             "http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit";
         var uri = Uri.parse(url);
-        print(url+"scrool Url");
 
 
         final response = await http.get(uri);
@@ -213,7 +211,7 @@ void _search(String searchval) async {
                                     // result[index].id
                                   },
                                   child: ExpansionTile(
-                                    leading: CircleAvatar(
+                                    leading: const CircleAvatar(
                                       radius: 30,
                                       backgroundImage: NetworkImage(
                                           "http://e-gam.com/GKA/Logo/GKA%20logo.jpg"),
@@ -223,110 +221,122 @@ void _search(String searchval) async {
                                     ),
                                     subtitle: Text(result[index].name.toString()),
                                     children: [
-                                      ExpansionTile(
-                                        title: Text("Basic Information"),
+                                       ExpansionTile(
+                                        title: const Text("Basic Information"),
                                         children: [
                                           Card(
-                                            child: Column(
+                                            child: Row(
                                               children: [
-                                                Row(
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text('Address1'),
-                                                    Expanded(child: Text(result[index].address)),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Address2'),
-                                                    Expanded(child: Text(result[index].address1)),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Country'),
-                                                    Expanded(child: Text(result[index].strcountry.toString())),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('State'),
-                                                    Expanded(child: Text(result[index].strstate.toString())),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('City'),
-                                                    Expanded(child: Text(result[index].strcities.toString())),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Zip/Pin'),
-                                                    Expanded(child: Text(result[index].strpin)),
                                                   ],
                                                 ),
-
+                                                const SizedBox(width: 5,),
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                  ],
+                                                ),
+                                                const SizedBox(width: 15,),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(result[index].address),
+                                                    Text(result[index].address1),
+                                                    Text(result[index].strcountry.name),
+                                                    Text(result[index].strstate.name),
+                                                    Text(result[index].strcities.name),
+                                                    Text(result[index].strpin),
+                                                  ],
+                                                ),
                                               ],
-                                            ),)
+                                            ),
+                                          )
                                         ],
                                       ),
                                       ExpansionTile(
-                                        title: Text("Contact Information"),
+                                        title: const Text("Contact Information"),
                                         children: [
                                           Card(
-                                            child: Column(
+                                            child: Row(
                                               children: [
-                                                Row(
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text('Country Code'),
-                                                    Expanded(child: Text("+1")),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Home Phone'),
-                                                    Expanded(child: Text(result[index].phone)),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Mobile'),
-                                                    Expanded(child: Text(result[index].mob)),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Email'),
-                                                    Expanded(child: Text(result[index].email)),
                                                   ],
                                                 ),
-
+                                                const SizedBox(width: 5,),
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                  ],
+                                                ),
+                                                const SizedBox(width: 15,),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Text('+1'),
+                                                    Text(result[0].phone),
+                                                    Text(result[0].mob),
+                                                    Text(result[0].email),
+                                                  ],
+                                                ),
                                               ],
-                                            ),)
+                                            ),
+                                          )
                                         ],
                                       ),
                                       ExpansionTile(
-                                        title: Text("Businees Details"),
+                                        title: const Text("Businees Details"),
                                         children: [
                                           Card(
-                                            child: Column(
+                                            child: Row(
                                               children: [
-                                                Row(
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text('Website'),
-                                                    Expanded(child: Text(result[index].bWebsite.toString())),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text('Type of Businees'),
-                                                    Expanded(child: Text(result[index].bDetail.toString())),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
+                                                    Text('Business Type'),
                                                     Text('Location'),
-                                                    Expanded(child: Text(result[index].bLocation.toString())),
+                                                  ],
+                                                ),
+                                                const SizedBox(width: 5,),
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                  ],
+                                                ),
+                                                const SizedBox(width: 15,),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(result[0].bWebsite.name),
+                                                    Text(result[0].bDetail.name),
+                                                    Text(result[0].bLocation.name),
                                                   ],
                                                 ),
                                               ],
@@ -336,63 +346,62 @@ void _search(String searchval) async {
 
                                       result[index].userApprov=="1" ?
                                       ExpansionTile(
-
-                                        title: Text("Family Details"),
+                                        title: const Text("Family"),
                                         children: [
                                           ListView.builder(
                                             shrinkWrap: true,
-                                            physics: NeverScrollableScrollPhysics(),
+                                            physics: const NeverScrollableScrollPhysics(),
                                             itemCount: result[index].familyinfo.length,
                                             itemBuilder: (context, index1) =>
-                                                Card(
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text('#'),
-                                                          Expanded(child: Text("${index1+1}")),
-                                                        ],
-                                                      ),
-
-                                                      Row(
-                                                        children: [
-                                                          Text('name'),
-                                                          Expanded(child: Text(result[index].familyinfo[index1].name)),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text('dob'),
-                                                          Expanded(child: Text(result[index].familyinfo[index1].dob)),                                ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text('Native:City/Country'),
-                                                          Expanded(child: Text(result[index].familyinfo[index1].phone)),                                ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text('Name of Samajik Sanstha Involved'),
-                                                          Expanded(child: Text(result[index].familyinfo[index1].occ.toString())),                                ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text('Extra1'),
-                                                          Expanded(child: Text(result[index].familyinfo[index1].email)),                                ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text('Extra2'),
-                                                          Expanded(child: Text(result[index].familyinfo[index1].relation)),                                ],
-                                                      ),
-
-
-                                                    ],
-                                                  ),)
+                                                Expanded(
+                                                  child: Card(
+                                                    child: Row(
+                                                      children: [
+                                                        const Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text('name'),
+                                                            Text('Relation'),
+                                                            Text('Date of Birth'),
+                                                            Text('Occupation'),
+                                                            Text('Phone'),
+                                                            Text('Email'),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(width: 5,),
+                                                        const Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(':'),
+                                                            Text(':'),
+                                                            Text(':'),
+                                                            Text(':'),
+                                                            Text(':'),
+                                                            Text(':'),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(width: 15,),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(result[index].familyinfo[index1].name),
+                                                              Text(result[index].familyinfo[index1].relation),
+                                                              Text(result[index].familyinfo[index1].dob),
+                                                              Text(result[index].familyinfo[index1].occ.name),
+                                                              Text(result[index].familyinfo[index1].phone),
+                                                              Text(result[index].familyinfo[index1].email),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
                                             ,
                                           )
                                         ],
-                                      ) : Text(""),
+                                      ) : const Text(""),
                                     ],
                                   ),
                                 ),
@@ -400,7 +409,7 @@ void _search(String searchval) async {
 
                         ): ListView.builder(
 
-                          controller: scrollController,
+                          // controller: scrollController,
                           itemCount:searchresult.length,
                           itemBuilder:(context, index) =>
                               Card(
@@ -413,7 +422,7 @@ void _search(String searchval) async {
                                     // result[index].id
                                   },
                                   child: ExpansionTile(
-                                    leading: CircleAvatar(
+                                    leading: const CircleAvatar(
                                       radius: 30,
                                       backgroundImage: NetworkImage(
                                           "http://e-gam.com/GKA/Logo/GKA%20logo.jpg"),
@@ -424,109 +433,121 @@ void _search(String searchval) async {
                                     subtitle: Text(searchresult[index].name.toString()),
                                     children: [
                                       ExpansionTile(
-                                        title: Text("Basic Information"),
+                                        title: const Text("Basic Information"),
                                         children: [
                                           Card(
-                                            child: Column(
+                                            child: Row(
                                               children: [
-                                                Row(
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text('Address1'),
-                                                    Expanded(child: Text(searchresult[index].address)),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Address2'),
-                                                    Expanded(child: Text(searchresult[index].address1)),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Country'),
-                                                    Expanded(child: Text(searchresult[index].strcountry.toString())),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('State'),
-                                                    Expanded(child: Text(searchresult[index].strstate.toString())),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('City'),
-                                                    Expanded(child: Text(searchresult[index].strcities.toString())),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Zip/Pin'),
-                                                    Expanded(child: Text(searchresult[index].strpin)),
                                                   ],
                                                 ),
-
+                                                const SizedBox(width: 5,),
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                  ],
+                                                ),
+                                                const SizedBox(width: 15,),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(searchresult[index].address),
+                                                    Text(searchresult[index].address1),
+                                                    Text(searchresult[index].strcountry.name),
+                                                    Text(searchresult[index].strstate.name),
+                                                    Text(searchresult[index].strcities.name),
+                                                    Text(searchresult[index].strpin),
+                                                  ],
+                                                ),
                                               ],
-                                            ),)
+                                            ),
+                                          )
                                         ],
                                       ),
                                       ExpansionTile(
-                                        title: Text("Contact Information"),
+                                        title: const Text("Contact Information"),
                                         children: [
                                           Card(
-                                            child: Column(
+                                            child: Row(
                                               children: [
-                                                Row(
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text('Country Code'),
-                                                    Expanded(child: Text("+1")),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Home Phone'),
-                                                    Expanded(child: Text(searchresult[index].phone)),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Mobile'),
-                                                    Expanded(child: Text(searchresult[index].mob)),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
                                                     Text('Email'),
-                                                    Expanded(child: Text(searchresult[index].email)),
                                                   ],
                                                 ),
-
+                                                const SizedBox(width: 5,),
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                  ],
+                                                ),
+                                                const SizedBox(width: 15,),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Text('+1'),
+                                                    Text(searchresult[0].phone),
+                                                    Text(searchresult[0].mob),
+                                                    Text(searchresult[0].email),
+                                                  ],
+                                                ),
                                               ],
-                                            ),)
+                                            ),
+                                          )
                                         ],
                                       ),
                                       ExpansionTile(
-                                        title: Text("Businees Details"),
+                                        title: const Text("Businees Details"),
                                         children: [
                                           Card(
-                                            child: Column(
+                                            child: Row(
                                               children: [
-                                                Row(
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text('Website'),
-                                                    Expanded(child: Text(searchresult[index].bWebsite.toString())),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text('Type of Businees'),
-                                                    Expanded(child: Text(searchresult[index].bDetail.toString())),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
+                                                    Text('Business Type'),
                                                     Text('Location'),
-                                                    Expanded(child: Text(searchresult[index].bLocation.toString())),
+                                                  ],
+                                                ),
+                                                const SizedBox(width: 5,),
+                                                const Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(':'),
+                                                    Text(':'),
+                                                    Text(':'),
+                                                  ],
+                                                ),
+                                                const SizedBox(width: 15,),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(searchresult[0].bWebsite.name),
+                                                    Text(searchresult[0].bDetail.name),
+                                                    Text(searchresult[0].bLocation.name),
                                                   ],
                                                 ),
                                               ],
@@ -536,63 +557,62 @@ void _search(String searchval) async {
 
                                       searchresult[index].userApprov=="1" ?
                                       ExpansionTile(
-
-                                        title: Text("Family Details"),
+                                        title: const Text("Family"),
                                         children: [
                                           ListView.builder(
                                             shrinkWrap: true,
-                                            physics: NeverScrollableScrollPhysics(),
+                                            physics: const NeverScrollableScrollPhysics(),
                                             itemCount: searchresult[index].familyinfo.length,
                                             itemBuilder: (context, index1) =>
-                                                Card(
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text('#'),
-                                                          Expanded(child: Text("${index1+1}")),
-                                                        ],
-                                                      ),
-
-                                                      Row(
-                                                        children: [
-                                                          Text('name'),
-                                                          Expanded(child: Text(searchresult[index].familyinfo[index1].name)),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text('dob'),
-                                                          Expanded(child: Text(searchresult[index].familyinfo[index1].dob)),                                ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text('Native:City/Country'),
-                                                          Expanded(child: Text(searchresult[index].familyinfo[index1].phone)),                                ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text('Name of Samajik Sanstha Involved'),
-                                                          Expanded(child: Text(searchresult[index].familyinfo[index1].occ.toString())),                                ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text('Extra1'),
-                                                          Expanded(child: Text(searchresult[index].familyinfo[index1].email)),                                ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text('Extra2'),
-                                                          Expanded(child: Text(searchresult[index].familyinfo[index1].relation)),                                ],
-                                                      ),
-
-
-                                                    ],
-                                                  ),)
+                                                Expanded(
+                                                  child: Card(
+                                                    child: Row(
+                                                      children: [
+                                                        const Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text('name'),
+                                                            Text('Relation'),
+                                                            Text('Date of Birth'),
+                                                            Text('Occupation'),
+                                                            Text('Phone'),
+                                                            Text('Email'),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(width: 5,),
+                                                        const Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(':'),
+                                                            Text(':'),
+                                                            Text(':'),
+                                                            Text(':'),
+                                                            Text(':'),
+                                                            Text(':'),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(width: 15,),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(searchresult[index].familyinfo[index1].name),
+                                                              Text(searchresult[index].familyinfo[index1].relation),
+                                                              Text(searchresult[index].familyinfo[index1].dob),
+                                                              Text(searchresult[index].familyinfo[index1].occ.name),
+                                                              Text(searchresult[index].familyinfo[index1].phone),
+                                                              Text(searchresult[index].familyinfo[index1].email),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
                                             ,
                                           )
                                         ],
-                                      ) : Text(""),
+                                      ) : const Text(""),
                                     ],
                                   ),
                                 ),
@@ -607,9 +627,9 @@ void _search(String searchval) async {
 
                     if(_hashNextPage==false)
                       Container(
-                        padding: EdgeInsets.only(top: 10,bottom: 10),
+                        padding: const EdgeInsets.only(top: 10,bottom: 10),
                         color: Colors.amber,
-                        child: Center(
+                        child: const Center(
                           child: Text("All Record Fatched SuccessFully"),
                         ),
                       )
@@ -619,20 +639,20 @@ void _search(String searchval) async {
             ],
         ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xd9fd6d0c),
+        backgroundColor: const Color(0xd9fd6d0c),
         onPressed: () {
           if (scrollController.hasClients) {
             final position = scrollController.position.minScrollExtent;
             scrollController.animateTo(
               position,
-              duration: Duration(seconds: 1),
+              duration: const Duration(seconds: 1),
               curve: Curves.easeOut,
             );
           }
         },
         isExtended: true,
         tooltip: "Scroll to Bottom",
-        child: Icon(Icons.arrow_upward),
+        child: const Icon(Icons.arrow_upward),
       ),
 
         );

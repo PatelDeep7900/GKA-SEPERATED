@@ -42,6 +42,12 @@ dependencies:
   crypto: ^3.0.3
   http: ^0.13.5
   shared_preferences: ^2.2.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  image_path: assets/images/friendship.png
+  android: true
+  ios: true
 
 dev_dependencies:
   flutter_test:

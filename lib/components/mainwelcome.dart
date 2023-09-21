@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gka/components/login_page.dart';
+import 'package:gka/Screens/Welcome/welcome_screen.dart';
 import 'package:gka/components/screen/screenbusiness.dart';
 import 'package:gka/components/screen/screencontact.dart';
 import 'package:gka/components/screen/screenhome.dart';
@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class mainwelcome extends StatefulWidget {
   const mainwelcome({super.key});
-
   @override
   State<mainwelcome> createState() => _mainwelcomeState();
 }
@@ -67,12 +66,12 @@ class _mainwelcomeState extends State<mainwelcome> {
                 accountEmail: Text("$user_Email"),
                 currentAccountPicture: CircleAvatar(
                   child: ClipOval(
-                      child:Image.network("http://e-gam.com/GKA/Logo/GKA%20logo.jpg")),
+                      child:Image.asset('assets/images/nopic.png')),
                 ),
-                decoration: BoxDecoration(color: Color(0xd9fd6d0c)),
+                decoration: const BoxDecoration(color: Color(0xd9fd6d0c)),
               ),
               Card(
-                color: status==0?Color(0xff233743):null,
+                color: status==0?const Color(0xff233743):null,
                 child: ListTile(
                   leading: Icon(Icons.home,color: status==0?Colors.white:null),
                   title: Text('Home',style: TextStyle(color: status==0?Colors.white:null),),
@@ -83,7 +82,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                 ),
               ),
               Card(
-                color: status==1?Color(0xff233743):null,
+                color: status==1?const Color(0xff233743):null,
                 child: ListTile(
                   leading: Icon(Icons.person,color: status==1?Colors.white:null),
                   trailing: Icon(Icons.share,color: status==1?Colors.white:null),
@@ -143,7 +142,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                   onTap: () async {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.clear();
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>LoginPage()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>WelcomeScreen()));
                   },
                 ),
               )
@@ -155,12 +154,6 @@ class _mainwelcomeState extends State<mainwelcome> {
           backgroundColor: Color(0xd9fd6d0c),
           title: const Text("GKA"),
           centerTitle: true,
-          actions: [
-            IconButton(onPressed: () {
-              SystemNavigator.pop();
-            },
-              icon: Icon(Icons.exit_to_app),),
-          ],
         ),
         body: _widgetOption[_selectedIndex],
       ),

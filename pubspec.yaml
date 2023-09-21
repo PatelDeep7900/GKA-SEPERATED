@@ -35,14 +35,13 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flare_flutter: ^3.0.2
-  flutter_spinkit: ^5.2.0
   email_validator: ^2.0.1
   icons_plus: ^4.0.0
-  crypto: ^3.0.3
   http: ^0.13.5
   shared_preferences: ^2.2.0
   flutter_launcher_icons: ^0.13.1
+  flutter_svg: ^2.0.7
+
 
 flutter_icons:
   image_path: assets/images/friendship.png
@@ -73,10 +72,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/friendship.png
-    - assets/images/wc.gif
-    - assets/images/sponsor.png
-    - assets/images/nopic.png
+    - assets/images/
+    - assets/icons/
 
 
 

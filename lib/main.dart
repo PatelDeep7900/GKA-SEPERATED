@@ -1,80 +1,44 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:gka/components/login_page.dart';
-import 'package:gka/components/mainwelcome.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Screens/Welcome/welcome_screen.dart';
+import 'constants.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-
-  @override
-  checkingTheSavedData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var a = prefs.getInt("id");
-    if(a != null){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => mainwelcome()));
-    } else {
-//Navigate to another screen
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
-
-    }
-
-
-
-
-
-  }
-
-  void initState() {
-    super.initState();
-    Timer(Duration(seconds: 1), () {
-      checkingTheSavedData();
-    });
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Image.asset('assets/images/wc.gif'),
-      ),
-    );
-  }
-}
-
-// Replace this widget with your main application screen.
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('GKA'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text('Welcome to the Home Screen!'),
-      ),
+      title: 'GKA',
+      theme: ThemeData(
+          primaryColor: kPrimaryColor,
+          scaffoldBackgroundColor: Colors.white,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              primary: kPrimaryColor,
+              shape: const StadiumBorder(),
+              maximumSize: const Size(double.infinity, 56),
+              minimumSize: const Size(double.infinity, 56),
+            ),
+          ),
+          inputDecorationTheme: const InputDecorationTheme(
+            filled: true,
+            fillColor: kPrimaryLightColor,
+            iconColor: kPrimaryColor,
+            prefixIconColor: kPrimaryColor,
+            contentPadding: EdgeInsets.symmetric(
+                horizontal: defaultPadding, vertical: defaultPadding),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              borderSide: BorderSide.none,
+            ),
+          )),
+      home: const WelcomeScreen(),
     );
   }
 }

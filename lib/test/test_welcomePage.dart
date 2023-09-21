@@ -213,8 +213,8 @@ void _search(String searchval) async {
                                   child: ExpansionTile(
                                     leading: const CircleAvatar(
                                       radius: 30,
-                                      backgroundImage: NetworkImage(
-                                          "http://e-gam.com/GKA/Logo/GKA%20logo.jpg"),
+                                      backgroundImage: AssetImage(
+                                          "assets/images/nopic.png"),
                                     ),
                                     title: Text(
                                       '${index + 1}',
@@ -424,8 +424,8 @@ void _search(String searchval) async {
                                   child: ExpansionTile(
                                     leading: const CircleAvatar(
                                       radius: 30,
-                                      backgroundImage: NetworkImage(
-                                          "http://e-gam.com/GKA/Logo/GKA%20logo.jpg"),
+                                      backgroundImage: AssetImage(
+                                          "assets/images/nopic.png"),
                                     ),
                                     title: Text(
                                       '${index + 1}',

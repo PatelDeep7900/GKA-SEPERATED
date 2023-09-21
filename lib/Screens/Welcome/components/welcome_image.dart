@@ -21,10 +21,8 @@ class WelcomeImage extends StatelessWidget {
           children: [
             Spacer(),
             Expanded(
-              flex: 8,
-              child: SvgPicture.asset(
-                "assets/icons/chat.svg",
-              ),
+              flex: 0,
+              child: Image.asset("assets/images/logo.png"),
             ),
             Spacer(),
           ],

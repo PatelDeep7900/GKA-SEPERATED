@@ -44,7 +44,7 @@ dependencies:
 
 
 flutter_icons:
-  image_path: assets/images/friendship.png
+  image_path: assets/images/logo.png
   android: true
   ios: true
 

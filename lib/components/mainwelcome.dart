@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gka/Screens/Welcome/welcome_screen.dart';
-import 'package:gka/components/screen/screenbusiness.dart';
+import 'package:gka/components/screen/basicinfoscreen.dart';
 import 'package:gka/components/screen/screencontact.dart';
-import 'package:gka/components/screen/screenhome.dart';
+
 import 'package:gka/components/screen/screenprofile.dart';
-import 'package:gka/components/screen/screenprofilephoto.dart';
 import 'package:gka/test/test_welcomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,9 +40,8 @@ class _mainwelcomeState extends State<mainwelcome> {
   static const List<Widget> _widgetOption = <Widget>[
     test_welcomepage(),
     profilescreen(),
+    basicinfoscreen(),
     contactscreen(),
-    businessscreen(),
-    profilephotoscreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -115,26 +113,24 @@ class _mainwelcomeState extends State<mainwelcome> {
                         Navigator.pop(context);
                       },
                     ),
-                    ListTile(
-                      leading: Icon(Icons.family_restroom),
-                      title: Text('Family Information'),
-                      onTap: () {
-                        _onItemTapped(4);
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.photo),
-                      title: Text('Profile Image'),
-                      onTap: () {
-                        _onItemTapped(4);
-                        Navigator.pop(context);
-                      },
-                    ),
+
                   ],
                 ),
               ),
               const Divider(),
+
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.delete),
+                  title: const Text('Account Delete'),
+                  onTap: () async {
+                    
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.clear();
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>WelcomeScreen()));
+                  },
+                ),
+              ),
               Card(
                 child: ListTile(
                   leading: Icon(Icons.logout),
@@ -145,7 +141,8 @@ class _mainwelcomeState extends State<mainwelcome> {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>WelcomeScreen()));
                   },
                 ),
-              )
+              ),
+
             ],
           ),
         ),

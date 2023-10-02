@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uri_to_file/uri_to_file.dart';
 import '../widgets/common_buttons.dart';
 import '../constants.dart';
 import 'select_photo_options_screen.dart';
@@ -40,13 +41,22 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
 
   void getinfo()async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-  setState(() {
+  setState(() async {
     _Name=prefs.getString("Name");
     _id=prefs.getInt("id");
 
     if(prefs.getBool("cimgpathexists1")==true){
       cimgpathexists1=true;
       img1=prefs.getString("img1");
+      File file = await toFile(img1!);
+      _image=file;
+
+      if(_image == null){
+        print("null hai image");
+      }else{
+        print("null nahi hai lode");
+      }
+
     }
 
 
@@ -184,13 +194,13 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                               color: Colors.grey.shade200,
                             ),
                             child: Center(
-                              child: cimgpathexists1 == false
+                              child: _image == null
                                   ? const Text(
                                 'No image selected',
                                 style: TextStyle(fontSize: 20),
                               )
                                   : CircleAvatar(
-                                backgroundImage: FileImage(img1 as File),
+                                backgroundImage: FileImage(_image!),
                                 radius: 200.0,
                               ),
                             )),

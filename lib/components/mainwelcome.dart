@@ -5,6 +5,8 @@ import 'package:gka/components/screen/basicinfoscreen.dart';
 import 'package:gka/components/screen/screencontact.dart';
 
 import 'package:gka/components/screen/screenprofile.dart';
+import 'package:gka/imagepicker/image1.dart';
+import 'package:gka/imagepicker/image2.dart';
 import 'package:gka/test/test_welcomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,6 +44,8 @@ class _mainwelcomeState extends State<mainwelcome> {
     profilescreen(),
     basicinfoscreen(),
     contactscreen(),
+    SetPhotoScreen(),
+    SetPhotoScreen2()
   ];
 
   void _onItemTapped(int index) {
@@ -64,7 +68,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                 accountEmail: Text("$user_Email"),
                 currentAccountPicture: CircleAvatar(
                   child: ClipOval(
-                      child:Image.asset('assets/images/nopic.png')),
+                      child:Image.network("http://e-gam.com/img/TestImageProfile/35003/1/1.jpg")),
                 ),
                 decoration: const BoxDecoration(color: Color(0xd9fd6d0c)),
               ),
@@ -113,6 +117,24 @@ class _mainwelcomeState extends State<mainwelcome> {
                         Navigator.pop(context);
                       },
                     ),
+                    ListTile(
+                      leading: Icon(Icons.photo),
+                      title: Text('Profile Image'),
+                      onTap: () {
+                        _onItemTapped(4);
+                        Navigator.pop(context);
+                      },
+                    ),
+
+                    ListTile(
+                      leading: Icon(Icons.photo),
+                      title: Text('Image'),
+                      onTap: () {
+                        _onItemTapped(5);
+                        Navigator.pop(context);
+                      },
+                    ),
+
 
                   ],
                 ),

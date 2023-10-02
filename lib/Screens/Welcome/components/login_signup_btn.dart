@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gka/imagepicker/image1.dart';
 
 import '../../../constants.dart';
 import '../../Login/login_screen.dart';
@@ -50,6 +51,19 @@ class LoginAndSignupBtn extends StatelessWidget {
             style: TextStyle(color: Colors.black),
           ),
         ),
+        ElevatedButton(onPressed:() {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return SetPhotoScreen();
+              },
+            ),
+          );
+        },   child: Text("click me"))
+
+
+
       ],
     );
   }

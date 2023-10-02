@@ -138,6 +138,10 @@ class _LoginFormState extends State<LoginForm> {
       var data=jsonDecode(response.body.toString());
       print(data);
       var cond=data['result'];
+
+      bool cimgpathexists1=data['cimgpathexists1'];
+      bool cimgpathexists2=data['cimgpathexists2'];
+
       if(cond==true) {
 
         await prefs.setInt('id', data['id']);
@@ -145,9 +149,19 @@ class _LoginFormState extends State<LoginForm> {
         await prefs.setString("user_Email", data['G_username']);
         await prefs.setString("User_Typ", data['User_Typ']);
         await prefs.setString("Name", data['Name']);
+        if(cimgpathexists1==true){
+          await prefs.setString("img1", data['img1']);
+        }else{
+          await prefs.setString("img1", "assets/images/nopic.png");
+        }
 
+        if(cimgpathexists2==true){
+          await prefs.setString("img2", data['img2']);
+        }else{
+          await prefs.setString("img2", "assets/images/nopic.png");
+        }
 
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => mainwelcome()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => mainwelcome()));
 
 
       }else{

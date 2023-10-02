@@ -26,6 +26,9 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
   int? _id;
   bool isLoading = false;
 
+  String? img1 = "";
+  String? img2 = "";
+
 
 @override
   void initState()  {
@@ -39,6 +42,9 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
   setState(() {
     _Name=prefs.getString("Name");
     _id=prefs.getInt("id");
+    img1=prefs.getString("img1");
+    img2=prefs.getString("img2");
+
   });
 
 

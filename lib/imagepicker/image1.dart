@@ -27,7 +27,8 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
   bool isLoading = false;
 
   String? img1 = "";
-  String? img2 = "";
+
+  bool cimgpathexists1=false;
 
 
 @override
@@ -42,8 +43,12 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
   setState(() {
     _Name=prefs.getString("Name");
     _id=prefs.getInt("id");
-    img1=prefs.getString("img1");
-    img2=prefs.getString("img2");
+
+    if(prefs.getBool("cimgpathexists1")==true){
+      cimgpathexists1=true;
+      img1=prefs.getString("img1");
+    }
+
 
   });
 
@@ -179,13 +184,13 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                               color: Colors.grey.shade200,
                             ),
                             child: Center(
-                              child: _image == null
+                              child: cimgpathexists1 == false
                                   ? const Text(
                                 'No image selected',
                                 style: TextStyle(fontSize: 20),
                               )
                                   : CircleAvatar(
-                                backgroundImage: FileImage(_image!),
+                                backgroundImage: FileImage(img1 as File),
                                 radius: 200.0,
                               ),
                             )),

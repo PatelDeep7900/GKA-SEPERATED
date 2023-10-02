@@ -149,17 +149,18 @@ class _LoginFormState extends State<LoginForm> {
         await prefs.setString("user_Email", data['G_username']);
         await prefs.setString("User_Typ", data['User_Typ']);
         await prefs.setString("Name", data['Name']);
+
+        await prefs.setBool("cimgpathexists1", data['cimgpathexists1']);
+        await prefs.setBool("cimgpathexists2", data['cimgpathexists2']);
+
         if(cimgpathexists1==true){
           await prefs.setString("img1", data['img1']);
-        }else{
-          await prefs.setString("img1", "assets/images/nopic.png");
         }
 
         if(cimgpathexists2==true){
           await prefs.setString("img2", data['img2']);
-        }else{
-          await prefs.setString("img2", "assets/images/nopic.png");
         }
+
 
         Navigator.push(context, MaterialPageRoute(builder: (context) => mainwelcome()));
 

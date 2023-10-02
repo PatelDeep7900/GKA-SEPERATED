@@ -22,8 +22,12 @@ class _mainwelcomeState extends State<mainwelcome> {
   String? user_Email = "";
   String? Name = "";
   String? User_Typ = "";
+
   String? img1 = "";
   String? img2 = "";
+
+  bool cimgpathexists1=false;
+  bool cimgpathexists2=false;
 
 
   addprefs() async {
@@ -32,8 +36,17 @@ class _mainwelcomeState extends State<mainwelcome> {
       user_Email = prefs.get("user_Email").toString();
       Name = prefs.get("Name").toString();
       User_Typ = prefs.get("User_Typ").toString();
-      img1=prefs.getString("img1");
-      img2=prefs.getString("img2");
+
+      if(prefs.getBool("cimgpathexists1")==true){
+        cimgpathexists1=true;
+        img1=prefs.getString("img1");
+      }
+      if(prefs.getBool("cimgpathexists2")==true){
+        cimgpathexists1=true;
+        img2=prefs.getString("img2");
+      }
+
+
     });
   }
 
@@ -73,7 +86,9 @@ class _mainwelcomeState extends State<mainwelcome> {
                 accountEmail: Text("$user_Email"),
                 currentAccountPicture: CircleAvatar(
                   child: ClipOval(
-                      child:Image.network(img1!)),
+                      child:cimgpathexists1==true ? Image.network(img1!) :Image.asset("assets/images/nopic.png")
+
+                  ),
                 ),
                 decoration: const BoxDecoration(color: Color(0xd9fd6d0c)),
               ),

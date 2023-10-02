@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uri_to_file/uri_to_file.dart';
 import '../widgets/common_buttons.dart';
 import '../constants.dart';
 import 'select_photo_options_screen.dart';
@@ -48,9 +48,18 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
     if(prefs.getBool("cimgpathexists1")==true){
       cimgpathexists1=true;
       img1=prefs.getString("img1");
-      File file = await toFile(img1!);
-      _image=file;
+      final http.Response response = await http.get(Uri.parse(img1!));
 
+      // Get temporary directory
+      final dir = await getTemporaryDirectory();
+
+      // Create an image name
+      var filename = '${dir.path}/image.png';
+
+      // Save to filesystem
+      final file = File(filename);
+      await file.writeAsBytes(response.bodyBytes);
+      _image=file;
       if(_image == null){
         print("null hai image");
       }else{

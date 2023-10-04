@@ -136,36 +136,16 @@ class _LoginFormState extends State<LoginForm> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if(response.statusCode==200) {
       var data=jsonDecode(response.body.toString());
-      print(data);
       var cond=data['result'];
 
-      bool cimgpathexists1=data['cimgpathexists1'];
-      bool cimgpathexists2=data['cimgpathexists2'];
-
-      if(cond==true) {
-
+       if(cond==true) {
         await prefs.setInt('id', data['id']);
         await prefs.setBool("result", true);
         await prefs.setString("user_Email", data['G_username']);
         await prefs.setString("User_Typ", data['User_Typ']);
         await prefs.setString("Name", data['Name']);
-
-        await prefs.setBool("cimgpathexists1", data['cimgpathexists1']);
-        await prefs.setBool("cimgpathexists2", data['cimgpathexists2']);
-
-        if(cimgpathexists1==true){
-          await prefs.setString("img1", data['img1']);
-        }
-
-        if(cimgpathexists2==true){
-          await prefs.setString("img2", data['img2']);
-        }
-
-
         Navigator.push(context, MaterialPageRoute(builder: (context) => mainwelcome()));
-
-
-      }else{
+        }else{
         await prefs.setBool("result", false);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Invalid UserName Or Password")),

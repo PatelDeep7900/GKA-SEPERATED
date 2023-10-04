@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -10,6 +12,7 @@ import '../widgets/common_buttons.dart';
 import '../constants.dart';
 import 'select_photo_options_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 
 // ignore: must_be_immutable
@@ -27,50 +30,26 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
   int? _id;
   bool isLoading = false;
 
-  String? img1 = "";
 
-  bool cimgpathexists1=false;
 
 
 @override
-  void initState()  {
-  getinfo();
-    // TODO: implement initState
+  void initState(){
     super.initState();
   }
 
-  void getinfo()async{
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-  setState(() async {
-    _Name=prefs.getString("Name");
-    _id=prefs.getInt("id");
-
-    if(prefs.getBool("cimgpathexists1")==true){
-      cimgpathexists1=true;
-      img1=prefs.getString("img1");
-      final http.Response response = await http.get(Uri.parse(img1!));
-
-      // Get temporary directory
-      final dir = await getTemporaryDirectory();
-
-      // Create an image name
-      var filename = '${dir.path}/image.png';
-
-      // Save to filesystem
-      final file = File(filename);
-      await file.writeAsBytes(response.bodyBytes);
-      _image=file;
-      if(_image == null){
-        print("null hai image");
-      }else{
-        print("null nahi hai lode");
-      }
-
-    }
 
 
-  });
 
+
+
+  void getimg() async{
+
+  var url="http://e-gam.com/img/TestImageProfile/35003/1/1.jpg";
+  var res=await http.get(Uri.parse(url));
+  Directory? directory=await getExternalStorageDirectory();
+  File file=new File(path.join(directory!.path,path.basename(url)));
+  await file.writeAsBytes(res.bodyBytes);
 
   }
 
@@ -94,12 +73,18 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
 
 
   Future uploadImage() async{
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     final uri = Uri.parse("http://e-gam.com/GKARESTAPI/image1?User_Id=${_id}");
     var request = http.MultipartRequest("POST",uri);
     var pic = await http.MultipartFile.fromPath("image",_image!.path);
     request.files.add(pic);
     var res = await request.send();
     if(res.statusCode == 200){
+
+      prefs.setString("imgpath1", _image!.path);
+
       setState(() {
         isLoading=false;
         _vb1=false;
@@ -120,6 +105,7 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
     CroppedFile? croppedImage =
     await ImageCropper().cropImage(sourcePath: imageFile.path);
     if (croppedImage == null) return null;
+
     return File(croppedImage.path);
   }
 
@@ -165,17 +151,17 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children:  [
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         Text(
                           'Set a photo of yourself-${_Name}',
                           style: txtfntsize,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
-                        Text(
+                        const Text(
                           'Photos make your profile more engaging',
                           style: txtfntsize1,
                         ),
@@ -203,11 +189,8 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                               color: Colors.grey.shade200,
                             ),
                             child: Center(
-                              child: _image == null
-                                  ? const Text(
-                                'No image selected',
-                                style: TextStyle(fontSize: 20),
-                              )
+                              child: _image ==null
+                                  ?  Text("no image here")
                                   : CircleAvatar(
                                 backgroundImage: FileImage(_image!),
                                 radius: 200.0,
@@ -220,8 +203,15 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-
-
+                    CommonButtons(
+                      onTap: () => getimg(),
+                      backgroundColor: Colors.black,
+                      textColor: Colors.white,
+                      textLabel: 'get photo',
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
                     CommonButtons(
                       onTap: () => _showSelectPhotoOptions(context),
                       backgroundColor: Colors.black,
@@ -254,6 +244,8 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
 
                       ),
                     ),
+
+
 
                   ],
                 ),

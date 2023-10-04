@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gka/Screens/Welcome/welcome_screen.dart';
 import 'package:gka/components/screen/basicinfoscreen.dart';
 import 'package:gka/components/screen/screencontact.dart';
@@ -8,7 +9,11 @@ import 'package:gka/components/screen/screenprofile.dart';
 import 'package:gka/imagepicker/image1.dart';
 import 'package:gka/imagepicker/image2.dart';
 import 'package:gka/test/test_welcomePage.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
+
 
 class mainwelcome extends StatefulWidget {
   const mainwelcome({super.key});
@@ -17,6 +22,8 @@ class mainwelcome extends StatefulWidget {
 }
 
 class _mainwelcomeState extends State<mainwelcome> {
+
+  String imgpath001="";
   int _selectedIndex = 0;
   int status = 0;
   String? user_Email = "";
@@ -30,6 +37,21 @@ class _mainwelcomeState extends State<mainwelcome> {
   bool cimgpathexists2=false;
 
 
+  void getimg(String url) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var res=await http.get(Uri.parse(url));
+    Directory? directory=await getExternalStorageDirectory();
+    File file=new File(path.join(directory!.path,path.basename(url)));
+    await file.writeAsBytes(res.bodyBytes);
+    prefs.setString("imgpath001", file.path);
+    setState(() {
+      imgpath001=file.path;
+    });
+
+  }
+
+
   addprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -40,7 +62,9 @@ class _mainwelcomeState extends State<mainwelcome> {
       if(prefs.getBool("cimgpathexists1")==true){
         cimgpathexists1=true;
         img1=prefs.getString("img1");
+        getimg(img1!);
       }
+
       if(prefs.getBool("cimgpathexists2")==true){
         cimgpathexists1=true;
         img2=prefs.getString("img2");
@@ -52,9 +76,8 @@ class _mainwelcomeState extends State<mainwelcome> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     addprefs();
+    super.initState();
   }
 
   static const List<Widget> _widgetOption = <Widget>[
@@ -86,7 +109,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                 accountEmail: Text("$user_Email"),
                 currentAccountPicture: CircleAvatar(
                   child: ClipOval(
-                      child:cimgpathexists1==true ? Image.network(img1!) :Image.asset("assets/images/nopic.png")
+                      child:cimgpathexists1==true ?Image.file(File(imgpath001)):Image.asset("assets/images/nopic.png")
 
                   ),
                 ),

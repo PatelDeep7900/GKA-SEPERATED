@@ -40,8 +40,6 @@ class _SetPhotoScreenState extends State<SetPhotoScreen2> {
       _Name=prefs.getString("Name");
       _id=prefs.getInt("id");
     });
-
-
   }
 
 

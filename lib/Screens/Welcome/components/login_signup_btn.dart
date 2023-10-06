@@ -51,16 +51,6 @@ class LoginAndSignupBtn extends StatelessWidget {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        ElevatedButton(onPressed:() {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return SetPhotoScreen();
-              },
-            ),
-          );
-        },   child: Text("click me"))
 
 
 

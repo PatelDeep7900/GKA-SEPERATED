@@ -31,26 +31,23 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
   bool isLoading = false;
 
 
-
-
 @override
   void initState(){
     super.initState();
   }
 
-
-
-
-
-
   void getimg() async{
-
   var url="http://e-gam.com/img/TestImageProfile/35003/1/1.jpg";
   var res=await http.get(Uri.parse(url));
   Directory? directory=await getExternalStorageDirectory();
-  File file=new File(path.join(directory!.path,path.basename(url)));
+  final myImagePath = '${directory?.path}/MyImages';
+  await  Directory(myImagePath).create();
+  File file=File(path.join(myImagePath,path.basename(url)));
   await file.writeAsBytes(res.bodyBytes);
-
+  if(await file.exists()){
+  }else{
+    print('not exist');
+  }
   }
 
 
@@ -82,9 +79,7 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
     request.files.add(pic);
     var res = await request.send();
     if(res.statusCode == 200){
-
       prefs.setString("imgpath1", _image!.path);
-
       setState(() {
         isLoading=false;
         _vb1=false;
@@ -190,7 +185,7 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                             ),
                             child: Center(
                               child: _image ==null
-                                  ?  Text("no image here")
+                                  ?  Text('no pic')
                                   : CircleAvatar(
                                 backgroundImage: FileImage(_image!),
                                 radius: 200.0,

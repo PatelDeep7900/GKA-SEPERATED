@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,13 +26,14 @@ class _SignUpFormState extends State<SignUpForm> {
    final TextEditingController _email = TextEditingController();
    final TextEditingController _name = TextEditingController();
 
+  TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 15.0);
+  TextStyle linkStyle = TextStyle(color: Colors.blue);
 
   @override
   Widget build(BuildContext context) {
     return Form(
       child: Column(
         children: [
-
           TextFormField(
             controller: _name,
             textInputAction: TextInputAction.next,
@@ -63,7 +65,6 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
 
           const SizedBox(height: defaultPadding / 1),
-
           Row(
             children: [
               Material(
@@ -76,18 +77,24 @@ class _SignUpFormState extends State<SignUpForm> {
                   },
                 ),
               ),
-                Row(
-                 children: [
-                   Text(
-                    'I have read and accept',
-                    overflow: TextOverflow.ellipsis,
-                    ),
-                   TextButton(onPressed: () {
-                     _showdialog();
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    style: defaultStyle,
+                    children: <TextSpan>[
+                      TextSpan(text: 'I have read and accept '),
+                      TextSpan(
+                          text: 'terms and conditions',
+                          style: linkStyle,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              _showdialog();
+                            }),
 
-                   }, child: Text("terms and conditions"))
-                 ],
-               )
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
           const SizedBox(height: defaultPadding),
@@ -126,7 +133,6 @@ class _SignUpFormState extends State<SignUpForm> {
               );
             },
           ),
-
         ],
       ),
     );
@@ -186,31 +192,53 @@ class _SignUpFormState extends State<SignUpForm> {
       isLoading=true;
     });
 
-    String url='http://192.168.10.141:8084/GKARESTAPI/c_signup';
-    final  response=await http.post(
-        Uri.parse(url),
-        body:
-        {
-          'email': _email.text,
-          'fullname':_name.text,
+    try {
+      String url = 'http://192.168.10.141:8084/GKARESTAPI/c_signup';
+      final response = await http.post(
+          Uri.parse(url),
+          body:
+          {
+            'email': _email.text.toString(),
+            'fullname': _name.text,
+          }
+
+      );
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        bool mailexists = data['mailexists'];
+
+        if (mailexists) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('This Email Adress Already Exists...')));
+        } else {
+          var result = data['result'];
+
+          if (result == "true") {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('SuccessFully Register')));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Failed To Register')));
+          }
+
         }
-    );
-    if(response.statusCode==200){
-      var data=jsonDecode(response.body);
-      if(data['mailexists']==true){
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('you can login')));
-        if(data['result']==false){
-          setState(() {
-            isLoading=true;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('data saveed!')));
-        }else{
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('data not saveed!')));
-        }
-      }else{
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('This email is not exist!')));
+        setState(() {
+          isLoading = false;
+        });
+
+
       }
-      print(data);
+    }on Exception catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Server not Responding')));
+
+      setState(() {
+        isLoading = false;
+      });
+      print('error caught: $e');
+      rethrow;
     }
+
   }
+
 }

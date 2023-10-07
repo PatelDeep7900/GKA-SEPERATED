@@ -205,17 +205,25 @@ class _SignUpFormState extends State<SignUpForm> {
       );
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
+        print(data);
         bool mailexists = data['mailexists'];
 
         if (mailexists) {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('This Email Adress Already Exists...')));
         } else {
-          var result = data['result'];
+          bool result = data['result'];
 
-          if (result == "true") {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('SuccessFully Register')));
+          if (result == true) {
+            bool checkmail=data['checkmail'];
+            if(checkmail==true){
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('otp send')));
+            }else{
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('retry')));
+            }
+
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Failed To Register')));
@@ -225,7 +233,6 @@ class _SignUpFormState extends State<SignUpForm> {
         setState(() {
           isLoading = false;
         });
-
 
       }
     }on Exception catch (e) {

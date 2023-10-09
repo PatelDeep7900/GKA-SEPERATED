@@ -50,6 +50,8 @@ class _VerificationScreen2State extends State<VerificationScreen2> {
               "We texted you a code",
               style: theme.textTheme.headline6,
             ),
+
+
             Text("Please enter it below", style: theme.textTheme.headline6),
             Spacer(flex: 2),
             OtpTextField(

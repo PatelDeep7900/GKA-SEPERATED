@@ -210,6 +210,8 @@ class _SignUpFormState extends State<SignUpForm> {
         } else {
           bool result = data['result'];
           if (result == true) {
+
+
             bool checkmail=data['checkmail'];
             if(checkmail==true){
               ScaffoldMessenger.of(context).showSnackBar(

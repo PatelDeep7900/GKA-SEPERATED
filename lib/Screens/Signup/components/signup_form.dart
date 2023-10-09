@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gka/Screens/Signup/signupotp.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
@@ -23,8 +24,8 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   bool agree = false;
   bool isLoading=false;
-   final TextEditingController _email = TextEditingController();
-   final TextEditingController _name = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _name = TextEditingController();
 
   TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 15.0);
   TextStyle linkStyle = TextStyle(color: Colors.blue);
@@ -71,9 +72,9 @@ class _SignUpFormState extends State<SignUpForm> {
                 child: Checkbox(
                   value: agree,
                   onChanged: (value) {
-                 setState(() {
-                   agree=value!;
-                 });
+                    setState(() {
+                      agree=value!;
+                    });
                   },
                 ),
               ),
@@ -114,12 +115,6 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
 
           const SizedBox(height: defaultPadding),
-          ElevatedButton(
-            onPressed: () {
-            },
-            child: Text("mail".toUpperCase()),
-          ),
-          const SizedBox(height: defaultPadding),
           AlreadyHaveAnAccountCheck(
             login: false,
             press: () {
@@ -155,16 +150,16 @@ class _SignUpFormState extends State<SignUpForm> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text("[GKA APP]", style: TextStyle(color: Colors.white, fontSize: 20.0),),
+                  const Text("[GKA APP]", style: TextStyle(color: Colors.white, fontSize: 20.0),),
                   SizedBox(height: 10,),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: RichText(
-                      text: TextSpan(
+                      text: const TextSpan(
                         style: TextStyle(color: Colors.white, fontSize: 15.0),
                         children: <TextSpan>[
                           TextSpan(
-                              text: 'You are encouraged to periodically review this Privacy Policy to stay informed of updates. You will be deemed to have been made aware of, will be subject to, and will be deemed to have accepted the changes in any revised Privacy Policy by your continued use of the Application after the date such revised. Privacy Policy is posted. This Privacy Policy does not apply to the third-party online/mobile store from which you install the Application or make payments, including any in-game virtual items, which may also collect and use data about you. We are not responsible for any of the data collected by any such third party. This privacy policy was created using Termly.',
+                            text: 'You are encouraged to periodically review this Privacy Policy to stay informed of updates. You will be deemed to have been made aware of, will be subject to, and will be deemed to have accepted the changes in any revised Privacy Policy by your continued use of the Application after the date such revised. Privacy Policy is posted. This Privacy Policy does not apply to the third-party online/mobile store from which you install the Application or make payments, including any in-game virtual items, which may also collect and use data about you. We are not responsible for any of the data collected by any such third party. This privacy policy was created using Termly.',
                           ),
                         ],
                       ),
@@ -203,6 +198,7 @@ class _SignUpFormState extends State<SignUpForm> {
           }
 
       );
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         print(data);
@@ -213,13 +209,15 @@ class _SignUpFormState extends State<SignUpForm> {
               SnackBar(content: Text('This Email Adress Already Exists...')));
         } else {
           bool result = data['result'];
-
           if (result == true) {
             bool checkmail=data['checkmail'];
             if(checkmail==true){
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('otp send')));
-              
+
+              await prefs.setString('email', _email.text);
+              await prefs.setString('fullname', _name.text);
+
               Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen2(),));
             }else{
               ScaffoldMessenger.of(context).showSnackBar(

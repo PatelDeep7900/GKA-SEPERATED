@@ -1,6 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:otp_timer_button/otp_timer_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 const Color primaryColor = Color(0xFF121212);
 const Color accentPurpleColor = Color(0xFF6A53A1);
@@ -19,6 +25,77 @@ class _VerificationScreen2State extends State<VerificationScreen2> {
   late List<TextStyle?> otpTextStyles;
   TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 20.0);
   TextStyle linkStyle = TextStyle(color: Colors.blue);
+  OtpTimerButtonController controller = OtpTimerButtonController();
+  String otp="";
+  String email="";
+  String name="";
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void>_doSomething() async{
+
+    try {
+      String url = 'http://192.168.10.141:8084/GKARESTAPI/c_signup';
+      final response = await http.post(
+          Uri.parse(url),
+          body:
+          {
+            'email': 'pdeep7900@gmail.com',
+            'fullname': 'deep',
+          }
+
+      );
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        print(data);
+        bool mailexists = data['mailexists'];
+        if (mailexists) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('This Email Adress Already Exists...')));
+        } else {
+          bool result = data['result'];
+          if (result == true) {
+            bool checkmail=data['checkmail'];
+            if(checkmail==true){
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('otp send')));
+              controller.startTimer();
+
+            }else{
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('retry')));
+              controller.enableButton();
+            }
+
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Failed To Register')));
+            controller.enableButton();
+          }
+
+        }
+
+      }
+    }on Exception catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Server not Responding')));
+      controller.enableButton();
+      print('error caught: $e');
+      rethrow;
+    }
+
+  }
+
+
+  _requestOtp() async{
+    controller.loading();
+    Future.delayed(Duration(seconds: 2), () {
+      _doSomething();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +108,12 @@ class _VerificationScreen2State extends State<VerificationScreen2> {
       createStyle(accentPinkColor),
       createStyle(accentPurpleColor),
     ];
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.orange,
+        title: Text('OTP Verification'),
       ),
       body: Container(
         padding: const EdgeInsets.all(24),
@@ -62,44 +141,37 @@ class _VerificationScreen2State extends State<VerificationScreen2> {
               showFieldAsBox: false,
               fieldWidth: 45,
               borderWidth: 4.0,
-              onCodeChanged: (String code) {},
-              onSubmit: (String verificationCode) {}, // end onSubmit
-            ),
-            Spacer(),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "This helps us verify every user in our market place",
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyText1,
-                ),
-              ),
-            ),
-            Center(
-              child: RichText(
-                text: TextSpan(
-                  style: defaultStyle,
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: "Didn't get code?",
-                        style: linkStyle,
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                             print('object');
-                          }),
-
-                  ],
-                ),
-              ),
+              onCodeChanged: (String code) {
+                setState(() {
+                  otp=code;
+                });
+              },
+              onSubmit: (String verificationCode) {
+                setState(() {
+                  otp=verificationCode;
+                });
+              }, // end onSubmit
             ),
             Spacer(flex: 3),
             CustomButton(
-              onPressed: () {},
+              onPressed: () {
+
+              },
               title: "Confirm",
               color: primaryColor,
               textStyle: theme.textTheme.subtitle1?.copyWith(
                 color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 10,),
+            Center(
+              child: OtpTimerButton(
+                controller: controller,
+                onPressed: () {
+                  _requestOtp();
+                },
+                text: Text('Resend OTP'),
+                duration: 5,
               ),
             ),
             Spacer(flex: 2),
@@ -219,4 +291,7 @@ class CustomButton extends StatelessWidget {
       ),
     );
   }
+
+
+
 }

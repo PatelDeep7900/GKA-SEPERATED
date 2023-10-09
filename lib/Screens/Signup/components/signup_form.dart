@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gka/Screens/Signup/signupotp.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
 import '../../Login/login_screen.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
+import '../verification_screen.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({
@@ -199,7 +199,7 @@ class _SignUpFormState extends State<SignUpForm> {
           body:
           {
             'email': _email.text.toString(),
-            'fullname': _name.text,
+            'fullname': _name.text.toString(),
           }
 
       );
@@ -219,6 +219,8 @@ class _SignUpFormState extends State<SignUpForm> {
             if(checkmail==true){
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('otp send')));
+              
+              Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen2(),));
             }else{
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('retry')));

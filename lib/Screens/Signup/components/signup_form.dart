@@ -225,8 +225,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('retry')));
             }
-
-          } else {
+          }else {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Failed To Register')));
           }

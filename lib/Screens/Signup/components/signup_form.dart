@@ -3,14 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:gka/Screens/Signup/signupotp.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
+import '../../../otp_page.dart';
 import '../../Login/login_screen.dart';
-import '../verification_screen.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({
@@ -26,20 +25,35 @@ class _SignUpFormState extends State<SignUpForm> {
   bool isLoading=false;
   final TextEditingController _email = TextEditingController();
   final TextEditingController _name = TextEditingController();
-
+  final _globkey = GlobalKey<FormState>();
   TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 15.0);
   TextStyle linkStyle = TextStyle(color: Colors.blue);
+
+  void _handleSignup() {
+
+    if (_globkey.currentState!.validate()) {
+      _doSomething();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _globkey,
       child: Column(
         children: [
           TextFormField(
             controller: _name,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+
             textInputAction: TextInputAction.next,
             cursorColor: kPrimaryColor,
             onSaved: (email) {},
+            validator: (val){
+              if(val!.isEmpty){
+                return 'Please enter Full Name';
+              }
+            },
             decoration: const InputDecoration(
               hintText: "Your Full Name",
               prefixIcon: Padding(
@@ -52,15 +66,27 @@ class _SignUpFormState extends State<SignUpForm> {
 
           TextFormField(
             controller: _email,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             cursorColor: kPrimaryColor,
+            maxLength: 100,
             onSaved: (email) {},
+            validator: (val){
+               if(val!.isEmpty){
+                 return 'Please enter Email';
+               }else if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                   .hasMatch(val))
+               {
+               return 'Please enter valid email';
+               }
+            },
             decoration: const InputDecoration(
+              counterText: '',
               hintText: "Your email",
               prefixIcon: Padding(
                 padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.person),
+                child: Icon(Icons.email),
               ),
             ),
           ),
@@ -102,8 +128,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
 
           ElevatedButton(
-
-            onPressed: agree ? _doSomething : null,
+            onPressed: agree ? _handleSignup : null,
             child: isLoading? const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -115,6 +140,7 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
 
           const SizedBox(height: defaultPadding),
+
           AlreadyHaveAnAccountCheck(
             login: false,
             press: () {
@@ -188,7 +214,7 @@ class _SignUpFormState extends State<SignUpForm> {
     });
 
     try {
-      String url = 'http://192.168.10.141:8084/GKARESTAPI/c_signup';
+      String url = 'http://e-gam.com/GKARESTAPI/c_signup';
       final response = await http.post(
           Uri.parse(url),
           body:
@@ -201,9 +227,7 @@ class _SignUpFormState extends State<SignUpForm> {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-        print(data);
         bool mailexists = data['mailexists'];
-
         if (mailexists) {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('This Email Adress Already Exists...')));
@@ -220,7 +244,7 @@ class _SignUpFormState extends State<SignUpForm> {
               await prefs.setString('email', _email.text);
               await prefs.setString('fullname', _name.text);
 
-              Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen2(),));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => OTPPage(),));
             }else{
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('retry')));

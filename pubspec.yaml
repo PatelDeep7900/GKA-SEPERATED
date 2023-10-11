@@ -48,8 +48,7 @@ dependencies:
   image_cropper: ^4.0.1
   device_info_plus: ^9.0.3
   path_provider: ^2.1.1
-  flutter_otp_text_field: ^1.1.1
-  otp_timer_button: ^1.1.0
+
 
 flutter_icons:
   image_path: assets/images/logo.png

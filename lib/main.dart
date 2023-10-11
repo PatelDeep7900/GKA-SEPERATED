@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Screens/Welcome/welcome_screen.dart';
 import 'constants.dart';
+import 'otp_page.dart';
 
 void main() => runApp( MyApp());
 
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
             ),
           )),
       home: const WelcomeScreen(),
+
       
     );
   }

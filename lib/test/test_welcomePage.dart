@@ -22,9 +22,9 @@ class _test_welcomepageState extends State<test_welcomepage> {
 
   final int _limit = 10;
   bool _isFirstLoadRunning = false;
-  List<Result> result = [];
+  List<Results> result = [];
 
-  List<Result> searchresult = [];
+  List<Results> searchresult = [];
 
 
 
@@ -47,7 +47,7 @@ void _search(String searchval) async {
     final response = await http.get(uri);
     setState((){
     Welcome welcome = Welcome.fromJson(json.decode(response.body));
-    searchresult =welcome.results;
+    searchresult =welcome.results!;
     });
 
     setState(() {
@@ -72,13 +72,14 @@ void _search(String searchval) async {
     try {
       var url =
           "http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit";
+      print(url);
       var uri = Uri.parse(url);
 
       final response = await http.get(uri);
       setState(() {
         Welcome welcome = Welcome.fromJson(json.decode(response.body));
 
-        result = result + welcome.results;
+        result = result + welcome.results!;
 
       });
     } catch (err) {
@@ -119,7 +120,7 @@ void _search(String searchval) async {
           Welcome welcome = Welcome.fromJson(json.decode(response.body));
           if(result.isNotEmpty) {
             setState(() {
-              result = result + welcome.results;
+              result = result + welcome.results!;
             });
           }
         }else{
@@ -254,12 +255,12 @@ void _search(String searchval) async {
                                                 Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(result[index].address),
-                                                    Text(result[index].address1),
-                                                    Text(result[index].strcountry.name),
-                                                    Text(result[index].strstate.name),
-                                                    Text(result[index].strcities.name),
-                                                    Text(result[index].strpin),
+                                                    Text(result[index].address.toString()),
+                                                    Text(result[index].address1.toString()),
+                                                    Text(result[index].strcountry.toString()),
+                                                    Text(result[index].strstate.toString()),
+                                                    Text(result[index].strcities.toString()),
+                                                    Text(result[index].strpin.toString()),
                                                   ],
                                                 ),
                                               ],
@@ -297,9 +298,9 @@ void _search(String searchval) async {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     const Text('+1'),
-                                                    Text(result[0].phone),
-                                                    Text(result[0].mob),
-                                                    Text(result[0].email),
+                                                    Text(result[0].phone.toString()),
+                                                    Text(result[0].mob.toString()),
+                                                    Text(result[0].email.toString()),
                                                   ],
                                                 ),
                                               ],
@@ -334,9 +335,9 @@ void _search(String searchval) async {
                                                 Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(result[0].bWebsite.name),
-                                                    Text(result[0].bDetail.name),
-                                                    Text(result[0].bLocation.name),
+                                                    Text(result[0].bWebsite.toString()),
+                                                    Text(result[0].bDetail.toString()),
+                                                    Text(result[0].bLocation.toString()),
                                                   ],
                                                 ),
                                               ],
@@ -351,7 +352,7 @@ void _search(String searchval) async {
                                           ListView.builder(
                                             shrinkWrap: true,
                                             physics: const NeverScrollableScrollPhysics(),
-                                            itemCount: result[index].familyinfo.length,
+                                            itemCount: result[index].familyinfo!.length,
                                             itemBuilder: (context, index1) =>
                                                 Expanded(
                                                   child: Card(
@@ -385,12 +386,12 @@ void _search(String searchval) async {
                                                           child: Column(
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              Text(result[index].familyinfo[index1].name),
-                                                              Text(result[index].familyinfo[index1].relation),
-                                                              Text(result[index].familyinfo[index1].dob),
-                                                              Text(result[index].familyinfo[index1].occ.name),
-                                                              Text(result[index].familyinfo[index1].phone),
-                                                              Text(result[index].familyinfo[index1].email),
+                                                              Text(result[index].familyinfo![index1].name.toString()),
+                                                              Text(result[index].familyinfo![index1].relation.toString()),
+                                                              Text(result[index].familyinfo![index1].dob.toString()),
+                                                              Text(result[index].familyinfo![index1].occ.toString()),
+                                                              Text(result[index].familyinfo![index1].phone.toString()),
+                                                              Text(result[index].familyinfo![index1].email.toString()),
                                                             ],
                                                           ),
                                                         ),
@@ -465,12 +466,12 @@ void _search(String searchval) async {
                                                 Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(searchresult[index].address),
-                                                    Text(searchresult[index].address1),
-                                                    Text(searchresult[index].strcountry.name),
-                                                    Text(searchresult[index].strstate.name),
-                                                    Text(searchresult[index].strcities.name),
-                                                    Text(searchresult[index].strpin),
+                                                    Text(searchresult[index].address.toString()),
+                                                    Text(searchresult[index].address1.toString()),
+                                                    Text(searchresult[index].strcountry.toString()),
+                                                    Text(searchresult[index].strstate.toString()),
+                                                    Text(searchresult[index].strcities.toString()),
+                                                    Text(searchresult[index].toString()),
                                                   ],
                                                 ),
                                               ],
@@ -508,9 +509,9 @@ void _search(String searchval) async {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     const Text('+1'),
-                                                    Text(searchresult[0].phone),
-                                                    Text(searchresult[0].mob),
-                                                    Text(searchresult[0].email),
+                                                    Text(searchresult[0].phone.toString()),
+                                                    Text(searchresult[0].mob.toString()),
+                                                    Text(searchresult[0].email.toString()),
                                                   ],
                                                 ),
                                               ],
@@ -545,9 +546,9 @@ void _search(String searchval) async {
                                                 Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(searchresult[0].bWebsite.name),
-                                                    Text(searchresult[0].bDetail.name),
-                                                    Text(searchresult[0].bLocation.name),
+                                                    Text(searchresult[0].bWebsite.toString()),
+                                                    Text(searchresult[0].bDetail.toString()),
+                                                    Text(searchresult[0].bLocation.toString()),
                                                   ],
                                                 ),
                                               ],
@@ -562,7 +563,7 @@ void _search(String searchval) async {
                                           ListView.builder(
                                             shrinkWrap: true,
                                             physics: const NeverScrollableScrollPhysics(),
-                                            itemCount: searchresult[index].familyinfo.length,
+                                            itemCount: searchresult[index].familyinfo!.length,
                                             itemBuilder: (context, index1) =>
                                                 Expanded(
                                                   child: Card(
@@ -596,12 +597,12 @@ void _search(String searchval) async {
                                                           child: Column(
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              Text(searchresult[index].familyinfo[index1].name),
-                                                              Text(searchresult[index].familyinfo[index1].relation),
-                                                              Text(searchresult[index].familyinfo[index1].dob),
-                                                              Text(searchresult[index].familyinfo[index1].occ.name),
-                                                              Text(searchresult[index].familyinfo[index1].phone),
-                                                              Text(searchresult[index].familyinfo[index1].email),
+                                                              Text(searchresult[index].familyinfo![index1].toString()),
+                                                              Text(searchresult[index].familyinfo![index1].relation.toString()),
+                                                              Text(searchresult[index].familyinfo![index1].dob.toString()),
+                                                              Text(searchresult[index].familyinfo![index1].occ.toString()),
+                                                              Text(searchresult[index].familyinfo![index1].toString()),
+                                                              Text(searchresult[index].familyinfo![index1].toString()),
                                                             ],
                                                           ),
                                                         ),

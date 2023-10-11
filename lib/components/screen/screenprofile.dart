@@ -15,7 +15,7 @@ class profilescreen extends StatefulWidget {
 
 class _profilescreenState extends State<profilescreen> {
   bool _isloading = false;
-  List<Result> result = [];
+  List<Results> result = [];
   bool _isEdit = false;
   TextEditingController inoutcint = TextEditingController(text: 'Hello');
   int id = 0;
@@ -31,7 +31,7 @@ class _profilescreenState extends State<profilescreen> {
     final response = await http.get(url);
     setState(() {
       Welcome welcome = Welcome.fromJson(json.decode(response.body));
-      result = welcome.results;
+      result = welcome.results!;
     });
     setState(() {
       _isloading = false;
@@ -127,7 +127,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       cursorHeight: 13,
                                                     )
                                                   : Text(
-                                                      result[0].name,
+                                                      result[0].name.toString(),
                                                       style: const TextStyle(
                                                           color: Colors.white,
                                                           fontWeight:
@@ -145,7 +145,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               subtitle: Text(
-                                                result[0].address,
+                                                result[0].address.toString(),
                                                 style: const TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:
@@ -162,7 +162,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               subtitle: Text(
-                                                result[0].address1,
+                                                result[0].address1.toString(),
                                                 style: const TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:
@@ -180,7 +180,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               subtitle: Text(
-                                                "${result[0].strcities.name}-${result[0].strstate.name}-${result[0].strcountry.name}",
+                                                "${result[0].strcities.toString()}-${result[0].strstate.toString()}-${result[0].strcountry.toString()}",
                                                 style: const TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:
@@ -196,7 +196,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       color: Colors.red,
                                                       fontWeight:
                                                           FontWeight.bold)),
-                                              subtitle: Text(result[0].strpin,
+                                              subtitle: Text(result[0].strpin.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -234,7 +234,7 @@ class _profilescreenState extends State<profilescreen> {
                                                         FontWeight.bold),
                                               ),
                                               subtitle: Text(
-                                                result[0].phone,
+                                                result[0].phone.toString(),
                                                 style: const TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:
@@ -250,7 +250,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       color: Colors.red,
                                                       fontWeight:
                                                           FontWeight.bold)),
-                                              subtitle: Text(result[0].mob,
+                                              subtitle: Text(result[0].mob.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -265,7 +265,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       color: Colors.red,
                                                       fontWeight:
                                                           FontWeight.bold)),
-                                              subtitle: Text(result[0].email,
+                                              subtitle: Text(result[0].email.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -303,7 +303,7 @@ class _profilescreenState extends State<profilescreen> {
                                                         FontWeight.bold),
                                               ),
                                               subtitle: Text(
-                                                result[0].bWebsite.name,
+                                                result[0].bWebsite.toString(),
                                                 style: const TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:
@@ -320,7 +320,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               subtitle: Text(
-                                                  result[0].bDetail.name,
+                                                  result[0].bDetail.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -336,7 +336,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               subtitle: Text(
-                                                  result[0].bLocation.name,
+                                                  result[0].bLocation.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -373,7 +373,7 @@ class _profilescreenState extends State<profilescreen> {
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
-                                              subtitle: Text(result[0].parent,
+                                              subtitle: Text(result[0].parent.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -389,7 +389,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               subtitle: Text(
-                                                  result[0].sParents,
+                                                  result[0].sParents.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -406,7 +406,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               subtitle: Text(
-                                                  result[0].natCity,
+                                                  result[0].natCity.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -423,7 +423,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               subtitle: Text(
-                                                  result[0].sSanstha,
+                                                  result[0].sSanstha.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -439,7 +439,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               subtitle: Text(
-                                                  result[0].ext1.name,
+                                                  result[0].ext1.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -454,7 +454,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       color: Colors.red,
                                                       fontWeight:
                                                           FontWeight.bold)),
-                                              subtitle: Text(result[0].ext2,
+                                              subtitle: Text(result[0].ext2.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -470,7 +470,7 @@ class _profilescreenState extends State<profilescreen> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               subtitle: Text(
-                                                  result[0].aboutFamily,
+                                                  result[0].aboutFamily.toString(),
                                                   style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -495,7 +495,7 @@ class _profilescreenState extends State<profilescreen> {
                                   child: ListView.builder(
                                     shrinkWrap: true,
                                     physics: const NeverScrollableScrollPhysics(),
-                                    itemCount: result[0].familyinfo.length,
+                                    itemCount: result[0].familyinfo!.length,
                                     itemBuilder: (context, index) {
                                       return Card(
                                         color: Colors.grey,
@@ -525,8 +525,8 @@ class _profilescreenState extends State<profilescreen> {
                                                             FontWeight.bold)),
                                                 subtitle: Text(
                                                     result[0]
-                                                        .familyinfo[index]
-                                                        .name,
+                                                        .familyinfo![index]
+                                                        .name.toString(),
                                                     style: const TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
@@ -543,8 +543,8 @@ class _profilescreenState extends State<profilescreen> {
                                                             FontWeight.bold)),
                                                 subtitle: Text(
                                                     result[0]
-                                                        .familyinfo[index]
-                                                        .relation,
+                                                        .familyinfo![index]
+                                                        .relation.toString(),
                                                     style: const TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
@@ -561,8 +561,8 @@ class _profilescreenState extends State<profilescreen> {
                                                             FontWeight.bold)),
                                                 subtitle: Text(
                                                     result[0]
-                                                        .familyinfo[index]
-                                                        .dob,
+                                                        .familyinfo![index]
+                                                        .dob.toString(),
                                                     style: const TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
@@ -579,9 +579,9 @@ class _profilescreenState extends State<profilescreen> {
                                                             FontWeight.bold)),
                                                 subtitle: Text(
                                                     result[0]
-                                                        .familyinfo[index]
+                                                        .familyinfo![index]
                                                         .occ
-                                                        .name,
+                                                        .toString(),
                                                     style: const TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
@@ -598,8 +598,8 @@ class _profilescreenState extends State<profilescreen> {
                                                             FontWeight.bold)),
                                                 subtitle: Text(
                                                     result[0]
-                                                        .familyinfo[index]
-                                                        .phone,
+                                                        .familyinfo![index]
+                                                        .phone.toString(),
                                                     style: const TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
@@ -616,8 +616,8 @@ class _profilescreenState extends State<profilescreen> {
                                                             FontWeight.bold)),
                                                 subtitle: Text(
                                                     result[0]
-                                                        .familyinfo[index]
-                                                        .email,
+                                                        .familyinfo![index]
+                                                        .email.toString(),
                                                     style: const TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:

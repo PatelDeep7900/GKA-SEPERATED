@@ -24,6 +24,7 @@ class _profilescreenState extends State<profilescreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     id = prefs.getInt("id")!;
     setState(() {
+
       _isloading = true;
     });
     var uri = "http://e-gam.com/GKARESTAPI/searchbyid?id=$id";

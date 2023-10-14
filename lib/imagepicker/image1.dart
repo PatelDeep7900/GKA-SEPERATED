@@ -1,17 +1,15 @@
- import 'dart:io';
-import 'dart:math';
+ import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/common_buttons.dart';
 import '../constants.dart';
 import 'select_photo_options_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as path;
 
 
 // ignore: must_be_immutable
@@ -19,35 +17,35 @@ class SetPhotoScreen extends StatefulWidget {
   const SetPhotoScreen({super.key});
   @override
   State<SetPhotoScreen> createState() => _SetPhotoScreenState();
-
 }
 
 class _SetPhotoScreenState extends State<SetPhotoScreen> {
   File? _image;
   bool _vb1=false;
-  String? _Name;
-  int? _id;
   bool isLoading = false;
-
+  String? _Name;
+  String? _img1;
+  bool? _cimgpathexists1=false;
 
 @override
   void initState(){
+  sharedprefget();
     super.initState();
   }
 
-  void getimg() async{
-  var url="http://e-gam.com/img/TestImageProfile/35003/1/1.jpg";
-  var res=await http.get(Uri.parse(url));
-  Directory? directory=await getExternalStorageDirectory();
-  final myImagePath = '${directory?.path}/MyImages';
-  await  Directory(myImagePath).create();
-  File file=File(path.join(myImagePath,path.basename(url)));
-  await file.writeAsBytes(res.bodyBytes);
-  if(await file.exists()){
-  }else{
-    print('not exist');
+
+  void sharedprefget() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+   setState(() {
+     _img1=prefs.getString("img1");
+     _Name=prefs.getString("Name");
+     _cimgpathexists1=prefs.getBool("cimgpathexists1");
+
+   });
+
   }
-  }
+
+
 
 
   Future _pickImage(ImageSource source) async {
@@ -69,22 +67,40 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
 
 
   Future uploadImage() async{
-
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final uri = Uri.parse("http://e-gam.com/GKARESTAPI/image1?User_Id=${_id}");
+    int? _id=prefs.getInt("id");
+    final uri = Uri.parse("http://e-gam.com/GKARESTAPI/image1?User_Id=$_id");
     var request = http.MultipartRequest("POST",uri);
     var pic = await http.MultipartFile.fromPath("image",_image!.path);
     request.files.add(pic);
     var res = await request.send();
+    final responseData = await res.stream.toBytes();
+    final responseString = String.fromCharCodes(responseData);
+
     if(res.statusCode == 200){
-      prefs.setString("imgpath1", _image!.path);
-      setState(() {
-        isLoading=false;
-        _vb1=false;
-      });
-      var snackBar = const SnackBar(content: Text('Successfully Uploaded...'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  var str=json.decode(responseString);
+  bool res=str['result'];
+
+  if(res==true){
+
+
+    String img1=str['img1'];
+
+
+    prefs.setString("imgpath1", _image!.path);
+    setState(() {
+      prefs.setString("img1", img1);
+      prefs.setBool("cimgpathexists1", true);
+      isLoading=false;
+      _vb1=false;
+    });
+
+    var snackBar = const SnackBar(content: Text('Successfully Uploaded...'));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }else{
+    var snackBar = const SnackBar(content: Text('Something Wrong Please try Again'));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
     }else{
       var snackBar = const SnackBar(content: Text('Error Please Try Again.....'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -184,7 +200,10 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                             ),
                             child: Center(
                               child: _image ==null
-                                  ?  Text('no pic')
+                                  ?  CircleAvatar(
+                                backgroundImage: _cimgpathexists1==true ? NetworkImage(_img1!) : null,
+                                radius: 200.0,
+                              )
                                   : CircleAvatar(
                                 backgroundImage: FileImage(_image!),
                                 radius: 200.0,
@@ -197,15 +216,7 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    CommonButtons(
-                      onTap: () => getimg(),
-                      backgroundColor: Colors.black,
-                      textColor: Colors.white,
-                      textLabel: 'get photo',
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+
                     CommonButtons(
                       onTap: () => _showSelectPhotoOptions(context),
                       backgroundColor: Colors.black,

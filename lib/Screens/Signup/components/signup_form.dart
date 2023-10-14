@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,123 +39,132 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _globkey,
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _name,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(
+          top: 50, bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Form(
+        key: _globkey,
+        child: Column(
+          children: [
+            TextFormField(
+              controller: _name,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              textInputAction: TextInputAction.next,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.allow(RegExp("[0-9 a-zA-Z]")),
+              ], //
+              maxLength: 30,
+              cursorColor: kPrimaryColor,
+              onSaved: (email) {},
+              validator: (val){
+                if(val!.isEmpty){
+                  return 'Please enter Full Name';
+                }
 
-            textInputAction: TextInputAction.next,
-            cursorColor: kPrimaryColor,
-            onSaved: (email) {},
-            validator: (val){
-              if(val!.isEmpty){
-                return 'Please enter Full Name';
-              }
-            },
-            decoration: const InputDecoration(
-              hintText: "Your Full Name",
-              prefixIcon: Padding(
-                padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.person),
-              ),
-            ),
-          ),
-          const SizedBox(height: defaultPadding / 1),
 
-          TextFormField(
-            controller: _email,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            keyboardType: TextInputType.emailAddress,
-            textInputAction: TextInputAction.next,
-            cursorColor: kPrimaryColor,
-            maxLength: 100,
-            onSaved: (email) {},
-            validator: (val){
-               if(val!.isEmpty){
-                 return 'Please enter Email';
-               }else if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                   .hasMatch(val))
-               {
-               return 'Please enter valid email';
-               }
-            },
-            decoration: const InputDecoration(
-              counterText: '',
-              hintText: "Your email",
-              prefixIcon: Padding(
-                padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.email),
-              ),
-            ),
-          ),
 
-          const SizedBox(height: defaultPadding / 1),
-          Row(
-            children: [
-              Material(
-                child: Checkbox(
-                  value: agree,
-                  onChanged: (value) {
-                    setState(() {
-                      agree=value!;
-                    });
-                  },
+              },
+              decoration: const InputDecoration(
+                hintText: "Your Full Name",
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(defaultPadding),
+                  child: Icon(Icons.person),
                 ),
               ),
-              Expanded(
-                child: RichText(
-                  text: TextSpan(
-                    style: defaultStyle,
-                    children: <TextSpan>[
-                      TextSpan(text: 'I have read and accept '),
-                      TextSpan(
-                          text: 'terms and conditions',
-                          style: linkStyle,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              _showdialog();
-                            }),
+            ),
+            const SizedBox(height: defaultPadding / 1),
 
-                    ],
+            TextFormField(
+              controller: _email,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              cursorColor: kPrimaryColor,
+              maxLength: 80,
+              onSaved: (email) {},
+              validator: (val){
+                 if(val!.isEmpty){
+                   return 'Please enter Email';
+                 }else if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                     .hasMatch(val))
+                 {
+                 return 'Please enter valid email';
+                 }
+              },
+              decoration: const InputDecoration(
+                hintText: "Your email",
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(defaultPadding),
+                  child: Icon(Icons.email),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: defaultPadding / 1),
+            Row(
+              children: [
+                Material(
+                  child: Checkbox(
+                    value: agree,
+                    onChanged: (value) {
+                      setState(() {
+                        agree=value!;
+                      });
+                    },
                   ),
                 ),
-              )
-            ],
-          ),
-          const SizedBox(height: defaultPadding),
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(
+                      style: defaultStyle,
+                      children: <TextSpan>[
+                        TextSpan(text: 'I have read and accept '),
+                        TextSpan(
+                            text: 'terms and conditions',
+                            style: linkStyle,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                _showdialog();
+                              }),
 
-
-          ElevatedButton(
-            onPressed: agree ? _handleSignup : null,
-            child: isLoading? const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Loading...', style: TextStyle(fontSize: 20),),
-                SizedBox(width: 10,),
-                CircularProgressIndicator(color: Colors.white,),
+                      ],
+                    ),
+                  ),
+                )
               ],
-            ) :  Text('Sign Up'.toUpperCase()),
-          ),
+            ),
+            const SizedBox(height: defaultPadding),
 
-          const SizedBox(height: defaultPadding),
 
-          AlreadyHaveAnAccountCheck(
-            login: false,
-            press: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return LoginScreen();
-                  },
-                ),
-              );
-            },
-          ),
-        ],
+            ElevatedButton(
+              onPressed: agree ? _handleSignup : null,
+              child: isLoading? const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Loading...', style: TextStyle(fontSize: 20),),
+                  SizedBox(width: 10,),
+                  CircularProgressIndicator(color: Colors.white,),
+                ],
+              ) :  Text('Sign Up'.toUpperCase()),
+            ),
+
+            const SizedBox(height: defaultPadding),
+
+            AlreadyHaveAnAccountCheck(
+              login: false,
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return LoginScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
 

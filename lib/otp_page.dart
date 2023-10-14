@@ -120,7 +120,7 @@ class _OTPPageState extends State<OTPPage> {
           setState(() {
             invalidOtp =false;
           });
-          Navigator.push(context, MaterialPageRoute(builder: (context) => passwordset(),));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => passwordset(),));
 
 
         }else{

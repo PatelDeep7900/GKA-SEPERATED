@@ -22,97 +22,126 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  bool _obtxt1=true;
+  final _loginFormKey = GlobalKey<FormState>();
+  TextEditingController _cemail=TextEditingController();
+  TextEditingController _cpass=TextEditingController();
+
+  void _handleLoginUser() {
+
+    if (_loginFormKey.currentState!.validate()) {
+      loginapi(_cemail.text, _cpass.text);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    final _loginFormKey = GlobalKey<FormState>();
-    TextEditingController _cemail=TextEditingController();
-    TextEditingController _cpass=TextEditingController();
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(
+        top: 50, bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Form(
+        key: _loginFormKey,
+        child: Column(
+          children: [
+            TextFormField(
 
-    void _handleLoginUser() {
-
-      if (_loginFormKey.currentState!.validate()) {
-        loginapi(_cemail.text, _cpass.text);
-      }
-    }
-
-    return Form(
-      key: _loginFormKey,
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _cemail,
-            keyboardType: TextInputType.emailAddress,
-            textInputAction: TextInputAction.next,
-            cursorColor: kPrimaryColor,
-            onSaved: (email) {},
-            decoration: const InputDecoration(
-              hintText: "Your email",
-              prefixIcon: Padding(
-                padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.person),
-              ),
-            ),
-            validator:(textValue) {
-              if(textValue == null || textValue.isEmpty) {
-                return 'Email is required!';
-              }
-              if(!EmailValidator.validate(textValue)) {
-                return 'Please enter a valid email';
-              }
-              return null;
-            },
-          ),
-          Padding(
-
-            padding: const EdgeInsets.symmetric(vertical: defaultPadding),
-            child: TextFormField(
-              controller: _cpass,
-              textInputAction: TextInputAction.done,
-              obscureText: true,
+              controller: _cemail,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
               cursorColor: kPrimaryColor,
+              onSaved: (email) {},
               decoration: const InputDecoration(
-                hintText: "Your password",
+                hintText: "Enter email address",
                 prefixIcon: Padding(
                   padding: EdgeInsets.all(defaultPadding),
-                  child: Icon(Icons.lock),
+                  child: Icon(Icons.email_outlined),
+
+                ),
+                errorStyle: TextStyle(
+                  fontSize: 14.0,
+
                 ),
 
               ),
-              validator: (textValue) {
+              validator:(textValue) {
                 if(textValue == null || textValue.isEmpty) {
-                  return 'Password is required!';
+                  return 'Please Enter email address';
+                }
+                if(!EmailValidator.validate(textValue)) {
+                  return 'Please enter a valid email';
                 }
                 return null;
               },
-
             ),
-          ),
-          const SizedBox(height: defaultPadding),
-          Hero(
-            tag: "login_btn",
-            child: ElevatedButton(
-              onPressed: () {
-                _handleLoginUser();
-              },
-              child: const Text(
-                "LOGIN",
+            Padding(
+
+              padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+              child: TextFormField(
+
+                controller: _cpass,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                textInputAction: TextInputAction.done,
+                obscureText: _obtxt1,
+                cursorColor: kPrimaryColor,
+                decoration:  InputDecoration(
+                  hintText: "Enter password",
+                    suffixIcon:IconButton(onPressed: () {
+                      setState(() {
+                        setState(() {
+                          _obtxt1 = !_obtxt1;
+                        });
+                      });
+                    }, icon: Icon( _obtxt1? Icons.visibility : Icons.visibility_off,)),
+
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.all(defaultPadding),
+                    child: Icon(Icons.lock),
+
+                  ),
+                  errorStyle: TextStyle(
+                    fontSize: 14.0,
+
+                  ),
+
+                ),
+                validator: (textValue) {
+                  if(textValue == null || textValue.isEmpty) {
+                    return 'Please Enter Password';
+                  }
+                  return null;
+                },
+
               ),
             ),
-          ),
-          const SizedBox(height: defaultPadding),
-          AlreadyHaveAnAccountCheck(
-            press: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return SignUpScreen();
-                  },
+            const SizedBox(height: defaultPadding),
+            Hero(
+              tag: "login_btn",
+              child: ElevatedButton(
+                onPressed: () {
+                  _handleLoginUser();
+                },
+                child: const Text(
+                  "LOGIN",
                 ),
-              );
-            },
-          ),
-        ],
+              ),
+            ),
+            const SizedBox(height: defaultPadding),
+            AlreadyHaveAnAccountCheck(
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SignUpScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
 
@@ -143,6 +172,22 @@ class _LoginFormState extends State<LoginForm> {
         await prefs.setString("user_Email", data['G_username']);
         await prefs.setString("User_Typ", data['User_Typ']);
         await prefs.setString("Name", data['Name']);
+        bool cimgpathexists1=data["cimgpathexists1"];
+        bool cimgpathexists2=data["cimgpathexists2"];
+
+        await prefs.setBool("cimgpathexists1", cimgpathexists1);
+        await prefs.setBool("cimgpathexists2", cimgpathexists2);
+
+        if(cimgpathexists1){
+          await prefs.setString("img1", data['img1']);
+          await prefs.setString("imgname1", data['imgname1']);
+        }
+        if(cimgpathexists2){
+          await prefs.setString("img2", data['img2']);
+          await prefs.setString("imgname2", data['imgname2']);
+        }
+
+
         Navigator.push(context, MaterialPageRoute(builder: (context) => mainwelcome()));
         }else{
         await prefs.setBool("result", false);

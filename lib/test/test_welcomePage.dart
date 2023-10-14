@@ -203,6 +203,8 @@ void _search(String searchval) async {
                           itemCount:result.length,
                           itemBuilder:(context, index) =>
                               Card(
+                                color: (index % 2 == 0) ? Colors.white : Colors.white60,
+
                                 key: ValueKey(result[index].id),
                                 shape: Border.all(color: Colors.grey),
                                 elevation: 8,

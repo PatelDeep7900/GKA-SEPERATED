@@ -1,5 +1,5 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -23,23 +23,25 @@ class _SetPhotoScreenState extends State<SetPhotoScreen2> {
   File? _image;
   bool _vb1=false;
   String? _Name;
-  int? _id;
+  String? _img2;
   bool isLoading = false;
-
+  bool? _cimgpathexists2=false;
 
   @override
   void initState()  {
-    getinfo();
-    // TODO: implement initState
+    sharedprefget();
     super.initState();
   }
 
-  void getinfo()async{
+  void sharedprefget() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+      _img2=prefs.getString("img2");
       _Name=prefs.getString("Name");
-      _id=prefs.getInt("id");
+
+      _cimgpathexists2=prefs.getBool("cimgpathexists2");
     });
+
   }
 
 
@@ -62,18 +64,41 @@ class _SetPhotoScreenState extends State<SetPhotoScreen2> {
 
 
   Future uploadImage() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? _id=prefs.getInt("id");
+
     final uri = Uri.parse("http://e-gam.com/GKARESTAPI/image2?User_Id=${_id}");
     var request = http.MultipartRequest("POST",uri);
     var pic = await http.MultipartFile.fromPath("image",_image!.path);
     request.files.add(pic);
     var res = await request.send();
+    final responseData = await res.stream.toBytes();
+    final responseString = String.fromCharCodes(responseData);
+
     if(res.statusCode == 200){
-      setState(() {
-        isLoading=false;
-        _vb1=false;
-      });
-      var snackBar = const SnackBar(content: Text('Successfully Uploaded...'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      var str=json.decode(responseString);
+      bool res=str['result'];
+
+      if(res==true){
+
+
+        String img2=str['img2'];
+
+
+        prefs.setString("imgpath2", _image!.path);
+        setState(() {
+          prefs.setString("img2", img2);
+          prefs.setBool("cimgpathexists2", true);
+          isLoading=false;
+          _vb1=false;
+        });
+
+        var snackBar = const SnackBar(content: Text('Successfully Uploaded...'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }else{
+        var snackBar = const SnackBar(content: Text('Something Wrong Please try Again'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     }else{
       var snackBar = const SnackBar(content: Text('Error Please Try Again.....'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -170,17 +195,17 @@ class _SetPhotoScreenState extends State<SetPhotoScreen2> {
                               shape: BoxShape.rectangle,
                               color: Colors.grey.shade200,
                             ),
-                            child: Center(
-                              child: _image == null
-                                  ? const Text(
-                                'No image selected',
-                                style: TextStyle(fontSize: 20),
-                              )
-                                  : CircleAvatar(
-                                backgroundImage: FileImage(_image!),
-                                radius: 200.0,
-                              ),
-                            )),
+                             child: Center(
+                        child: _image ==null
+                        ?  CircleAvatar(
+                          backgroundImage: _cimgpathexists2==true ? NetworkImage(_img2!) : null,
+                        radius: 200.0,
+                      )
+                            : CircleAvatar(
+                        backgroundImage: FileImage(_image!),
+                    radius: 200.0,
+                  ),
+                )),
                       ),
                     ),
                   ),

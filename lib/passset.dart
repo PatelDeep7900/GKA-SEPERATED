@@ -22,6 +22,9 @@ class _passwordsetState extends State<passwordset> {
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _cpass = TextEditingController();
   final _globkey = GlobalKey<FormState>();
+  
+  bool _obtxt1=true;
+  bool _obtxt2=true;
 
   void _handleSignup() {
 
@@ -104,8 +107,8 @@ class _passwordsetState extends State<passwordset> {
               const SizedBox(height: defaultPadding / 1),
               TextFormField(
                 controller: _pass,
+                obscureText: _obtxt1,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-
                 textInputAction: TextInputAction.next,
                 cursorColor: kPrimaryColor,
                 onSaved: (email) {},
@@ -117,18 +120,28 @@ class _passwordsetState extends State<passwordset> {
                     return 'Must be more than 6 charater';
                   }
                 },
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   hintText: "New Password",
                   prefixIcon: Padding(
                     padding: EdgeInsets.all(defaultPadding),
                     child: Icon(Icons.lock),
                   ),
+                  suffixIcon:IconButton(onPressed: () {
+                    setState(() {
+                      setState(() {
+                        _obtxt1 = !_obtxt1;
+                      });
+                    });
+                  }, icon: Icon( _obtxt1
+                      ? Icons.visibility
+                      : Icons.visibility_off,))
                 ),
               ),
               const SizedBox(height: defaultPadding / 1),
               TextFormField(
                 controller: _cpass,
                 maxLength: 20,
+                obscureText: _obtxt2,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
@@ -144,12 +157,22 @@ class _passwordsetState extends State<passwordset> {
 
 
                 },
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   hintText: "confirm Password",
                   prefixIcon: Padding(
                     padding: EdgeInsets.all(defaultPadding),
                     child: Icon(Icons.lock_reset),
                   ),
+                    suffixIcon:IconButton(onPressed: () {
+                      setState(() {
+                        setState(() {
+                          _obtxt2 = !_obtxt2;
+                        });
+                      });
+                    }, icon: Icon( _obtxt2
+                        ? Icons.visibility
+                        : Icons.visibility_off,))
+
                 ),
               ),
               const SizedBox(height: defaultPadding / 1),

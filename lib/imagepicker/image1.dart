@@ -82,11 +82,7 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
   bool res=str['result'];
 
   if(res==true){
-
-
     String img1=str['img1'];
-
-
     prefs.setString("imgpath1", _image!.path);
     setState(() {
       prefs.setString("img1", img1);
@@ -94,7 +90,6 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
       isLoading=false;
       _vb1=false;
     });
-
     var snackBar = const SnackBar(content: Text('Successfully Uploaded...'));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }else{

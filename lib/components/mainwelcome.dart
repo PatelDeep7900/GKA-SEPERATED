@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:gka/Screens/Welcome/welcome_screen.dart';
+import 'package:gka/components/screen/approve_list.dart';
 import 'package:gka/components/screen/basicinfoscreen.dart';
 import 'package:gka/components/screen/screencontact.dart';
 
@@ -24,6 +26,13 @@ class mainwelcome extends StatefulWidget {
 class _mainwelcomeState extends State<mainwelcome> {
 
   String imgpath001="";
+  bool _adm=true;
+
+  bool _hphone=false;
+  bool _hmobile=false;
+  bool _hemail=false;
+
+
   int _selectedIndex = 0;
   int status = 0;
   String? user_Email = "";
@@ -39,19 +48,38 @@ class _mainwelcomeState extends State<mainwelcome> {
 
 
 
-
-
   addprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       user_Email = prefs.get("user_Email").toString();
       Name = prefs.get("Name").toString();
       User_Typ = prefs.get("User_Typ").toString();
+      if(User_Typ=="AU"){
+        _adm=true;
+      }
+    
+      String? a=prefs.getString("h_phone");
+      if(a=="true"){setState(() {_hphone=true;});
+      }else{setState(() {_hphone=false;});}
+
+      String? b=prefs.getString("h_mobile");
+      if(b=="true"){setState(() {_hmobile=true;});
+      }else{setState(() {_hmobile=false;});}
+
+      String? c=prefs.getString("h_email");
+      if(c=="true"){setState(() {_hemail=true;});
+      }else{setState(() {_hemail=false;});}
+
+      
       cimgpathexists1=prefs.getBool("cimgpathexists1");
       cimgpathexists2=prefs.getBool("cimgpathexists2");
+
+
+
       img1=prefs.getString("img1");
       img2=prefs.getString("img2");
     });
+
   }
 
   @override
@@ -66,7 +94,8 @@ class _mainwelcomeState extends State<mainwelcome> {
     basicinfoscreen(),
     contactscreen(),
     SetPhotoScreen(),
-    SetPhotoScreen2()
+    SetPhotoScreen2(),
+    ApproveList(),
   ];
 
   void _onItemTapped(int index) {
@@ -81,6 +110,11 @@ class _mainwelcomeState extends State<mainwelcome> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        onDrawerChanged: (isOpened) {
+          return setState(() {
+
+          });
+        },
         drawer: Drawer(
           child: ListView(
             children: [
@@ -162,12 +196,84 @@ class _mainwelcomeState extends State<mainwelcome> {
               ),
               const Divider(),
 
+
+              Visibility(
+                visible: _adm,
+                child: Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.admin_panel_settings),
+                    title: const Text('Approved List',style: TextStyle(color: Colors.red),),
+                    onTap: () async {
+                      _onItemTapped(6);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              Card(
+                child: ExpansionTile(
+                  backgroundColor: Colors.white30,
+                  title: Text("setting & privacy"),
+                  leading: Icon(Icons.settings),
+                  onExpansionChanged: (value) async {
+                    addprefs();
+                  },
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.phone_disabled),
+                      trailing: Switch(value: _hphone, onChanged: (val) async {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.setString("h_phone", val.toString());
+                        setState(() {
+                          _hphone=!_hphone;
+                        });
+                        addsecurity(_hphone, "h_phone");
+
+                      }),
+                      title: const Text('Hide Phone'),
+                      onTap: () {
+
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.mobile_off),
+                      title: const Text('Hide Mobile'),
+                      trailing: Switch(value: _hmobile, onChanged: (val){
+                        setState(() {
+                          _hmobile=!_hmobile;
+                        });
+                        addsecurity(_hmobile, "h_mobile");
+
+                      }),
+                      onTap: () {
+
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.email),
+                      title: const Text('Hide Email'),
+                      trailing: Switch(value: _hemail, onChanged: (val){
+                        setState(() {
+                          _hemail=!_hemail;
+
+                        });
+                        addsecurity(_hemail, "h_email");
+
+
+                      }),
+                      onTap: () {
+
+                      },
+                    ),
+
+                  ],
+                ),
+              ),
               Card(
                 child: ListTile(
                   leading: Icon(Icons.delete),
                   title: const Text('Account Delete'),
                   onTap: () async {
-                    
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.clear();
                     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>WelcomeScreen()));
@@ -212,4 +318,48 @@ class _mainwelcomeState extends State<mainwelcome> {
       ),
     );
   }
+
+  Future<void> addsecurity(bool val,String field) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    int? _id=prefs.getInt("id");
+
+    try {
+      String url = 'http://e-gam.com/GKARESTAPI/c_security';
+      final response = await http.post(
+          Uri.parse(url),
+          body:
+          {
+            'id': _id.toString(),
+            'val': val.toString(),
+            'field':field
+          }
+
+      );
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        if(data['result']==true){
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Success')));
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('${data['result']}')));
+        }
+
+
+      }
+    }on Exception catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Server not Responding')));
+
+
+      print('error caught: $e');
+      rethrow;
+    }
+
+  }
+
+
 }

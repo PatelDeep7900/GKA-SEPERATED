@@ -168,10 +168,18 @@ class _LoginFormState extends State<LoginForm> {
 
        if(cond==true) {
         await prefs.setInt('id', data['id']);
+        print(data['id']);
         await prefs.setBool("result", true);
         await prefs.setString("user_Email", data['G_username']);
         await prefs.setString("User_Typ", data['User_Typ']);
         await prefs.setString("Name", data['Name']);
+        
+        
+        await prefs.setString("h_phone", data['h_phone']);
+        await prefs.setString("h_mobile", data['h_mobile']);
+        await prefs.setString("h_email", data['h_email']);
+        
+        
         bool cimgpathexists1=data["cimgpathexists1"];
         bool cimgpathexists2=data["cimgpathexists2"];
 

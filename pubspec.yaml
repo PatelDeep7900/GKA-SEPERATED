@@ -40,6 +40,7 @@ dependencies:
   shared_preferences: ^2.2.0
   flutter_launcher_icons: ^0.13.1
   flutter_exit_app: ^1.1.2
+  url_launcher: ^6.1.14
 
 
 
@@ -48,6 +49,10 @@ dependencies:
   image_cropper: ^4.0.1
   device_info_plus: ^9.0.3
   path_provider: ^2.1.1
+
+
+  dropdown_search: ^5.0.6
+  dio: ^5.3.3
 
 
 flutter_icons:

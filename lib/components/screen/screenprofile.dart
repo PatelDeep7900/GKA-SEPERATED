@@ -15,6 +15,8 @@ class profilescreen extends StatefulWidget {
 
 class _profilescreenState extends State<profilescreen> {
   bool _isloading = false;
+  bool? _cimgpathexists1=false;
+  String? _img1="";
   List<Results> result = [];
   bool _isEdit = false;
   TextEditingController inoutcint = TextEditingController(text: 'Hello');
@@ -24,15 +26,17 @@ class _profilescreenState extends State<profilescreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     id = prefs.getInt("id")!;
     setState(() {
-
       _isloading = true;
     });
     var uri = "http://e-gam.com/GKARESTAPI/searchbyid?id=$id";
+    print(uri);
     final url = Uri.parse(uri);
     final response = await http.get(url);
     setState(() {
       Welcome welcome = Welcome.fromJson(json.decode(response.body));
       result = welcome.results!;
+      _cimgpathexists1=prefs.getBool("cimgpathexists1");
+      _img1=prefs.getString("img1");
     });
     setState(() {
       _isloading = false;
@@ -59,7 +63,8 @@ class _profilescreenState extends State<profilescreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const CircleAvatar(
+                           CircleAvatar(
+                            child: _cimgpathexists1==true ? CircleAvatar(radius: 80,backgroundImage: NetworkImage(_img1!),) :Image.asset("assets/images/nopic.png"),
                             backgroundColor: Colors.black,
                             radius: 80,
                           ),
@@ -70,423 +75,236 @@ class _profilescreenState extends State<profilescreen> {
                           Expanded(
                             child: ListView(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      const Text(
-                                        "Basic Information",
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const Spacer(),
-                                      _isEdit == true
-                                          ? IconButton(
-                                              onPressed: () {
-                                                _saveProfile();
-                                              },
-                                              icon: const Icon(Icons.save))
-                                          : IconButton(
-                                              onPressed: () {
-                                                _editProfile();
-                                              },
-                                              icon: const Icon(Icons.edit))
-                                    ],
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Basic Information",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                Card(
-                                    color: Colors.grey,
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 15),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text(
-                                                'Name:',
-                                                style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              subtitle: _isEdit == true
-                                                  ? TextField(
-                                                      controller: inoutcint,
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        isDense: true,
-                                                        contentPadding:
-                                                            EdgeInsets.all(5),
-                                                      ),
-                                                      autofocus: true,
-                                                      style: const TextStyle(
-                                                          fontSize: 15),
-                                                      cursorHeight: 13,
-                                                    )
-                                                  : Text(
-                                                      result[0].name.toString(),
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight
-                                                                  .bold),
-                                                    ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text('Address1:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                result[0].address.toString(),
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text('Address1:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                result[0].address1.toString(),
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text(
-                                                  'Country/State/City:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                "${result[0].strcities.toString()}-${result[0].strstate.toString()}-${result[0].strcountry.toString()}",
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text('Zip/Pin:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(result[0].strpin.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
+                                Container(
+                                  alignment:  Alignment.topLeft,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                      alignment: Alignment.topLeft,
+                                      child: DataTable(
+                                        columnSpacing: 20.0,
+                                        headingRowHeight: 0,
+                                        columns: [
+                                          DataColumn(label: Container()),
+                                          DataColumn(label: Container()),
+                                          DataColumn(label: Container()),
+                                        ],
+                                        rows: [
+                                          DataRow(cells: [
+                                            DataCell( Container(width:65,child: Text('Address1',style: TextStyle(fontSize: 13),)),),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].address.toString(),style: TextStyle(fontSize: 13),)),
+                                          ]),
+
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Address2',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].address1.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Country',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].strcountry.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('State',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].strstate.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('City',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].strcities.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Zip/Pin',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].strpin.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
                                         ],
                                       ),
-                                    )),
+                                    ),
+                                  ),
+                                ),
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
                                     "Contact Information",
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: Colors.black,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                Card(
-                                    color: Colors.grey,
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 15),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text(
-                                                'Home Phone:',
-                                                style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              subtitle: Text(
-                                                result[0].phone.toString(),
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text('Mobile No:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(result[0].mob.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text('Email:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(result[0].email.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
+                                Container(
+                                  alignment:  Alignment.topLeft,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                      alignment: Alignment.topLeft,
+                                      child: DataTable(
+                                        columnSpacing: 20.0,
+                                        headingRowHeight: 0,
+                                        columns: [
+                                          DataColumn(label: Container()),
+                                          DataColumn(label: Container()),
+                                          DataColumn(label: Container()),
+                                        ],
+                                        rows: [
+                                          DataRow(cells: [
+                                            DataCell( Container(width:65,child: Text('Country Code',style: TextStyle(fontSize: 13),)),),
+                                            DataCell(Text(":")),
+                                            DataCell(Text('+1',style: TextStyle(fontSize: 13),)),
+                                          ]),
+
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Home Phone',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].phone.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Mobile',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].mob.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Email',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].email.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
                                         ],
                                       ),
-                                    )),
+                                    ),
+                                  ),
+                                ),
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
                                     "Business Information",
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: Colors.black,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                Card(
-                                    color: Colors.grey,
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 15),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text(
-                                                'Website:',
-                                                style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              subtitle: Text(
-                                                result[0].bWebsite.toString(),
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text('Type of Business:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                  result[0].bDetail.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text('Location:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                  result[0].bLocation.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                      alignment: Alignment.topLeft,
+                                      child: DataTable(
+                                        columnSpacing: 20.0,
+                                        headingRowHeight: 0,
+                                        columns: [
+                                          DataColumn(label: Container()),
+                                          DataColumn(label: Container()),
+                                          DataColumn(label: Container()),
+                                        ],
+                                        rows: [
+                                          DataRow(cells: [
+                                            DataCell( Container(width:65,child: Text('Website',style: TextStyle(fontSize: 13),)),),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].bWebsite.toString(),style: TextStyle(fontSize: 13),)),
+                                          ]),
+
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Business Type',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].bDetail.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Business Location',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].bLocation.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
                                         ],
                                       ),
-                                    )),
+                                    ),
+                                  ),
+                                ),
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
                                     "Family Details",
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: Colors.black,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                Card(
-                                    color: Colors.grey,
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 15),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text(
-                                                'Parents:',
-                                                style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              subtitle: Text(result[0].parent.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text('Spouse Parents:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                  result[0].sParents.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text(
-                                                  'Native:city/country:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                  result[0].natCity.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text(
-                                                  'Name of Samajik sanstha involved:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                  result[0].sSanstha.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text('Extra1:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                  result[0].ext1.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text('Extra2:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(result[0].ext2.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                            child: ListTile(
-                                              title: const Text('About Family:',
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                  result[0].aboutFamily.toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ),
+                                Container(
+                                  alignment:  Alignment.topLeft,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                      alignment: Alignment.topLeft,
+                                      child: DataTable(
+                                        columnSpacing: 20.0,
+                                        headingRowHeight: 0,
+                                        columns: [
+                                          DataColumn(label: Container()),
+                                          DataColumn(label: Container()),
+                                          DataColumn(label: Container()),
+                                        ],
+                                        rows: [
+                                          DataRow(cells: [
+                                            DataCell( Container(width:65,child: Text('Parents',style: TextStyle(fontSize: 13),)),),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].parent.toString().toString(),style: TextStyle(fontSize: 13),)),
+                                          ]),
+
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Spouse Parents',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].sParents.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Native:city/country',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].natCity.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Samajik sanstha',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].sSanstha.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Extra1',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].ext1.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('Extra2',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].ext2.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Container(width:65,child: Text('About Family',style: TextStyle(fontSize: 13)))),
+                                            DataCell(Text(":")),
+                                            DataCell(Text(result[0].aboutFamily.toString(),style: TextStyle(fontSize: 13))),
+                                          ]),
                                         ],
                                       ),
-                                    )),
+                                    ),
+                                  ),
+                                ),
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
                                     "Family Information",
                                     style: TextStyle(
-                                        color: Colors.red,
+                                        color: Colors.black,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -499,136 +317,51 @@ class _profilescreenState extends State<profilescreen> {
                                     itemCount: result[0].familyinfo!.length,
                                     itemBuilder: (context, index) {
                                       return Card(
-                                        color: Colors.grey,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 0, top: 0),
-                                              child: CircleAvatar(
-                                                  radius: 10,
-                                                  child: Text("#$index",
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 10))),
-                                            ),
-                                            SizedBox(
-                                              height: 45,
-                                              child: ListTile(
-                                                title: const Text("Name:",
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                subtitle: Text(
-                                                    result[0]
-                                                        .familyinfo![index]
-                                                        .name.toString(),
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
+                                        child: Container(
+                                          alignment:  Alignment.topLeft,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Container(
+                                              alignment: Alignment.topLeft,
+                                              child: DataTable(
+                                                columnSpacing: 20.0,
+                                                headingRowHeight: 0,
+                                                columns: [
+                                                  DataColumn(label: Container()),
+                                                  DataColumn(label: Container()),
+                                                  DataColumn(label: Container()),
+                                                ],
+                                                rows: [
+                                                  DataRow(cells: [
+                                                    DataCell( Container(width:72,child: Text('name',style: TextStyle(fontSize: 13),)),),
+                                                    DataCell(Text(":")),
+                                                    DataCell(Text(result[0].familyinfo![index].name.toString(),style: TextStyle(fontSize: 13),)),
+                                                  ]),
+
+                                                  DataRow(cells: [
+                                                    DataCell(Container(width:72,child: Text('Date Of Birth',style: TextStyle(fontSize: 13)))),
+                                                    DataCell(Text(":")),
+                                                    DataCell(Text(result[0].familyinfo![index].dob.toString(),style: TextStyle(fontSize: 13))),
+                                                  ]),
+                                                  DataRow(cells: [
+                                                    DataCell(Container(width:72,child: Text('occupation',style: TextStyle(fontSize: 13)))),
+                                                    DataCell(Text(":")),
+                                                    DataCell(Text(result[0].familyinfo![index].occ.toString(),style: TextStyle(fontSize: 13))),
+                                                  ]),
+                                                  DataRow(cells: [
+                                                    DataCell(Container(width:72,child: Text('Phone',style: TextStyle(fontSize: 13)))),
+                                                    DataCell(Text(":")),
+                                                    DataCell(Text(result[0].familyinfo![index].phone.toString(),style: TextStyle(fontSize: 13))),
+                                                  ]),
+                                                  DataRow(cells: [
+                                                    DataCell(Container(width:72,child: Text('Email',style: TextStyle(fontSize: 13)))),
+                                                    DataCell(Text(":")),
+                                                    DataCell(Text(result[0].familyinfo![index].email.toString(),style: TextStyle(fontSize: 13))),
+                                                  ]),
+                                                ],
                                               ),
                                             ),
-                                            SizedBox(
-                                              height: 45,
-                                              child: ListTile(
-                                                title: const Text("Relation:",
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                subtitle: Text(
-                                                    result[0]
-                                                        .familyinfo![index]
-                                                        .relation.toString(),
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 45,
-                                              child: ListTile(
-                                                title: const Text("Data of Birth:",
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                subtitle: Text(
-                                                    result[0]
-                                                        .familyinfo![index]
-                                                        .dob.toString(),
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 45,
-                                              child: ListTile(
-                                                title: const Text("occupation:",
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                subtitle: Text(
-                                                    result[0]
-                                                        .familyinfo![index]
-                                                        .occ
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 45,
-                                              child: ListTile(
-                                                title: const Text("Phone:",
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                subtitle: Text(
-                                                    result[0]
-                                                        .familyinfo![index]
-                                                        .phone.toString(),
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 45,
-                                              child: ListTile(
-                                                title: const Text("Email:",
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                subtitle: Text(
-                                                    result[0]
-                                                        .familyinfo![index]
-                                                        .email.toString(),
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 15,
-                                            ),
-                                          ],
+                                          ),
                                         ),
                                       );
                                     },
@@ -642,17 +375,5 @@ class _profilescreenState extends State<profilescreen> {
                     ),
                   )
                 : null);
-  }
-
-  _editProfile() {
-    setState(() {
-      _isEdit = true;
-    });
-  }
-
-  _saveProfile() {
-    setState(() {
-      _isEdit = false;
-    });
   }
 }

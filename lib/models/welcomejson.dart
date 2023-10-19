@@ -34,6 +34,10 @@ class Welcome {
 
 class Results {
   String? userApprov;
+  bool? cimgpathexists1;
+  String? img1;
+
+
   String? strcities;
   String? mob;
   String? bDetail;
@@ -56,9 +60,12 @@ class Results {
   String? id;
   String? ext2;
   String? ext1;
+  String?imgapprove;
 
   Results(
       {this.userApprov,
+        this.cimgpathexists1,
+        this.img1,
         this.strcities,
         this.mob,
         this.bDetail,
@@ -80,10 +87,14 @@ class Results {
         this.bWebsite,
         this.id,
         this.ext2,
-        this.ext1});
+        this.ext1,
+        this.imgapprove
+      });
 
   Results.fromJson(Map<String, dynamic> json) {
     userApprov = json['User_Approv'];
+    cimgpathexists1=json['cimgpathexists1'];
+    img1=json['img1'];
     strcities = json['strcities'];
     mob = json['Mob'];
     bDetail = json['B_Detail'];
@@ -109,6 +120,7 @@ class Results {
     strcountry = json['strcountry'];
     bWebsite = json['B_Website'];
     id = json['id'];
+    imgapprove = json['imgapprove'];
     ext2 = json['ext2'];
     ext1 = json['ext1'];
   }
@@ -116,6 +128,8 @@ class Results {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['User_Approv'] = this.userApprov;
+    data['cimgpathexists1']=this.cimgpathexists1;
+    data['img1']=this.img1;
     data['strcities'] = this.strcities;
     data['Mob'] = this.mob;
     data['B_Detail'] = this.bDetail;
@@ -138,6 +152,7 @@ class Results {
     data['strcountry'] = this.strcountry;
     data['B_Website'] = this.bWebsite;
     data['id'] = this.id;
+    data['imgapprove'] = this.imgapprove;
     data['ext2'] = this.ext2;
     data['ext1'] = this.ext1;
     return data;

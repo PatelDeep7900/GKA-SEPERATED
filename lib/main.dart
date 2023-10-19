@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gka/ddsearch.dart';
 import 'Screens/Welcome/welcome_screen.dart';
 import 'constants.dart';
 import 'otp_page.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
           )),
-      home: const WelcomeScreen(),
+      home:  MyHomePage()
 
       
     );

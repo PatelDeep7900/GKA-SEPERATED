@@ -41,7 +41,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_exit_app: ^1.1.2
   url_launcher: ^6.1.14
-
+  csc_picker: ^0.2.7
 
 
   image_picker: ^1.0.0
@@ -49,9 +49,6 @@ dependencies:
   image_cropper: ^4.0.1
   device_info_plus: ^9.0.3
   path_provider: ^2.1.1
-
-
-  dropdown_search: ^5.0.6
   dio: ^5.3.3
 
 

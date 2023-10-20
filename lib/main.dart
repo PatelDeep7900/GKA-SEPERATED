@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
           )),
-      home:  MyHomePage()
+      home:  MyHomeApp()
 
       
     );

@@ -1,17 +1,27 @@
 
 class CountryModel {
-  String? sortname;
-  int? id;
-  String? name;
-  String? phonecode;
 
-  CountryModel({required this.sortname, required this.id, required this.name, required this.phonecode});
+  final String sortname;
+  final int id;
+  final String name;
+  final String phonecode;
 
-  CountryModel.fromJson(Map<String, dynamic> json) {
-    sortname = json['sortname'];
-    id = json['id'];
-    name = json['name'];
-    phonecode = json['phonecode'];
+  CountryModel({
+    required this.sortname,
+    required this.id,
+    required this.name,
+    required this.phonecode,
+  });
+
+
+
+  factory CountryModel.fromJson(Map<String, dynamic> json) {
+    return CountryModel(
+      sortname: json["sortname"],
+      id: json["id"],
+      name: json["name"],
+      phonecode: json["phonecode"],
+    );
   }
 
   static List<CountryModel> fromJsonList(List list) {
@@ -19,7 +29,7 @@ class CountryModel {
   }
 
   String userAsString() {
-    return '#${this.id} ${this.name}';
+    return '#${this.id.toString()} ${this.name}';
   }
 
   bool userFilterByCreationDate(String filter) {
@@ -27,9 +37,9 @@ class CountryModel {
   }
 
   bool isEqual(CountryModel model) {
-    return this.id == model.id;
+    return this.id.toString() == model.id.toString();
   }
 
   @override
-  String toString() => name.toString();
+  String toString() => name;
 }

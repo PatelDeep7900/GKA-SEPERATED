@@ -42,7 +42,7 @@ dependencies:
   flutter_exit_app: ^1.1.2
   url_launcher: ^6.1.14
   csc_picker: ^0.2.7
-
+  dropdown_button2: ^2.3.9
 
   image_picker: ^1.0.0
   permission_handler: ^11.0.0

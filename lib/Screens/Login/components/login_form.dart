@@ -178,8 +178,13 @@ class _LoginFormState extends State<LoginForm> {
         await prefs.setString("h_phone", data['h_phone']);
         await prefs.setString("h_mobile", data['h_mobile']);
         await prefs.setString("h_email", data['h_email']);
-        
-        
+
+        await prefs.setString("val_Country", data['val_Country']);
+        await prefs.setString("val_State", data['val_State']);
+        await prefs.setString("val_City", data['val_City']);
+
+
+
         bool cimgpathexists1=data["cimgpathexists1"];
         bool cimgpathexists2=data["cimgpathexists2"];
 

@@ -681,6 +681,46 @@ class _basicinfoscreenState extends State<biscreen> {
       print(err.toString());
     }
   }
+  void getpref1() async {
+    setState(() {
+      _isLoading = true;
+    });
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? id = prefs.getInt("id");
+    String? val1 = prefs.getString("val_Country");
+
+    setState(() {
+      _countryval = val1;
+    });
+
+    String? val2 = prefs.getString("val_State");
+    String? val3 = prefs.getString("val_City");
+
+    try {
+      var url =
+          "http://192.168.10.141:8084/GKARESTAPI/c_cscpicker?cond=onload&country_id=${val1}&state_id=${val2}&id=${id}";
+      print(url);
+      var uri = Uri.parse(url);
+      final response = await http.get(uri);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        setState(() {
+          statelist = data['statelist'];
+          citylist = data['citylist'];
+          _stateval = val2;
+          _cityval = val3;
+
+          _biname.text = data["biname"];
+          _biadd1.text = data["biadd1"];
+          _biadd2.text = data["biadd2"];
+
+          _isLoading = false;
+        });
+      }
+    } catch (err) {
+      print(err.toString());
+    }
+  }
 
   @override
   void initState() {

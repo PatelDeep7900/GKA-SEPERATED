@@ -6,6 +6,7 @@ import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:gka/Screens/Welcome/welcome_screen.dart';
 import 'package:gka/components/screen/approve_list.dart';
 import 'package:gka/components/screen/basicinfoscreen.dart';
+import 'package:gka/components/screen/biscreen.dart';
 import 'package:gka/components/screen/screencontact.dart';
 
 import 'package:gka/components/screen/screenprofile.dart';
@@ -89,7 +90,8 @@ class _mainwelcomeState extends State<mainwelcome> {
   }
 
   static const List<Widget> _widgetOption = <Widget>[
-    test_welcomepage(),
+    biscreen(),
+    /*test_welcomepage(),*/
     profilescreen(),
     basicinfoscreen(),
     contactscreen(),

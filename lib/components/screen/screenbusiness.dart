@@ -6,21 +6,20 @@ import 'package:http/http.dart' as http;
 
 
 import '../../constants.dart';
-class contactscreen extends StatefulWidget {
-  const contactscreen({super.key});
+class businessscreen extends StatefulWidget {
+  const businessscreen({super.key});
 
   @override
-  State<contactscreen> createState() => _contactscreenState();
+  State<businessscreen> createState() => _businessscreenState();
 }
 
-class _contactscreenState extends State<contactscreen> {
+class _businessscreenState extends State<businessscreen> {
 
 
-  TextEditingController _C_code = TextEditingController();
-  TextEditingController _Phone = TextEditingController();
-  TextEditingController _Mob = TextEditingController();
-  TextEditingController _Email = TextEditingController();
-bool _isLoading=false;
+  TextEditingController _B_Website = TextEditingController();
+  TextEditingController _B_Detail = TextEditingController();
+  TextEditingController _B_location = TextEditingController();
+  bool _isLoading=false;
 
   void getpref() async {
     setState(() {
@@ -37,10 +36,9 @@ bool _isLoading=false;
         var data = jsonDecode(response.body);
         setState(() {
 
-          _C_code.text=data['C_code'];
-          _Phone.text=data['Phone'];
-          _Mob.text=data['Mob'];
-          _Email.text=data['Email'];
+          _B_Website.text=data['B_Website'];
+          _B_Detail.text=data['B_Detail'];
+          _B_location.text=data['B_location'];
 
 
           _isLoading = false;
@@ -62,11 +60,10 @@ bool _isLoading=false;
           Uri.parse(url),
           body:
           {
-            'cond': "contactinfoupdate",
-            'C_code': _C_code.text.toString(),
-            'Phone': _Phone.text.toString(),
-            'Mob': _Mob.text.toString(),
-            'Email': _Email.text.toString(),
+            'cond': "businessdetailsupdate",
+            'B_Website': _B_Website.text.toString(),
+            'B_Detail': _B_Detail.text.toString(),
+            'B_location': _B_location.text.toString(),
             'id':id.toString()
           }
 
@@ -123,7 +120,7 @@ bool _isLoading=false;
 
 
                 TextFormField(
-                  controller: _C_code,
+                  controller: _B_Website,
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
                   cursorColor: kPrimaryColor,
@@ -131,7 +128,7 @@ bool _isLoading=false;
 
                   },
                   decoration: const InputDecoration(
-                    hintText: "Country Code",
+                    hintText: "Business Website",
                     prefixIcon: Padding(
                       padding: EdgeInsets.all(defaultPadding),
                       child: Icon(Icons.person),
@@ -144,11 +141,11 @@ bool _isLoading=false;
 
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
-                    controller: _Phone,
+                    controller: _B_Detail,
                     textInputAction: TextInputAction.done,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
-                      hintText: "Home Phone",
+                      hintText: "Type Of Business",
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.lock),
@@ -164,11 +161,11 @@ bool _isLoading=false;
 
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
-                    controller: _Mob,
+                    controller: _B_location,
                     textInputAction: TextInputAction.done,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
-                      hintText: "Mobile Number",
+                      hintText: "Business Location",
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.lock),
@@ -180,25 +177,7 @@ bool _isLoading=false;
                 ),
 
 
-                Padding(
 
-                  padding: const EdgeInsets.symmetric(vertical: defaultPadding),
-                  child: TextFormField(
-                    controller: _Email,
-                    textInputAction: TextInputAction.done,
-
-                    cursorColor: kPrimaryColor,
-                    decoration: const InputDecoration(
-                      hintText: "Email Address",
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(defaultPadding),
-                        child: Icon(Icons.lock),
-                      ),
-
-                    ),
-
-                  ),
-                ),
 
                 const SizedBox(height: defaultPadding),
                 Hero(
@@ -218,14 +197,14 @@ bool _isLoading=false;
                   tag: "reset_btn",
                   child: ElevatedButton(
                     onPressed: () {
-                        getpref();
+                      getpref();
                     },
                     child: const Text(
                       "RESET",
                     ),
                   ),
                 ),
-                
+
               ],
             ),
           ),

@@ -15,6 +15,8 @@ class biscreen extends StatefulWidget {
 
 class _basicinfoscreenState extends State<biscreen> {
   bool _isLoading = false;
+  bool _isLoadingbtn1=false;
+  bool _isLoadingbtn2=false;
 
   List countylist = [
     {"sortname": "SELECT", "name": "SELECT", "phonecode": "0", "id": "0"},
@@ -587,6 +589,9 @@ class _basicinfoscreenState extends State<biscreen> {
 
 
   Future<void> _doSomething() async{
+    setState(() {
+      _isLoadingbtn1=true;
+    });
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int? id=prefs.getInt("id");
    try {
@@ -621,10 +626,15 @@ class _basicinfoscreenState extends State<biscreen> {
 
          ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Data Saved SuccessFully...')));
+         setState(() {
+           _isLoadingbtn1=false;
+         });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(data['msg'])));
-
+         setState(() {
+           _isLoadingbtn1=false;
+         });
         }
 
 
@@ -683,7 +693,7 @@ class _basicinfoscreenState extends State<biscreen> {
   }
   void getpref1() async {
     setState(() {
-      _isLoading = true;
+      _isLoadingbtn2 = true;
     });
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int? id = prefs.getInt("id");
@@ -714,7 +724,7 @@ class _basicinfoscreenState extends State<biscreen> {
           _biadd1.text = data["biadd1"];
           _biadd2.text = data["biadd2"];
 
-          _isLoading = false;
+          _isLoadingbtn2 = false;
         });
       }
     } catch (err) {
@@ -731,6 +741,46 @@ class _basicinfoscreenState extends State<biscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(children: [
+          Expanded(
+            child: Hero(
+              tag: "submit btn",
+              child:  ElevatedButton(
+                onPressed: (){_doSomething();},
+                child: _isLoadingbtn1? const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Loading...', style: TextStyle(fontSize: 20),),
+                    SizedBox(width: 10,),
+                    CircularProgressIndicator(color: Colors.white,),
+                  ],
+                ) :  Text('SUBMIT'.toUpperCase()),
+              ),
+            ),
+          ),
+          SizedBox(width: 10,),
+          Expanded(
+              child:  Hero(
+                tag: "reset_btn",
+                child: ElevatedButton(
+                  onPressed: (){getpref1();},
+                  child: _isLoadingbtn2? const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Loading...', style: TextStyle(fontSize: 20),),
+                      SizedBox(width: 10,),
+                      CircularProgressIndicator(color: Colors.white,),
+                    ],
+                  ) :  Text('RESET'.toUpperCase()),
+                ),
+              ),
+
+
+          )
+        ],),
+      ),
       body: _isLoading == true
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -744,7 +794,7 @@ class _basicinfoscreenState extends State<biscreen> {
                     child: Text(
                       "Basic Information",
                       style: TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.bold),
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     )),
                 Divider(),
                 const SizedBox(height: defaultPadding),
@@ -828,12 +878,11 @@ class _basicinfoscreenState extends State<biscreen> {
                       },
                       buttonStyleData:  ButtonStyleData(
                         padding: EdgeInsets.symmetric(horizontal: 16),
-                        height: 40,
+                        height: 55,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(30)),
-                          border: Border.all(color: kPrimaryLightColor),
-                          color: kPrimaryLightColor
+                          color: kPrimaryLightColor,
                         )
                       ),
                       dropdownStyleData: const DropdownStyleData(
@@ -915,8 +964,12 @@ class _basicinfoscreenState extends State<biscreen> {
                       },
                       buttonStyleData: ButtonStyleData(
                         padding: EdgeInsets.symmetric(horizontal: 16),
-                        height: 40,
+                          height: 55,
                         width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            color: kPrimaryLightColor,
+                          )
                       ),
                       dropdownStyleData: const DropdownStyleData(
                         maxHeight: 200,
@@ -996,8 +1049,12 @@ class _basicinfoscreenState extends State<biscreen> {
                         },
                         buttonStyleData: ButtonStyleData(
                           padding: EdgeInsets.symmetric(horizontal: 16),
-                          height: 40,
+                            height: 55,
                           width: MediaQuery.of(context).size.width,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              color: kPrimaryLightColor,
+                            )
                         ),
                         dropdownStyleData: const DropdownStyleData(
                           maxHeight: 200,
@@ -1050,32 +1107,6 @@ class _basicinfoscreenState extends State<biscreen> {
                         },
                       ),
                     )),
-                const SizedBox(height: defaultPadding),
-                Hero(
-                  tag: "submit btn",
-                  child: ElevatedButton(
-                    onPressed: () {
-                        print("hi iam click");
-                      _doSomething();
-                    },
-                    child: const Text(
-                      "SUBMIT hai",
-                    ),
-                  ),
-                ),
-                const SizedBox(height: defaultPadding),
-                Hero(
-                  tag: "reset_btn",
-                  child: ElevatedButton(
-                    onPressed: () {
-                      getpref();
-
-                    },
-                    child: const Text(
-                      "RESET",
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

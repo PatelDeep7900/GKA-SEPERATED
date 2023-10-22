@@ -7,6 +7,7 @@ import 'package:gka/Screens/Welcome/welcome_screen.dart';
 import 'package:gka/components/screen/approve_list.dart';
 import 'package:gka/components/screen/basicinfoscreen.dart';
 import 'package:gka/components/screen/biscreen.dart';
+import 'package:gka/components/screen/screenbusiness.dart';
 import 'package:gka/components/screen/screencontact.dart';
 
 import 'package:gka/components/screen/screenprofile.dart';
@@ -90,11 +91,11 @@ class _mainwelcomeState extends State<mainwelcome> {
   }
 
   static const List<Widget> _widgetOption = <Widget>[
-    biscreen(),
-    /*test_welcomepage(),*/
+    test_welcomepage(),
     profilescreen(),
     basicinfoscreen(),
     contactscreen(),
+    businessscreen(),
     SetPhotoScreen(),
     SetPhotoScreen2(),
     ApproveList(),
@@ -175,10 +176,18 @@ class _mainwelcomeState extends State<mainwelcome> {
                       },
                     ),
                     ListTile(
+                      leading: Icon(Icons.business_center_sharp),
+                      title: Text('Business Information'),
+                      onTap: () {
+                        _onItemTapped(4);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
                       leading: Icon(Icons.photo),
                       title: Text('Profile Image'),
                       onTap: () {
-                        _onItemTapped(4);
+                        _onItemTapped(5);
                         Navigator.pop(context);
                       },
                     ),
@@ -187,7 +196,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                       leading: Icon(Icons.photo),
                       title: Text('Image'),
                       onTap: () {
-                        _onItemTapped(5);
+                        _onItemTapped(6);
                         Navigator.pop(context);
                       },
                     ),
@@ -206,7 +215,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                     leading: const Icon(Icons.admin_panel_settings),
                     title: const Text('Approved List',style: TextStyle(color: Colors.red),),
                     onTap: () async {
-                      _onItemTapped(6);
+                      _onItemTapped(7);
                       Navigator.pop(context);
                     },
                   ),

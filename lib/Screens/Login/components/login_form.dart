@@ -152,69 +152,64 @@ class _LoginFormState extends State<LoginForm> {
 
 
   Future<void> loginapi(String Emailval,String Passval)async{
-    const url="http://e-gam.com/GKARESTAPI/login";
-    Response response=await post(
-        Uri.parse(url),
-        body:
-        {
-          'userEmail':Emailval,
-          'userPass':Passval
-        }
-    );
+    try{
+      const url="http://e-gam.com/GKARESTAPI/login";
+      Response response=await post(
+          Uri.parse(url),
+          body:
+          {
+            'userEmail':Emailval,
+            'userPass':Passval
+          }
+      );
 
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(response.statusCode==200) {
-      var data=jsonDecode(response.body.toString());
-      var cond=data['result'];
-
-       if(cond==true) {
-        await prefs.setInt('id', data['id']);
-        print(data['id']);
-        await prefs.setBool("result", true);
-        await prefs.setString("user_Email", data['G_username']);
-        await prefs.setString("User_Typ", data['User_Typ']);
-        await prefs.setString("Name", data['Name']);
-        
-        
-        await prefs.setString("h_phone", data['h_phone']);
-        await prefs.setString("h_mobile", data['h_mobile']);
-        await prefs.setString("h_email", data['h_email']);
-
-        await prefs.setString("val_Country", data['val_Country']);
-        await prefs.setString("val_State", data['val_State']);
-        await prefs.setString("val_City", data['val_City']);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      if(response.statusCode==200) {
+        var data=jsonDecode(response.body.toString());
+        var cond=data['result'];
+        print(data);
+        if(cond==true) {
+          await prefs.setInt('id', data['id']);
+          await prefs.setBool("result", true);
+          await prefs.setInt("User_Approv", data['User_Approv']);
+          await prefs.setString("user_Email", data['G_username']);
+          await prefs.setString("User_Typ", data['User_Typ']);
+          await prefs.setString("Name", data['Name']);
 
 
+          await prefs.setString("h_phone", data['h_phone']);
+          await prefs.setString("h_mobile", data['h_mobile']);
+          await prefs.setString("h_email", data['h_email']);
 
-        bool cimgpathexists1=data["cimgpathexists1"];
-        bool cimgpathexists2=data["cimgpathexists2"];
+          await prefs.setString("val_Country", data['val_Country']);
+          await prefs.setString("val_State", data['val_State']);
+          await prefs.setString("val_City", data['val_City']);
 
-        await prefs.setBool("cimgpathexists1", cimgpathexists1);
-        await prefs.setBool("cimgpathexists2", cimgpathexists2);
+          await prefs.setBool("imgavl", data["imgavl"]);
 
-        if(cimgpathexists1){
-          await prefs.setString("img1", data['img1']);
-          await prefs.setString("imgname1", data['imgname1']);
-        }
-        if(cimgpathexists2){
-          await prefs.setString("img2", data['img2']);
-          await prefs.setString("imgname2", data['imgname2']);
-        }
+          await prefs.setString("imgupload1", data['imgupload1']);
 
 
-        Navigator.push(context, MaterialPageRoute(builder: (context) => mainwelcome()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => mainwelcome()));
         }else{
+          await prefs.setBool("result", false);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Invalid UserName Or Password")),
+          );
+        }
+      }else{
         await prefs.setBool("result", false);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Invalid UserName Or Password")),
+          const SnackBar(content: Text("Server Not Responding")),
         );
       }
-    }else{
-      await prefs.setBool("result", false);
+    }on Exception catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Server Not Responding")),
-      );
+          SnackBar(content: Text(e.toString())));
+      print(e.toString());
+      rethrow;
     }
+
 
   }
 

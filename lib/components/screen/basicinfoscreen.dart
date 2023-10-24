@@ -544,7 +544,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
 
     try {
       var url =
-          "http://192.168.10.141:8084//GKARESTAPI/c_cscpicker?cond=state&country_id=${country_id}";
+          "http://e-gam.com//GKARESTAPI/c_cscpicker?cond=state&country_id=${country_id}";
       var uri = Uri.parse(url);
       final response = await http.get(uri);
       if (response.statusCode == 200) {
@@ -569,7 +569,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
   Future<void> _cityfromstate(String state_id) async {
     try {
       var url =
-          "http://192.168.10.141:8084/GKARESTAPI/c_cscpicker?cond=city&state_id=${state_id}";
+          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=city&state_id=${state_id}";
       print(url);
       var uri = Uri.parse(url);
       print(uri);
@@ -596,7 +596,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
     int? id=prefs.getInt("id");
     try {
 
-      String url = 'http://192.168.10.141:8084/GKARESTAPI/c_cscpicker';
+      String url = 'http://e-gam.com/GKARESTAPI/c_cscpicker';
       print(url);
       final response = await http.post(
           Uri.parse(url),
@@ -668,7 +668,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
 
     try {
       var url =
-          "http://192.168.10.141:8084/GKARESTAPI/c_cscpicker?cond=onload&country_id=${val1}&state_id=${val2}&id=${id}";
+          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=onload&country_id=${val1}&state_id=${val2}&id=${id}";
       print(url);
       var uri = Uri.parse(url);
       final response = await http.get(uri);
@@ -708,7 +708,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
 
     try {
       var url =
-          "http://192.168.10.141:8084/GKARESTAPI/c_cscpicker?cond=onload&country_id=${val1}&state_id=${val2}&id=${id}";
+          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=onload&country_id=${val1}&state_id=${val2}&id=${id}";
       print(url);
       var uri = Uri.parse(url);
       final response = await http.get(uri);

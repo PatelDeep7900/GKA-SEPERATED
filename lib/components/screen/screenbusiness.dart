@@ -19,7 +19,9 @@ class _businessscreenState extends State<businessscreen> {
   TextEditingController _B_Website = TextEditingController();
   TextEditingController _B_Detail = TextEditingController();
   TextEditingController _B_location = TextEditingController();
-  bool _isLoading=false;
+  bool _isLoading = false;
+  bool _isLoadingbtn1=false;
+  bool _isLoadingbtn2=false;
 
   void getpref() async {
     setState(() {
@@ -29,7 +31,8 @@ class _businessscreenState extends State<businessscreen> {
     int? id = prefs.getInt("id");
     try {
       var url =
-          "http://192.168.10.141:8084/GKARESTAPI/c_cscpicker?cond=contactinfoget&id=${id}";
+          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=contactinfoget&id=${id}";
+      print(url);
       var uri = Uri.parse(url);
       final response = await http.get(uri);
       if (response.statusCode == 200) {
@@ -48,13 +51,44 @@ class _businessscreenState extends State<businessscreen> {
       print(err.toString());
     }
   }
+  void getpref1() async {
+    setState(() {
+      _isLoadingbtn2 = true;
+    });
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? id = prefs.getInt("id");
+    try {
+      var url =
+          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=contactinfoget&id=${id}";
+      print(url);
+      var uri = Uri.parse(url);
+      final response = await http.get(uri);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        setState(() {
+
+          _B_Website.text=data['B_Website'];
+          _B_Detail.text=data['B_Detail'];
+          _B_location.text=data['B_location'];
+
+
+          _isLoadingbtn2 = false;
+        });
+      }
+    } catch (err) {
+      print(err.toString());
+    }
+  }
 
   Future<void> _doSomething() async{
+    setState(() {
+      _isLoadingbtn1=true;
+    });
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int? id=prefs.getInt("id");
     try {
 
-      String url = 'http://192.168.10.141:8084/GKARESTAPI/c_cscpicker';
+      String url = 'http://e-gam.com/GKARESTAPI/c_cscpicker';
       print(url);
       final response = await http.post(
           Uri.parse(url),
@@ -78,10 +112,15 @@ class _businessscreenState extends State<businessscreen> {
 
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Data Saved SuccessFully...')));
+          setState(() {
+            _isLoadingbtn1=false;
+          });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(data['msg'])));
-
+          setState(() {
+            _isLoadingbtn1=false;
+          });
         }
 
 
@@ -106,7 +145,50 @@ class _businessscreenState extends State<businessscreen> {
   @override
   Widget build(BuildContext context) {
     return   Scaffold(
-      body:SingleChildScrollView(
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(children: [
+          Expanded(
+            child: Hero(
+              tag: "submit btn",
+              child:  ElevatedButton(
+                onPressed: (){_doSomething();},
+                child: _isLoadingbtn1? const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Loading...', style: TextStyle(fontSize: 20),),
+                    SizedBox(width: 10,),
+                    CircularProgressIndicator(color: Colors.white,),
+                  ],
+                ) :  Text('SUBMIT'.toUpperCase()),
+              ),
+            ),
+          ),
+          SizedBox(width: 10,),
+          Expanded(
+            child:  Hero(
+              tag: "reset_btn",
+              child: ElevatedButton(
+                onPressed: (){getpref1();},
+                child: _isLoadingbtn2? const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Loading...', style: TextStyle(fontSize: 20),),
+                    SizedBox(width: 10,),
+                    CircularProgressIndicator(color: Colors.white,),
+                  ],
+                ) :  Text('RESET'.toUpperCase()),
+              ),
+            ),
+
+
+          )
+        ],),
+      ),
+
+      body:_isLoading == true
+          ? Center(child: CircularProgressIndicator())
+          :SingleChildScrollView(
         child: Card(
           child:Form(
             child: Column(
@@ -114,7 +196,7 @@ class _businessscreenState extends State<businessscreen> {
               children: [
                 const SizedBox(height: defaultPadding),
 
-                Center(child: Text("Contact Information",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
+                Center(child: Text("Business Information Edit",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
                 Divider(),
                 const SizedBox(height: defaultPadding),
 
@@ -173,35 +255,6 @@ class _businessscreenState extends State<businessscreen> {
 
                     ),
 
-                  ),
-                ),
-
-
-
-
-                const SizedBox(height: defaultPadding),
-                Hero(
-                  tag: "submit_btn",
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _doSomething();
-                    },
-                    child: const Text(
-                      "SUBMIT",
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: defaultPadding),
-                Hero(
-                  tag: "reset_btn",
-                  child: ElevatedButton(
-                    onPressed: () {
-                      getpref();
-                    },
-                    child: const Text(
-                      "RESET",
-                    ),
                   ),
                 ),
 

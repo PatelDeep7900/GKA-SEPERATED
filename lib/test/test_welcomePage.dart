@@ -19,7 +19,6 @@ class _test_welcomepageState extends State<test_welcomepage> {
 
   int _page = 0;
   int _len = 0;
-  String _searchval = "";
 
   final int _limit = 10;
   bool _isFirstLoadRunning = false;
@@ -183,34 +182,20 @@ class _test_welcomepageState extends State<test_welcomepage> {
                                         // result[index].id
                                       },
                                       child: ExpansionTile(
-                                        leading: result[index]
-                                                    .cimgpathexists1 ==
-                                                true
-                                            ? CircleAvatar(
-                                                radius: 30,
-                                                backgroundImage: NetworkImage(
-                                                    result[index]
-                                                        .img1
-                                                        .toString()),
-                                              )
-                                            : result[index].imgapprove == "P"
-                                                ? CircleAvatar(
+                                        leading:result[index].imgapprove =="P" ? const CircleAvatar(
                                                     radius: 30,
                                                     backgroundImage: AssetImage(
                                                         'assets/images/underreview.png'),
                                                   )
-                                                : result[index].imgapprove ==
-                                                        "C"
-                                                    ? CircleAvatar(
-                                                        radius: 30,
-                                                        backgroundImage: AssetImage(
-                                                            'assets/images/canceled.png'),
-                                                      )
-                                                    : CircleAvatar(
+                                                :result[index].imgapprove =="N" ? const CircleAvatar(
                                                         radius: 30,
                                                         backgroundImage: AssetImage(
                                                             "assets/images/nopic.png"),
-                                                      ),
+                                                      )
+                                               :  CircleAvatar(
+                                              radius: 30,
+                                              backgroundImage: NetworkImage(result[index].img1.toString()),
+                                              ),
                                         title: Text(
                                           '${index + 1}',
                                         ),
@@ -754,17 +739,7 @@ class _test_welcomepageState extends State<test_welcomepage> {
                                         // result[index].id
                                       },
                                       child: ExpansionTile(
-                                        leading: searchresult[index]
-                                                    .cimgpathexists1 ==
-                                                true
-                                            ? CircleAvatar(
-                                                radius: 30,
-                                                backgroundImage: NetworkImage(
-                                                    searchresult[index]
-                                                        .img1
-                                                        .toString()),
-                                              )
-                                            : searchresult[index].imgapprove ==
+                                        leading:searchresult[index].imgapprove ==
                                                     "P"
                                                 ? CircleAvatar(
                                                     radius: 30,
@@ -779,11 +754,15 @@ class _test_welcomepageState extends State<test_welcomepage> {
                                                         backgroundImage: AssetImage(
                                                             'assets/images/canceled.png'),
                                                       )
-                                                    : CircleAvatar(
+                                                    : searchresult[index].imgapprove=="N"?CircleAvatar(
                                                         radius: 30,
                                                         backgroundImage: AssetImage(
                                                             "assets/images/nopic.png"),
-                                                      ),
+                                                      ):CircleAvatar(
+                                          radius: 30,
+                                          backgroundImage: NetworkImage(
+                                              searchresult[index].img1.toString()),
+                                        ),
                                         title: Text(
                                           '${index + 1}',
                                         ),

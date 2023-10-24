@@ -15,7 +15,7 @@ class profilescreen extends StatefulWidget {
 
 class _profilescreenState extends State<profilescreen> {
   bool _isloading = false;
-  bool? _cimgpathexists1=false;
+
   String? _img1="";
   List<Results> result = [];
   bool _isEdit = false;
@@ -35,8 +35,8 @@ class _profilescreenState extends State<profilescreen> {
     setState(() {
       Welcome welcome = Welcome.fromJson(json.decode(response.body));
       result = welcome.results!;
-      _cimgpathexists1=prefs.getBool("cimgpathexists1");
-      _img1=prefs.getString("img1");
+      _img1=result[0].img1;
+
     });
     setState(() {
       _isloading = false;
@@ -64,7 +64,11 @@ class _profilescreenState extends State<profilescreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                            CircleAvatar(
-                            child: _cimgpathexists1==true ? CircleAvatar(radius: 80,backgroundImage: NetworkImage(_img1!),) :Image.asset("assets/images/nopic.png"),
+                            child:  CircleAvatar(
+                              radius: 80,
+                              backgroundImage: NetworkImage(_img1!),
+
+                            ) ,
                             backgroundColor: Colors.black,
                             radius: 80,
                           ),

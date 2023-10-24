@@ -35,7 +35,7 @@ class _contactscreenState extends State<contactscreen> {
     int? id = prefs.getInt("id");
     try {
       var url =
-          "http://192.168.10.141:8084/GKARESTAPI/c_cscpicker?cond=contactinfoget&id=${id}";
+          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=contactinfoget&id=${id}";
       var uri = Uri.parse(url);
       final response = await http.get(uri);
       if (response.statusCode == 200) {
@@ -63,7 +63,7 @@ class _contactscreenState extends State<contactscreen> {
     int? id = prefs.getInt("id");
     try {
       var url =
-          "http://192.168.10.141:8084/GKARESTAPI/c_cscpicker?cond=contactinfoget&id=${id}";
+          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=contactinfoget&id=${id}";
       var uri = Uri.parse(url);
       final response = await http.get(uri);
       if (response.statusCode == 200) {
@@ -92,7 +92,7 @@ class _contactscreenState extends State<contactscreen> {
     int? id=prefs.getInt("id");
     try {
 
-      String url = 'http://192.168.10.141:8084/GKARESTAPI/c_cscpicker';
+      String url = 'http://e-gam.com/GKARESTAPI/c_cscpicker';
       print(url);
       final response = await http.post(
           Uri.parse(url),

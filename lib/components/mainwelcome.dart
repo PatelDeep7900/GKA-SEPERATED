@@ -6,7 +6,7 @@ import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:gka/Screens/Welcome/welcome_screen.dart';
 import 'package:gka/components/screen/approve_list.dart';
 import 'package:gka/components/screen/basicinfoscreen.dart';
-import 'package:gka/components/screen/biscreen.dart';
+import 'package:gka/components/screen/noscreen.dart';
 import 'package:gka/components/screen/screenbusiness.dart';
 import 'package:gka/components/screen/screencontact.dart';
 
@@ -28,13 +28,14 @@ class mainwelcome extends StatefulWidget {
 class _mainwelcomeState extends State<mainwelcome> {
 
   String imgpath001="";
-  bool _adm=true;
+  bool _adm=false;
 
   bool _hphone=false;
   bool _hmobile=false;
   bool _hemail=false;
 
-
+  int? User_Approv=0;
+  String _imgapprov="";
   int _selectedIndex = 0;
   int status = 0;
   String? user_Email = "";
@@ -48,14 +49,25 @@ class _mainwelcomeState extends State<mainwelcome> {
   bool? cimgpathexists2=false;
 
 
+  bool? imgavl=false;
+  String? imgupload1="";
 
-
+int? id=0;
   addprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       user_Email = prefs.get("user_Email").toString();
       Name = prefs.get("Name").toString();
       User_Typ = prefs.get("User_Typ").toString();
+
+      imgavl=prefs.getBool("imgavl");
+      imgupload1 = prefs.get("imgupload1").toString();
+
+      User_Approv=prefs.getInt("User_Approv");
+      id=prefs.getInt("id");
+
+
+
       if(User_Typ=="AU"){
         _adm=true;
       }
@@ -73,14 +85,18 @@ class _mainwelcomeState extends State<mainwelcome> {
       }else{setState(() {_hemail=false;});}
 
       
-      cimgpathexists1=prefs.getBool("cimgpathexists1");
-      cimgpathexists2=prefs.getBool("cimgpathexists2");
 
 
 
       img1=prefs.getString("img1");
       img2=prefs.getString("img2");
     });
+
+    if(User_Approv==0){
+      setState(() {
+        _selectedIndex=8;
+      });
+    }
 
   }
 
@@ -99,6 +115,7 @@ class _mainwelcomeState extends State<mainwelcome> {
     SetPhotoScreen(),
     SetPhotoScreen2(),
     ApproveList(),
+    aboutusscree()
   ];
 
   void _onItemTapped(int index) {
@@ -126,7 +143,8 @@ class _mainwelcomeState extends State<mainwelcome> {
                 accountEmail: Text("$user_Email"),
                 currentAccountPictureSize:Size.fromRadius(43),
                 currentAccountPicture: CircleAvatar(
-                  child: cimgpathexists1==true ? CircleAvatar(radius: 43,backgroundImage: NetworkImage(img1!),) :Image.asset("assets/images/nopic.png"),
+                  child:
+            CircleAvatar(radius:43, backgroundImage: NetworkImage("http://e-gam.com/img/GKAPROFILE/$id/$imgupload1")),
                 ),
                 decoration: const BoxDecoration(color: Color(0xd9fd6d0c)),
               ),

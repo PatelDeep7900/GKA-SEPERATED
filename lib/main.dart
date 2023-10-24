@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gka/components/screen/splashscreen.dart';
 import 'package:gka/ddsearch.dart';
 import 'Screens/Welcome/welcome_screen.dart';
 import 'constants.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
           )),
-      home:  WelcomeScreen()
+      home:  SplashScreen()
 
       
     );

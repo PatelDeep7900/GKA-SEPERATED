@@ -10,8 +10,6 @@ import '../../../components/mainwelcome.dart';
 import '../../../constants.dart';
 import '../../Signup/signup_screen.dart';
 
-
-
 class LoginForm extends StatefulWidget {
   const LoginForm({
     Key? key,
@@ -24,131 +22,8 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   bool _obtxt1=true;
   final _loginFormKey = GlobalKey<FormState>();
-  TextEditingController _cemail=TextEditingController();
-  TextEditingController _cpass=TextEditingController();
-
-  void _handleLoginUser() {
-
-    if (_loginFormKey.currentState!.validate()) {
-      loginapi(_cemail.text, _cpass.text);
-    }
-  }
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.only(
-        top: 50, bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: Form(
-        key: _loginFormKey,
-        child: Column(
-          children: [
-            TextFormField(
-
-              controller: _cemail,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              cursorColor: kPrimaryColor,
-              onSaved: (email) {},
-              decoration: const InputDecoration(
-                hintText: "Enter email address",
-                prefixIcon: Padding(
-                  padding: EdgeInsets.all(defaultPadding),
-                  child: Icon(Icons.email_outlined),
-
-                ),
-                errorStyle: TextStyle(
-                  fontSize: 14.0,
-
-                ),
-
-              ),
-              validator:(textValue) {
-                if(textValue == null || textValue.isEmpty) {
-                  return 'Please Enter email address';
-                }
-                if(!EmailValidator.validate(textValue)) {
-                  return 'Please enter a valid email';
-                }
-                return null;
-              },
-            ),
-            Padding(
-
-              padding: const EdgeInsets.symmetric(vertical: defaultPadding),
-              child: TextFormField(
-
-                controller: _cpass,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                textInputAction: TextInputAction.done,
-                obscureText: _obtxt1,
-                cursorColor: kPrimaryColor,
-                decoration:  InputDecoration(
-                  hintText: "Enter password",
-                    suffixIcon:IconButton(onPressed: () {
-                      setState(() {
-                        setState(() {
-                          _obtxt1 = !_obtxt1;
-                        });
-                      });
-                    }, icon: Icon( _obtxt1? Icons.visibility : Icons.visibility_off,)),
-
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(defaultPadding),
-                    child: Icon(Icons.lock),
-
-                  ),
-                  errorStyle: TextStyle(
-                    fontSize: 14.0,
-
-                  ),
-
-                ),
-                validator: (textValue) {
-                  if(textValue == null || textValue.isEmpty) {
-                    return 'Please Enter Password';
-                  }
-                  return null;
-                },
-
-              ),
-            ),
-            const SizedBox(height: defaultPadding),
-            Hero(
-              tag: "login_btn",
-              child: ElevatedButton(
-                onPressed: () {
-                  _handleLoginUser();
-                },
-                child: const Text(
-                  "LOGIN",
-                ),
-              ),
-            ),
-            const SizedBox(height: defaultPadding),
-            AlreadyHaveAnAccountCheck(
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SignUpScreen();
-                    },
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-
-
-
-  }
+  final TextEditingController _cemail=TextEditingController();
+  final TextEditingController _cpass=TextEditingController();
 
 
   Future<void> loginapi(String Emailval,String Passval)async{
@@ -186,7 +61,6 @@ class _LoginFormState extends State<LoginForm> {
           await prefs.setString("val_City", data['val_City']);
 
           await prefs.setBool("imgavl", data["imgavl"]);
-
           await prefs.setString("imgupload1", data['imgupload1']);
 
 
@@ -209,9 +83,114 @@ class _LoginFormState extends State<LoginForm> {
       print(e.toString());
       rethrow;
     }
-
-
   }
 
+  void _handleLoginUser() {
+    if (_loginFormKey.currentState!.validate()) {
+      loginapi(_cemail.text, _cpass.text);
+    }
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(
+        top: 50, bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Form(
+        key: _loginFormKey,
+        child: Column(
+          children: [
+            TextFormField(
+              controller: _cemail,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              cursorColor: kPrimaryColor,
+              onSaved: (email) {},
+              decoration: const InputDecoration(
+                hintText: "Enter email address",
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(defaultPadding),
+                  child: Icon(Icons.email_outlined),
+                ),
+                errorStyle: TextStyle(
+                  fontSize: 14.0,
+                ),
+              ),
+              validator:(textValue) {
+                if(textValue == null || textValue.isEmpty) {
+                  return 'Please Enter email address';
+                }
+                if(!EmailValidator.validate(textValue)) {
+                  return 'Please enter a valid email';
+                }
+                return null;
+              },
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+              child: TextFormField(
+                controller: _cpass,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                textInputAction: TextInputAction.done,
+                obscureText: _obtxt1,
+                cursorColor: kPrimaryColor,
+                decoration:  InputDecoration(
+                  hintText: "Enter password",
+                    suffixIcon:IconButton(onPressed: () {
+                      setState(() {
+                        setState(() {
+                          _obtxt1 = !_obtxt1;
+                        });
+                      });
+                    }, icon: Icon( _obtxt1? Icons.visibility : Icons.visibility_off,)),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(defaultPadding),
+                    child: Icon(Icons.lock),
+                  ),
+                  errorStyle: const TextStyle(
+                    fontSize: 14.0,
+                  ),
+                ),
+                validator: (textValue) {
+                  if(textValue == null || textValue.isEmpty) {
+                    return 'Please Enter Password';
+                  }
+                  return null;
+                },
+              ),
+            ),
+
+            const SizedBox(height: defaultPadding),
+
+            Hero(
+              tag: "login_btn",
+              child: ElevatedButton(
+                onPressed: () {
+                  _handleLoginUser();
+                },
+                child: const Text(
+                  "LOGIN",
+                ),
+              ),
+            ),
+            const SizedBox(height: defaultPadding),
+            AlreadyHaveAnAccountCheck(
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SignUpScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

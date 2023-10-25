@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gka/components/screen/splashscreen.dart';
-import 'package:gka/ddsearch.dart';
-import 'Screens/Welcome/welcome_screen.dart';
 import 'constants.dart';
-import 'otp_page.dart';
+
 
 void main() => runApp( MyApp());
 

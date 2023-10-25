@@ -15,10 +15,9 @@ class businessscreen extends StatefulWidget {
 
 class _businessscreenState extends State<businessscreen> {
 
-
-  TextEditingController _B_Website = TextEditingController();
-  TextEditingController _B_Detail = TextEditingController();
-  TextEditingController _B_location = TextEditingController();
+  final TextEditingController _B_Website = TextEditingController();
+  final TextEditingController _B_Detail = TextEditingController();
+  final TextEditingController _B_location = TextEditingController();
   bool _isLoading = false;
   bool _isLoadingbtn1=false;
   bool _isLoadingbtn2=false;
@@ -37,13 +36,11 @@ class _businessscreenState extends State<businessscreen> {
       final response = await http.get(uri);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-        setState(() {
 
+        setState(() {
           _B_Website.text=data['B_Website'];
           _B_Detail.text=data['B_Detail'];
           _B_location.text=data['B_location'];
-
-
           _isLoading = false;
         });
       }
@@ -65,13 +62,11 @@ class _businessscreenState extends State<businessscreen> {
       final response = await http.get(uri);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-        setState(() {
 
+        setState(() {
           _B_Website.text=data['B_Website'];
           _B_Detail.text=data['B_Detail'];
           _B_location.text=data['B_location'];
-
-
           _isLoadingbtn2 = false;
         });
       }
@@ -87,7 +82,6 @@ class _businessscreenState extends State<businessscreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int? id=prefs.getInt("id");
     try {
-
       String url = 'http://e-gam.com/GKARESTAPI/c_cscpicker';
       print(url);
       final response = await http.post(
@@ -100,41 +94,33 @@ class _businessscreenState extends State<businessscreen> {
             'B_location': _B_location.text.toString(),
             'id':id.toString()
           }
-
       );
-
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         bool result = data['result'];
         if (result== true) {
-
-
-
+          if(!mounted)return;
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Data Saved SuccessFully...')));
+              const SnackBar(content: Text('Data Saved SuccessFully...')));
           setState(() {
             _isLoadingbtn1=false;
           });
         } else {
+          if(!mounted)return;
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(data['msg'])));
           setState(() {
             _isLoadingbtn1=false;
           });
         }
-
-
       }
     }on Exception catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Server not Responding')));
-
+      if(!mounted)return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Server not Responding')));
       print('error caught: $e');
       rethrow;
     }
-
   }
-
 
   @override
   void initState() {
@@ -164,7 +150,7 @@ class _businessscreenState extends State<businessscreen> {
               ),
             ),
           ),
-          SizedBox(width: 10,),
+          const SizedBox(width: 10,),
           Expanded(
             child:  Hero(
               tag: "reset_btn",
@@ -180,14 +166,12 @@ class _businessscreenState extends State<businessscreen> {
                 ) :  Text('RESET'.toUpperCase()),
               ),
             ),
-
-
           )
         ],),
       ),
 
       body:_isLoading == true
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           :SingleChildScrollView(
         child: Card(
           child:Form(
@@ -195,32 +179,24 @@ class _businessscreenState extends State<businessscreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: defaultPadding),
-
-                Center(child: Text("Business Information Edit",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
-                Divider(),
+                const Center(child: Text("Business Information Edit",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
+                const Divider(),
                 const SizedBox(height: defaultPadding),
-
-
                 TextFormField(
                   controller: _B_Website,
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
                   cursorColor: kPrimaryColor,
-                  onSaved: (email) {
-
-                  },
                   decoration: const InputDecoration(
                     hintText: "Business Website",
                     prefixIcon: Padding(
                       padding: EdgeInsets.all(defaultPadding),
-                      child: Icon(Icons.person),
+                      child: Icon(Icons.link),
                     ),
                   ),
-
                 ),
 
                 Padding(
-
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
                     controller: _B_Detail,
@@ -230,7 +206,7 @@ class _businessscreenState extends State<businessscreen> {
                       hintText: "Type Of Business",
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
-                        child: Icon(Icons.lock),
+                        child: Icon(Icons.business),
                       ),
 
                     ),
@@ -238,9 +214,7 @@ class _businessscreenState extends State<businessscreen> {
                   ),
                 ),
 
-
                 Padding(
-
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
                     controller: _B_location,
@@ -250,20 +224,16 @@ class _businessscreenState extends State<businessscreen> {
                       hintText: "Business Location",
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
-                        child: Icon(Icons.lock),
+                        child: Icon(Icons.map),
                       ),
-
                     ),
-
                   ),
                 ),
-
               ],
             ),
           ),
         ),
       ),
-
     );
   }
 }

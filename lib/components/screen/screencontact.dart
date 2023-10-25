@@ -17,15 +17,13 @@ class contactscreen extends StatefulWidget {
 
 class _contactscreenState extends State<contactscreen> {
 
-
-  TextEditingController _C_code = TextEditingController();
-  TextEditingController _Phone = TextEditingController();
-  TextEditingController _Mob = TextEditingController();
-  TextEditingController _Email = TextEditingController();
+  final TextEditingController _C_code = TextEditingController();
+  final TextEditingController _Phone = TextEditingController();
+  final TextEditingController _Mob = TextEditingController();
+  final TextEditingController _Email = TextEditingController();
   bool _isLoading = false;
   bool _isLoadingbtn1=false;
   bool _isLoadingbtn2=false;
-
 
   void getpref() async {
     setState(() {
@@ -40,14 +38,12 @@ class _contactscreenState extends State<contactscreen> {
       final response = await http.get(uri);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-        setState(() {
 
+        setState(() {
           _C_code.text=data['C_code'];
           _Phone.text=data['Phone'];
           _Mob.text=data['Mob'];
           _Email.text=data['Email'];
-
-
           _isLoading = false;
         });
       }
@@ -68,14 +64,12 @@ class _contactscreenState extends State<contactscreen> {
       final response = await http.get(uri);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-        setState(() {
 
+        setState(() {
           _C_code.text=data['C_code'];
           _Phone.text=data['Phone'];
           _Mob.text=data['Mob'];
           _Email.text=data['Email'];
-
-
           _isLoadingbtn2 = false;
         });
       }
@@ -91,7 +85,6 @@ class _contactscreenState extends State<contactscreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int? id=prefs.getInt("id");
     try {
-
       String url = 'http://e-gam.com/GKARESTAPI/c_cscpicker';
       print(url);
       final response = await http.post(
@@ -105,41 +98,34 @@ class _contactscreenState extends State<contactscreen> {
             'Email': _Email.text.toString(),
             'id':id.toString()
           }
-
       );
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         bool result = data['result'];
         if (result== true) {
-
-
-
+          if(!mounted)return;
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Data Saved SuccessFully...')));
+              const SnackBar(content: Text('Data Saved SuccessFully...')));
           setState(() {
             _isLoadingbtn1=false;
           });
         } else {
+          if(!mounted)return;
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(data['msg'])));
           setState(() {
             _isLoadingbtn1=false;
           });
         }
-
-
       }
     }on Exception catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Server not Responding')));
-
+      if(!mounted)return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Server not Responding')));
       print('error caught: $e');
       rethrow;
     }
-
   }
-
 
   @override
   void initState() {
@@ -169,7 +155,7 @@ class _contactscreenState extends State<contactscreen> {
               ),
             ),
           ),
-          SizedBox(width: 10,),
+          const SizedBox(width: 10,),
           Expanded(
             child:  Hero(
               tag: "reset_btn",
@@ -191,7 +177,7 @@ class _contactscreenState extends State<contactscreen> {
         ],),
       ),
       body: _isLoading == true
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           :SingleChildScrollView(
         child: Card(
           child:Form(
@@ -200,31 +186,26 @@ class _contactscreenState extends State<contactscreen> {
               children: [
                 const SizedBox(height: defaultPadding),
 
-                Center(child: Text("Contact Information",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
-                Divider(),
-                const SizedBox(height: defaultPadding),
+                const Center(child: Text("Contact Information",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
 
+                const Divider(),
+                const SizedBox(height: defaultPadding),
 
                 TextFormField(
                   controller: _C_code,
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
                   cursorColor: kPrimaryColor,
-                  onSaved: (email) {
-
-                  },
                   decoration: const InputDecoration(
                     hintText: "Country Code",
                     prefixIcon: Padding(
                       padding: EdgeInsets.all(defaultPadding),
-                      child: Icon(Icons.person),
+                      child: Icon(Icons.numbers),
                     ),
                   ),
-
                 ),
 
                 Padding(
-
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
                     controller: _Phone,
@@ -234,17 +215,13 @@ class _contactscreenState extends State<contactscreen> {
                       hintText: "Home Phone",
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
-                        child: Icon(Icons.lock),
+                        child: Icon(Icons.phone),
                       ),
-
                     ),
-
                   ),
                 ),
 
-
                 Padding(
-
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
                     controller: _Mob,
@@ -254,42 +231,32 @@ class _contactscreenState extends State<contactscreen> {
                       hintText: "Mobile Number",
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
-                        child: Icon(Icons.lock),
+                        child: Icon(Icons.mobile_friendly),
                       ),
-
                     ),
-
                   ),
                 ),
 
-
                 Padding(
-
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
                     controller: _Email,
                     textInputAction: TextInputAction.done,
-
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Email Address",
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
-                        child: Icon(Icons.lock),
+                        child: Icon(Icons.email),
                       ),
-
                     ),
-
                   ),
                 ),
-
-                
               ],
             ),
           ),
         ),
       ),
-
     );
   }
 }

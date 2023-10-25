@@ -22,16 +22,15 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  bool agree = false;
-  bool isLoading=false;
+  final _globkey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _name = TextEditingController();
-  final _globkey = GlobalKey<FormState>();
-  TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 15.0);
-  TextStyle linkStyle = TextStyle(color: Colors.blue);
+  TextStyle defaultStyle = const TextStyle(color: Colors.grey, fontSize: 15.0);
+  TextStyle linkStyle = const TextStyle(color: Colors.blue);
+  bool agree = false;
+  bool isLoading=false;
 
   void _handleSignup() {
-
     if (_globkey.currentState!.validate()) {
       _doSomething();
     }
@@ -60,11 +59,9 @@ class _SignUpFormState extends State<SignUpForm> {
                 if(val!.isEmpty){
                   return 'Please enter Full Name';
                 }
-
-
-
               },
               decoration: const InputDecoration(
+                counterText: "",
                 hintText: "Your Full Name",
                 prefixIcon: Padding(
                   padding: EdgeInsets.all(defaultPadding),
@@ -72,6 +69,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
               ),
             ),
+
             const SizedBox(height: defaultPadding / 1),
 
             TextFormField(
@@ -92,6 +90,7 @@ class _SignUpFormState extends State<SignUpForm> {
                  }
               },
               decoration: const InputDecoration(
+                counterText: "",
                 hintText: "Your email",
                 prefixIcon: Padding(
                   padding: EdgeInsets.all(defaultPadding),

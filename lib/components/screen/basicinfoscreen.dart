@@ -525,17 +525,15 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
   String? _stateval="0";
   String? _cityval="0";
 
-  TextEditingController _biname = TextEditingController();
-  TextEditingController _biadd1 = TextEditingController();
-  TextEditingController _biadd2 = TextEditingController();
+  final TextEditingController _biname = TextEditingController();
+  final TextEditingController _biadd1 = TextEditingController();
+  final TextEditingController _biadd2 = TextEditingController();
 
   final TextEditingController textEditingController = TextEditingController();
-  final TextEditingController textEditingControllerstate =
-  TextEditingController();
-  final TextEditingController textEditingControllercity =
-  TextEditingController();
+  final TextEditingController textEditingControllerstate = TextEditingController();
+  final TextEditingController textEditingControllercity = TextEditingController();
 
-  Future<void> _statefromcountry(String country_id) async {
+  Future<void> _statefromcountry(String countryId) async {
 
     setState(() {
       statelist=[];
@@ -544,41 +542,32 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
 
     try {
       var url =
-          "http://e-gam.com//GKARESTAPI/c_cscpicker?cond=state&country_id=${country_id}";
+          "http://e-gam.com//GKARESTAPI/c_cscpicker?cond=state&country_id=$countryId";
       var uri = Uri.parse(url);
       final response = await http.get(uri);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-        print(data);
-
         setState(() {
           _stateval="0";
           statelist = data;
           citylist=defaultlist;
           _cityval="0";
-
         });
       }
     } catch (err) {
       print(err.toString());
     }
-
-
   }
 
-  Future<void> _cityfromstate(String state_id) async {
+  Future<void> _cityfromstate(String stateId) async {
     try {
       var url =
-          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=city&state_id=${state_id}";
-      print(url);
+          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=city&state_id=$stateId";
       var uri = Uri.parse(url);
-      print(uri);
       final response = await http.get(uri);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-
         setState(() {
-
           citylist = data;
         });
       }
@@ -587,7 +576,6 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
     }
   }
 
-
   Future<void> _doSomething() async{
     setState(() {
       _isLoadingbtn1=true;
@@ -595,9 +583,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int? id=prefs.getInt("id");
     try {
-
       String url = 'http://e-gam.com/GKARESTAPI/c_cscpicker';
-      print(url);
       final response = await http.post(
           Uri.parse(url),
           body:
@@ -611,42 +597,36 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
             'city_id': _cityval,
             'id':id.toString()
           }
-
       );
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         bool result = data['result'];
         if (result== true) {
-
           await prefs.setString("val_Country",_countryval.toString());
           await prefs.setString("val_State", _stateval.toString());
           await prefs.setString("val_City", _cityval.toString());
-
-
+          if(!mounted)return;
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Data Saved SuccessFully...')));
+              const SnackBar(content: Text('Data Saved SuccessFully...')));
           setState(() {
             _isLoadingbtn1=false;
           });
         } else {
+          if(!mounted)return;
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(data['msg'])));
           setState(() {
             _isLoadingbtn1=false;
           });
         }
-
-
       }
     }on Exception catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Server not Responding')));
-
+      if(!mounted)return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Server not Responding')));
       print('error caught: $e');
       rethrow;
     }
-
   }
 
 
@@ -668,7 +648,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
 
     try {
       var url =
-          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=onload&country_id=${val1}&state_id=${val2}&id=${id}";
+          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=onload&country_id=$val1&state_id=$val2&id=$id";
       print(url);
       var uri = Uri.parse(url);
       final response = await http.get(uri);
@@ -698,17 +678,15 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int? id = prefs.getInt("id");
     String? val1 = prefs.getString("val_Country");
-
     setState(() {
       _countryval = val1;
     });
 
     String? val2 = prefs.getString("val_State");
     String? val3 = prefs.getString("val_City");
-
     try {
       var url =
-          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=onload&country_id=${val1}&state_id=${val2}&id=${id}";
+          "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=onload&country_id=$val1&state_id=$val2&id=$id";
       print(url);
       var uri = Uri.parse(url);
       final response = await http.get(uri);
@@ -760,7 +738,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
               ),
             ),
           ),
-          SizedBox(width: 10,),
+          const SizedBox(width: 10,),
           Expanded(
             child:  Hero(
               tag: "reset_btn",
@@ -782,7 +760,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
         ],),
       ),
       body: _isLoading == true
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
         child: Card(
           child: Form(
@@ -796,7 +774,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                       style: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     )),
-                Divider(),
+                const Divider(),
                 const SizedBox(height: defaultPadding),
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -827,7 +805,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                       hintText: "Address-1",
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
-                        child: Icon(Icons.lock),
+                        child: Icon(Icons.home),
                       ),
                     ),
                   ),
@@ -843,7 +821,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                       hintText: "Address-2",
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
-                        child: Icon(Icons.lock),
+                        child: Icon(Icons.home_filled),
                       ),
                     ),
                   ),
@@ -877,10 +855,10 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
 
                       },
                       buttonStyleData:  ButtonStyleData(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           height: 55,
                           width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                             color: kPrimaryLightColor,
                           )
@@ -963,10 +941,10 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                         });
                       },
                       buttonStyleData: ButtonStyleData(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           height: 55,
                           width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                             color: kPrimaryLightColor,
                           )
@@ -1048,7 +1026,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                           });
                         },
                         buttonStyleData: ButtonStyleData(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             height: 55,
                             width: MediaQuery.of(context).size.width,
                             decoration: const BoxDecoration(

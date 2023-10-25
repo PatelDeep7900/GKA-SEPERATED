@@ -51,10 +51,15 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
   }
 
   void onloadimgget() async {
+    Directory? directory;
     try {
       if (_imgavl == true) {
-        print("true hai bhai saab");
-        Directory? directory = await getExternalStorageDirectory();
+        if(Platform.isIOS){
+         directory=await getApplicationDocumentsDirectory();
+        }else{
+          directory = await getExternalStorageDirectory();
+        }
+
         String dirPath =
             '${directory?.path}/gkaimg/$_id/1';
 
@@ -69,8 +74,6 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
           saveNetworkImage("$mainurl/$_id", _imgupload1);
         }
       } else {
-
-        print("false hai bhai saab");
         File f = await getImageFileFromAssets('images/nopic.png');
         setState(() {
           _image = f;
@@ -91,8 +94,14 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
   }
 
   Future<void> saveNetworkImage(String imageUrl, String filename) async {
+    Directory? directory;
     try {
-      Directory? directory = await getExternalStorageDirectory();
+      if(Platform.isIOS){
+        directory = await getApplicationDocumentsDirectory();
+      }else{
+        directory = await getExternalStorageDirectory();
+      }
+
       String dirPath =
           '${directory?.path}/gkaimg/$_id/1'; // Change 'my_images' to your desired folder name
       await Directory(dirPath).create(recursive: true);
@@ -169,13 +178,14 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
         });
         var snackBar =
             const SnackBar(content: Text('Something Wrong Please try Again'));
+        if(!mounted)return;
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
 
       }
     } else {
-      var snackBar =
-          const SnackBar(content: Text('Error Please Try Again.....'));
+      var snackBar = const SnackBar(content: Text('Error Please Try Again.....'));
+      if(!mounted)return;
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
       setState(() {
@@ -243,14 +253,14 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                           height: 30,
                         ),
                         Text(
-                          'Set a photo of yourself-${_Name}',
+                          'Set a photo of yourself-\n${_Name}',
                           style: txtfntsize,
                         ),
                         const SizedBox(
                           height: 8,
                         ),
-                        Text(
-                          'Photos make your profile more engaging-${_imgupload1}: ${_imgavl.toString()}',
+                        const Text(
+                          'Photos make your profile more engaging',
                           style: txtfntsize1,
                         ),
                       ],

@@ -646,6 +646,8 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
     String? val2 = prefs.getString("val_State");
     String? val3 = prefs.getString("val_City");
 
+
+
     try {
       var url =
           "http://e-gam.com/GKARESTAPI/c_cscpicker?cond=onload&country_id=$val1&state_id=$val2&id=$id";

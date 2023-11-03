@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../../models/approved_model.dart';
+import '../../models/homeModels/approved_model.dart';
 
 class ApproveList extends StatefulWidget {
   const ApproveList({super.key});

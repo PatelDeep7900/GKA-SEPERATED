@@ -1,49 +1,125 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/common_buttons.dart';
 import '../constants.dart';
 import 'select_photo_options_screen.dart';
 import 'package:http/http.dart' as http;
 
-
 // ignore: must_be_immutable
 class SetPhotoScreen2 extends StatefulWidget {
   const SetPhotoScreen2({super.key});
   @override
   State<SetPhotoScreen2> createState() => _SetPhotoScreenState();
-
 }
 
 class _SetPhotoScreenState extends State<SetPhotoScreen2> {
+  String mainurl = "http://e-gam.com/img/GKAPROFILE";
   File? _image;
-  bool _vb1=false;
-  String? _Name;
-  String? _img2;
+  bool _vb1 = false;
   bool isLoading = false;
-  bool? _cimgpathexists2=false;
+  String? _Name;
+  bool _imgavl2 = false;
+  String _imgupload2 = "";
+  int _id = 0;
+
+  void sharedprefget() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _Name = prefs.getString("Name");
+      _imgavl2 = prefs.getBool("imgavl2")!;
+      _imgupload2 = prefs.getString("imgupload2")!;
+      _id = prefs.getInt("id")!;
+
+      onloadimgget();
+    });
+  }
 
   @override
-  void initState()  {
+  void initState() {
     sharedprefget();
     super.initState();
   }
 
-  void sharedprefget() async{
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _img2=prefs.getString("img2");
-      _Name=prefs.getString("Name");
+  void onloadimgget() async {
+    Directory? directory;
+    try {
+      if (_imgavl2 == true) {
+        if(Platform.isIOS){
+          directory=await getApplicationDocumentsDirectory();
+        }else{
+          directory = await getExternalStorageDirectory();
+        }
 
-      _cimgpathexists2=prefs.getBool("cimgpathexists2");
-    });
+        String dirPath =
+            '${directory?.path}/gkaimg/$_id/1';
 
+
+        String filePath = '$dirPath/$_imgupload2';
+        File f1 = File(filePath);
+        if (await f1.exists()) {
+          setState(() {
+            _image = f1;
+          });
+        } else {
+          saveNetworkImage("$mainurl/$_id", _imgupload2);
+        }
+      } else {
+        File f = await getImageFileFromAssets('images/nopic.png');
+        setState(() {
+          _image = f;
+        });
+      }
+    } catch (e) {
+      print('Error saving image: $e');
+    }
   }
 
+  Future<File> getImageFileFromAssets(String path) async {
+    final byteData = await rootBundle.load('assets/$path');
+    final file = File('${(await getTemporaryDirectory()).path}/$path');
+    await file.create(recursive: true);
+    await file.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    return file;
+  }
+
+  Future<void> saveNetworkImage(String imageUrl, String filename) async {
+    Directory? directory;
+    try {
+      if(Platform.isIOS){
+        directory = await getApplicationDocumentsDirectory();
+      }else{
+        directory = await getExternalStorageDirectory();
+      }
+
+      String dirPath =
+          '${directory?.path}/gkaimg/$_id/1'; // Change 'my_images' to your desired folder name
+      await Directory(dirPath).create(recursive: true);
+      String filePath = '$dirPath/$filename';
+      var response = await http.get(Uri.parse('$imageUrl/$filename'));
+      if (response.statusCode == 200) {
+        File file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+        setState(() {
+          _image = file;
+        });
+        print('Image saved to: $filePath');
+      } else {
+        _imgavl2=false;
+        print('Failed to download the image');
+      }
+    } catch (e) {
+      _imgavl2=false;
+      print('Error saving image: $e');
+    }
+  }
 
   Future _pickImage(ImageSource source) async {
     try {
@@ -53,7 +129,7 @@ class _SetPhotoScreenState extends State<SetPhotoScreen2> {
       img = await _cropImage(imageFile: img);
       setState(() {
         _image = img;
-        _vb1=true;
+        _vb1 = true;
         Navigator.of(context).pop();
       });
     } on PlatformException catch (e) {
@@ -62,57 +138,69 @@ class _SetPhotoScreenState extends State<SetPhotoScreen2> {
     }
   }
 
-
-  Future uploadImage() async{
+  Future uploadImage() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? _id=prefs.getInt("id");
-
-    final uri = Uri.parse("http://e-gam.com/GKARESTAPI/image2?User_Id=${_id}");
-    var request = http.MultipartRequest("POST",uri);
-    var pic = await http.MultipartFile.fromPath("image",_image!.path);
+    int? _id = prefs.getInt("id");
+    final uri = Uri.parse("http://e-gam.com/GKARESTAPI/image2?User_Id=$_id");
+    var request = http.MultipartRequest("POST", uri);
+    var pic = await http.MultipartFile.fromPath("image", _image!.path);
     request.files.add(pic);
     var res = await request.send();
     final responseData = await res.stream.toBytes();
     final responseString = String.fromCharCodes(responseData);
-
-    if(res.statusCode == 200){
-      var str=json.decode(responseString);
-      bool res=str['result'];
-
-      if(res==true){
-
-
-        String img2=str['img2'];
-
-
-        prefs.setString("imgpath2", _image!.path);
+    if (res.statusCode == 200) {
+      var str = json.decode(responseString);
+      bool res = str['result'];
+      if (res == true) {
         setState(() {
-          prefs.setString("img2", img2);
-          prefs.setBool("cimgpathexists2", true);
-          isLoading=false;
-          _vb1=false;
-        });
+          _imgavl2 = true;
+          prefs.setBool("imgavl2", _imgavl2);
+          _imgupload2 = str["imgupload2"];
+          prefs.setString("imgupload2", _imgupload2);
 
-        var snackBar = const SnackBar(content: Text('Successfully Uploaded...'));
+          _vb1 = false;
+          saveNetworkImage("$mainurl/$_id", _imgupload2);
+          isLoading = false;
+        });
+        var snackBar =
+        const SnackBar(content: Text('Successfully Uploaded...'));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }else{
-        var snackBar = const SnackBar(content: Text('Something Wrong Please try Again'));
+      } else {
+        setState(() {
+          _imgavl2=false;
+          prefs.setBool("imgavl2", _imgavl2);
+          _imgupload2 = str["imgupload2"];
+          prefs.setString("imgupload2", _imgupload2);
+
+        });
+        var snackBar =
+        const SnackBar(content: Text('Something Wrong Please try Again'));
+        if(!mounted)return;
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+
       }
-    }else{
+    } else {
       var snackBar = const SnackBar(content: Text('Error Please Try Again.....'));
+      if(!mounted)return;
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      setState(() {
+        _imgavl2=false;
+        prefs.setBool("imgavl2", _imgavl2);
+        _imgupload2 = "";
+        prefs.setString("imgupload2", _imgupload2);
+
+      });
+
     }
   }
-
-
-
-
 
   Future<File?> _cropImage({required File imageFile}) async {
     CroppedFile? croppedImage =
     await ImageCropper().cropImage(sourcePath: imageFile.path);
     if (croppedImage == null) return null;
+
     return File(croppedImage.path);
   }
 
@@ -157,19 +245,19 @@ class _SetPhotoScreenState extends State<SetPhotoScreen2> {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children:  [
+                      children: [
                         const SizedBox(
                           height: 30,
                         ),
                         Text(
-                          'Set a photo of yourself-${_Name}',
+                          'Set a photo of yourself-\n${_Name}',
                           style: txtfntsize,
                         ),
                         const SizedBox(
                           height: 8,
                         ),
                         const Text(
-                          'Photos make your Extra one more engaging',
+                          'Photos make your profile more engaging',
                           style: txtfntsize1,
                         ),
                       ],
@@ -195,17 +283,12 @@ class _SetPhotoScreenState extends State<SetPhotoScreen2> {
                               shape: BoxShape.rectangle,
                               color: Colors.grey.shade200,
                             ),
-                             child: Center(
-                        child: _image ==null
-                        ?  CircleAvatar(
-                          backgroundImage: _cimgpathexists2==true ? NetworkImage(_img2!) : null,
-                        radius: 200.0,
-                      )
-                            : CircleAvatar(
-                        backgroundImage: FileImage(_image!),
-                    radius: 200.0,
-                  ),
-                )),
+                            child: Center(
+                              child:_image ==null ? null : CircleAvatar(
+                                backgroundImage: FileImage(_image!),
+                                radius: 200.0,
+                              ),
+                            )),
                       ),
                     ),
                   ),
@@ -213,41 +296,47 @@ class _SetPhotoScreenState extends State<SetPhotoScreen2> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-
-
                     CommonButtons(
                       onTap: () => _showSelectPhotoOptions(context),
                       backgroundColor: Colors.black,
                       textColor: Colors.white,
                       textLabel: 'Add a Photo',
                     ),
-
                     const SizedBox(
                       height: 30,
                     ),
                     Visibility(
                       visible: _vb1,
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.black
-                        ),
+                        style: ElevatedButton.styleFrom(primary: Colors.black),
                         onPressed: () {
                           setState(() {
                             isLoading = true;
                           });
                           uploadImage();
-                        }, child: isLoading? const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Loading...', style: TextStyle(fontSize: 20),),
-                          SizedBox(width: 10,),
-                          CircularProgressIndicator(color: Colors.white,),
-                        ],
-                      ) : const Text('Upload Photo',style: TextStyle(fontSize: 18),),
-
+                        },
+                        child: isLoading
+                            ? const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Loading...',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ],
+                        )
+                            : const Text(
+                          'Upload Photo',
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
                     ),
-
                   ],
                 ),
               ],
@@ -256,8 +345,5 @@ class _SetPhotoScreenState extends State<SetPhotoScreen2> {
         ),
       ),
     );
-
-
   }
-
 }

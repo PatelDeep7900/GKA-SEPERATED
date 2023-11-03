@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gka/components/screen/splashscreen.dart';
+import 'components/screen/sceenfamilyinfo.dart';
 import 'constants.dart';
 
 
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
             ),
           )),
       home:  SplashScreen()
+      // home: familyinfoscreen(),
 
       
     );

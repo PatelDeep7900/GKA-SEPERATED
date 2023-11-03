@@ -6,8 +6,10 @@ import 'package:gka/Screens/Welcome/welcome_screen.dart';
 import 'package:gka/components/screen/approve_list.dart';
 import 'package:gka/components/screen/basicinfoscreen.dart';
 import 'package:gka/components/screen/noscreen.dart';
+import 'package:gka/components/screen/sceenfamilyinfo.dart';
 import 'package:gka/components/screen/screenbusiness.dart';
 import 'package:gka/components/screen/screencontact.dart';
+import 'package:gka/components/screen/screenfamilydtl.dart';
 import 'package:gka/components/screen/screenprofile.dart';
 import 'package:gka/imagepicker/image1.dart';
 import 'package:gka/imagepicker/image2.dart';
@@ -99,6 +101,7 @@ class _mainwelcomeState extends State<mainwelcome> {
         _selectedIndex = 8;
       });
     }
+
   }
 
   Future<void> addsecurity(bool val, String field) async {
@@ -142,7 +145,10 @@ class _mainwelcomeState extends State<mainwelcome> {
     SetPhotoScreen(),
     SetPhotoScreen2(),
     ApproveList(),
-    aboutusscree()
+    aboutusscree(),
+    familydtlsscreen(),
+    familyinfoscreen(),
+
   ];
 
   void _onItemTapped(int index) {
@@ -151,7 +157,6 @@ class _mainwelcomeState extends State<mainwelcome> {
       status = index;
     });
   }
-
 
   @override
   void initState() {
@@ -240,6 +245,22 @@ class _mainwelcomeState extends State<mainwelcome> {
                       title: const Text('Business Information'),
                       onTap: () {
                         _onItemTapped(4);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.family_restroom_rounded),
+                      title: const Text('Family Details'),
+                      onTap: () {
+                        _onItemTapped(9);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.family_restroom_outlined),
+                      title: const Text('Family Information'),
+                      onTap: () {
+                        _onItemTapped(10);
                         Navigator.pop(context);
                       },
                     ),

@@ -63,6 +63,10 @@ class _LoginFormState extends State<LoginForm> {
           await prefs.setBool("imgavl", data["imgavl"]);
           await prefs.setString("imgupload1", data['imgupload1']);
 
+          await prefs.setBool("imgavl2", data["imgavl2"]);
+          await prefs.setString("imgupload2", data['imgupload2']);
+
+
 
           Navigator.push(context, MaterialPageRoute(builder: (context) => mainwelcome()));
         }else{

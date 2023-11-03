@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:gka/components/screen/noscreen.dart';
 import 'package:gka/models/homeModels/welcomejson.dart';
 import 'package:http/http.dart' as http;
 import 'package:icons_plus/icons_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class test_welcomepage extends StatefulWidget {
@@ -24,23 +22,17 @@ class _test_welcomepageState extends State<test_welcomepage> {
   bool _isFirstLoadRunning = false;
   bool _hashNextPage = true;
   bool _isLoadMoreRunning = false;
-  int _selectedIndex = 0;
-  int? User_Approv=0;
 
-  void getpref() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    User_Approv = prefs.getInt("User_Approv");
-  }
+
+
 
 
   void _firstLoad() async {
-    if(User_Approv==1){
-      setState(() {
-        _selectedIndex=0;
-      });
     setState(() {
       _isFirstLoadRunning = true;
     });
+
+
 
     try {
       var url =
@@ -60,17 +52,6 @@ class _test_welcomepageState extends State<test_welcomepage> {
     setState(() {
       _isFirstLoadRunning = false;
     });
-  }else{
-      setState(() {
-        _selectedIndex=8;
-      });
-
-
-
-
-
-    }
-
   }
 
   void _loadMore() async {
@@ -161,7 +142,6 @@ class _test_welcomepageState extends State<test_welcomepage> {
   @override
   void initState() {
     super.initState();
-    getpref();
     _firstLoad();
     scrollController = ScrollController()..addListener(_loadMore);
   }

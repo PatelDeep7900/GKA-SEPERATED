@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:gka/models/homeModels/welcomejson.dart';
 import 'package:http/http.dart' as http;
 import 'package:icons_plus/icons_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class test_welcomepage extends StatefulWidget {
   const test_welcomepage({super.key});
-
   @override
   State<test_welcomepage> createState() => _test_welcomepageState();
 }
@@ -23,30 +23,36 @@ class _test_welcomepageState extends State<test_welcomepage> {
   bool _hashNextPage = true;
   bool _isLoadMoreRunning = false;
 
-
-
+  int? aproveornot=0;
+  bool _vbSearch=false;
+int? id=0;
 
 
   void _firstLoad() async {
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
     setState(() {
       _isFirstLoadRunning = true;
+      id = prefs.getInt("id")!;
     });
-
-
-
     try {
-      var url =
-          "http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit";
-      print(url);
+      var url ="http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
       var uri = Uri.parse(url);
-
       final response = await http.get(uri);
       setState(() {
         Welcome welcome = Welcome.fromJson(json.decode(response.body));
         result = result + welcome.results!;
+        aproveornot=welcome.aproveornot;
+
+        if(aproveornot==1){
+          _vbSearch=true;
+        }
+
       });
     } catch (err) {
-      print(err.toString());
+        print(err.toString());
     }
 
     setState(() {
@@ -55,11 +61,19 @@ class _test_welcomepageState extends State<test_welcomepage> {
   }
 
   void _loadMore() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      id = prefs.getInt("id")!;
+    });
+
+
     if (_hashNextPage == true &&
         _isFirstLoadRunning == false &&
         _isLoadMoreRunning == false &&
         scrollController.position.extentAfter < 300) {
       setState(() {
+
         _isLoadMoreRunning = true;
       });
 
@@ -69,11 +83,9 @@ class _test_welcomepageState extends State<test_welcomepage> {
 
       try {
         var url =
-            "http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit";
+            "http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
         var uri = Uri.parse(url);
-
         final response = await http.get(uri);
-
         var a = jsonDecode(response.body);
         if (a['datafound'] == true) {
           Welcome welcome = Welcome.fromJson(json.decode(response.body));
@@ -98,6 +110,8 @@ class _test_welcomepageState extends State<test_welcomepage> {
   }
 
   void _search(String searchval) async {
+
+
     setState(() {
       _hashNextPage = true;
     });
@@ -151,31 +165,34 @@ class _test_welcomepageState extends State<test_welcomepage> {
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              onChanged: (value) {
-                setState(() {
-                  _hashNextPage = true;
-                  searchresult = [];
-                });
-                if (value.length > 2) {
+          Visibility(
+            visible: _vbSearch,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    _hashNextPage = true;
+                    searchresult = [];
+                  });
+                  if (value.length > 2) {
+                    setState(() {
+                      _len = value.length;
+                      _search(value);
+                    });
+                  }
                   setState(() {
                     _len = value.length;
-                    _search(value);
+                    if (_len == 0) {
+                      _hashNextPage = true;
+                    }
                   });
-                }
-                setState(() {
-                  _len = value.length;
-                  if (_len == 0) {
-                    _hashNextPage = true;
-                  }
-                });
-              },
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                },
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                ),
               ),
             ),
           ),
@@ -189,9 +206,10 @@ class _test_welcomepageState extends State<test_welcomepage> {
                   child: Column(
                     children: [
                       Expanded(
-                          child: _len == 0
+                          child: aproveornot==0 ? _aprrovenot(context) :  _len == 0
                               ? _datalist(context,result)
-                              : _datalist(context,searchresult)),
+                              : _datalist(context,searchresult)
+                      ),
                       if (_isLoadMoreRunning == true)
                         const Center(
                           child: CircularProgressIndicator(),
@@ -227,8 +245,10 @@ class _test_welcomepageState extends State<test_welcomepage> {
       ),
     );
   }
+
+
  Widget _datalist(BuildContext context,List<Results> data){
-    return ListView.builder(
+    return   ListView.builder(
       controller: scrollController,
       itemCount: data.length,
       itemBuilder: (context, index) => Card(
@@ -834,4 +854,44 @@ class _test_welcomepageState extends State<test_welcomepage> {
       ),
     );
  }
+
+
+ Widget _aprrovenot(BuildContext context){
+
+    return const SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Text("You Are Under Approval Mode!",style: TextStyle(color: Colors.red,fontSize: 15,fontWeight: FontWeight.bold),),
+            Divider(),
+            SizedBox(height: 10,),
+            Text('Welcome to GKA USA & CANADA',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold)),
+            SizedBox(height: 5,),
+            Text.rich(
+              TextSpan(
+                text: 'Gujarati Kshatriya Associationwas founded in 1989. The goal of our Non-Profit organization is to unite and serve all our Gujarati Kshatriya communities living in USA-CANADA and to promote and preserve our heritage and language, and bring cultural awareness to future generations by providing a platform to all our community families while serving the community needs.',
+                style: TextStyle(fontSize: 15),
+              ),
+            ),
+            SizedBox(height: 12,),
+            Text.rich(
+              TextSpan(
+                text: 'The charitable and social activities developed steadily through the past 30+ years and the group cohesiveness of our past and present executive committee members and Board of Trustees along with many volunteers have culminated in a strong and vibrant Gujarati Kshatriya Association. As we continue our progress in 21st century, the foundation of social adaptiveness set forth by our previous executive committee members, has strengthen our resolve and made us proud of our cultural heritage.',
+                style: TextStyle(fontSize: 15),
+              ),
+            ),
+            SizedBox(height: 12,),
+            Text.rich(
+              TextSpan(
+                text: 'We have very active Mandals like GKA South East Atlanta, Vancouver Mochi Gnati Mandal, GKSNA NY/NJ and Mochi Gnati Mandal of Ontario-Canada where they regularly celebrate Diwali-Mela and picnic during the year. With the help of every Gujarati Kshatriya Association member in our community, we encourage each and every family to participate in cultural and social activities to build our strong youth generation.',
+                style: TextStyle(fontSize: 15),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+ }
+
 }

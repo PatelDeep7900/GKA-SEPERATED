@@ -52,7 +52,7 @@ dependencies:
   dio: ^5.3.3
   intl: ^0.18.1
   confirm_dialog: ^1.0.2
-
+  responsive_table: ^0.2.0+2
 
 
 

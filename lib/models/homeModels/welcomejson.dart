@@ -3,14 +3,16 @@ import 'dart:convert';
 class Welcome {
   bool? offcheck;
   bool? limcheck;
+  int? aproveornot;
   List<Results>? results;
   bool? datafound;
 
-  Welcome({this.offcheck, this.limcheck, this.results, this.datafound});
+  Welcome({this.offcheck, this.limcheck, this.results, this.datafound,this.aproveornot});
 
   Welcome.fromJson(Map<String, dynamic> json) {
     offcheck = json['offcheck'];
     limcheck = json['limcheck'];
+    aproveornot=json['aproveornot'];
     if (json['results'] != null) {
       results = <Results>[];
       json['results'].forEach((v) {
@@ -24,6 +26,7 @@ class Welcome {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['offcheck'] = this.offcheck;
     data['limcheck'] = this.limcheck;
+    data['aproveornot'] = this.aproveornot;
     if (this.results != null) {
       data['results'] = this.results!.map((v) => v.toJson()).toList();
     }

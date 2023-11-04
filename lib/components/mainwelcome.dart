@@ -5,7 +5,6 @@ import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:gka/Screens/Welcome/welcome_screen.dart';
 import 'package:gka/components/screen/approve_list.dart';
 import 'package:gka/components/screen/basicinfoscreen.dart';
-import 'package:gka/components/screen/noscreen.dart';
 import 'package:gka/components/screen/sceenfamilyinfo.dart';
 import 'package:gka/components/screen/screenbusiness.dart';
 import 'package:gka/components/screen/screencontact.dart';
@@ -96,11 +95,11 @@ class _mainwelcomeState extends State<mainwelcome> {
       img2 = prefs.getString("img2");
     });
 
-    if (User_Approv == 0) {
-      setState(() {
-        _selectedIndex = 8;
-      });
-    }
+    // if (User_Approv == 0) {
+    //   setState(() {
+    //     _selectedIndex = 8;
+    //   });
+    // }
 
   }
 
@@ -136,7 +135,7 @@ class _mainwelcomeState extends State<mainwelcome> {
   }
 
 
-  static const List<Widget> _widgetOption = <Widget>[
+  static  List<Widget> _widgetOption = <Widget>[
     test_welcomepage(),
     profilescreen(),
     basicinfoscreen(),
@@ -144,8 +143,7 @@ class _mainwelcomeState extends State<mainwelcome> {
     businessscreen(),
     SetPhotoScreen(),
     SetPhotoScreen2(),
-    ApproveList(),
-    aboutusscree(),
+    DataPage(),
     familydtlsscreen(),
     familyinfoscreen(),
 
@@ -252,7 +250,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                       leading: const Icon(Icons.family_restroom_rounded),
                       title: const Text('Family Details'),
                       onTap: () {
-                        _onItemTapped(9);
+                        _onItemTapped(8);
                         Navigator.pop(context);
                       },
                     ),
@@ -260,7 +258,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                       leading: const Icon(Icons.family_restroom_outlined),
                       title: const Text('Family Information'),
                       onTap: () {
-                        _onItemTapped(10);
+                        _onItemTapped(9);
                         Navigator.pop(context);
                       },
                     ),

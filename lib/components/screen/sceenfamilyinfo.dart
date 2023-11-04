@@ -82,10 +82,9 @@ class _HomePageState extends State<familyinfoscreen> {
         var data=json.decode(response.body);
           bool result=data['result'];
           if(result==true){
-            _items.add(familyinfo(name: _nameController.text,relation: _spouseController.text,dob: _dobController.text,occ: _desgController.text,phone: _mobController.text,email: _emailController.text));
-            setState(() {
-              _items=_items;
-            });
+
+            getfamilyinfoall();
+
             _nameController.text="";
             _spouseController.text="";
             _dobController.text="";
@@ -141,10 +140,8 @@ class _HomePageState extends State<familyinfoscreen> {
           _items[itemKey].phone=_mobController.text;
           _items[itemKey].email=_emailController.text;
 
+          getfamilyinfoall();
 
-          setState(() {
-            _items=_items;
-          });
           _nameController.text="";
           _spouseController.text="";
           _dobController.text="";
@@ -194,9 +191,7 @@ class _HomePageState extends State<familyinfoscreen> {
         var data=json.decode(response.body);
         bool result=data['result'];
         if(result==true){
-          setState(() {
-            _items.removeAt(index);
-                    });// Close th
+          getfamilyinfoall();
         }else{
           print("not saved data");
         }

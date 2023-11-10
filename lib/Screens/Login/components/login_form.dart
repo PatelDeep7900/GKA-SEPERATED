@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:gka/components/screen/screen_forgotpass.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -99,75 +100,73 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: EdgeInsets.only(
-        top: 50, bottom: MediaQuery.of(context).viewInsets.bottom),
+        top: 10, bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Form(
         key: _loginFormKey,
         child: Column(
           children: [
-            TextFormField(
-              controller: _cemail,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              cursorColor: kPrimaryColor,
-              onSaved: (email) {},
-              decoration: const InputDecoration(
-                hintText: "Enter email address",
-                prefixIcon: Padding(
-                  padding: EdgeInsets.all(defaultPadding),
-                  child: Icon(Icons.email_outlined),
-                ),
-                errorStyle: TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
-              validator:(textValue) {
-                if(textValue == null || textValue.isEmpty) {
-                  return 'Please Enter email address';
-                }
-                if(!EmailValidator.validate(textValue)) {
-                  return 'Please enter a valid email';
-                }
-                return null;
-              },
-            ),
-
             Padding(
               padding: const EdgeInsets.symmetric(vertical: defaultPadding),
               child: TextFormField(
-                controller: _cpass,
+                controller: _cemail,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                textInputAction: TextInputAction.done,
-                obscureText: _obtxt1,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
                 cursorColor: kPrimaryColor,
-                decoration:  InputDecoration(
-                  hintText: "Enter password",
-                    suffixIcon:IconButton(onPressed: () {
-                      setState(() {
-                        setState(() {
-                          _obtxt1 = !_obtxt1;
-                        });
-                      });
-                    }, icon: Icon( _obtxt1? Icons.visibility : Icons.visibility_off,)),
-                  prefixIcon: const Padding(
+                onSaved: (email) {},
+                decoration: const InputDecoration(
+                  hintText: "Enter email address",
+                  prefixIcon: Padding(
                     padding: EdgeInsets.all(defaultPadding),
-                    child: Icon(Icons.lock),
+                    child: Icon(Icons.email_outlined),
                   ),
-                  errorStyle: const TextStyle(
+                  errorStyle: TextStyle(
                     fontSize: 14.0,
                   ),
                 ),
-                validator: (textValue) {
+                validator:(textValue) {
                   if(textValue == null || textValue.isEmpty) {
-                    return 'Please Enter Password';
+                    return 'Please Enter email address';
+                  }
+                  if(!EmailValidator.validate(textValue)) {
+                    return 'Please enter a valid email';
                   }
                   return null;
                 },
               ),
             ),
 
+            TextFormField(
+              controller: _cpass,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              textInputAction: TextInputAction.done,
+              obscureText: _obtxt1,
+              cursorColor: kPrimaryColor,
+              decoration:  InputDecoration(
+                hintText: "Enter password",
+                  suffixIcon:IconButton(onPressed: () {
+                    setState(() {
+                      setState(() {
+                        _obtxt1 = !_obtxt1;
+                      });
+                    });
+                  }, icon: Icon( _obtxt1? Icons.visibility : Icons.visibility_off,)),
+                prefixIcon: const Padding(
+                  padding: EdgeInsets.all(defaultPadding),
+                  child: Icon(Icons.lock),
+                ),
+                errorStyle: const TextStyle(
+                  fontSize: 14.0,
+                ),
+              ),
+              validator: (textValue) {
+                if(textValue == null || textValue.isEmpty) {
+                  return 'Please Enter Password';
+                }
+                return null;
+              },
+            ),
             const SizedBox(height: defaultPadding),
-
             Hero(
               tag: "login_btn",
               child: ElevatedButton(
@@ -180,17 +179,39 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
             const SizedBox(height: defaultPadding),
-            AlreadyHaveAnAccountCheck(
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SignUpScreen();
-                    },
-                  ),
-                );
-              },
+            Hero(
+              tag: "forgot_btn",
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return forgotpass();
+                      },
+                    ),
+                  );
+                },
+                child: const Text(
+                  "Forgot Password",
+                ),
+              ),
+            ),
+            const SizedBox(height: defaultPadding),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: AlreadyHaveAnAccountCheck(
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return SignUpScreen();
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),

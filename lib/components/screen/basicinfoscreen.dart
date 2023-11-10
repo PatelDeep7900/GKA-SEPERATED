@@ -517,7 +517,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
     {"sortname": "ZM", "name": "Zambia", "phonecode": "260", "id": "245"},
     {"sortname": "ZW", "name": "Zimbabwe", "phonecode": "263", "id": "246"}
   ];
-  List statelist=[{"name":"SELECT","id":"0"}];
+  List statelist=[{"name":"SELECT State","id":"0"}];
   List citylist=[{"name":"SELECT","id":"0"}];
   List defaultlist=[{"name":"SELECT","id":"0"}];
 
@@ -787,8 +787,9 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                     textInputAction: TextInputAction.next,
                     cursorColor: kPrimaryColor,
                     onSaved: (email) {},
-                    decoration: const InputDecoration(
+                    decoration:  const InputDecoration(
                       hintText: "Full Name",
+                      label: Chip(label: Text('Full Name')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.person),
@@ -805,6 +806,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Address-1",
+                      label: Chip(label: Text('Address-1')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.home),
@@ -821,6 +823,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Address-2",
+                      label: Chip(label: Text('Address-2')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.home_filled),
@@ -828,206 +831,36 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: defaultPadding),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton2<String>(
-                      isExpanded: true,
-                      hint: Text(
-                        'Select Country',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).hintColor,
-                        ),
-                      ),
-                      items: countylist.map((item) {
-                        return DropdownMenuItem(
-                          value: item['id'].toString(),
-                          child: Text(item['name'].toString()),
-                        );
-                      }).toList(),
-                      value: _countryval,
-                      onChanged: (value) {
-
-                        setState(() {
-                          _countryval = value;
-                          _statefromcountry(value.toString());
-                        });
-
-                      },
-                      buttonStyleData:  ButtonStyleData(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          height: 55,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            color: kPrimaryLightColor,
-                          )
-                      ),
-                      dropdownStyleData: const DropdownStyleData(
-                        maxHeight: 200,
-                      ),
-                      menuItemStyleData: const MenuItemStyleData(
-                        height: 40,
-                      ),
-                      dropdownSearchData: DropdownSearchData(
-                        searchController: textEditingController,
-                        searchInnerWidgetHeight: 50,
-                        searchInnerWidget: Container(
-                          height: 50,
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                            bottom: 4,
-                            right: 8,
-                            left: 8,
-                          ),
-                          child: TextFormField(
-                            expands: true,
-                            maxLines: null,
-                            controller: textEditingController,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 8,
-                              ),
-                              hintText: 'Search for an item...',
-                              hintStyle: const TextStyle(fontSize: 12),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
-                        ),
-                        searchMatchFn: (item, searchValue) {
-                          return item.child
-                              .toString()
-                              .toLowerCase()
-                              .contains(searchValue);
-                        },
-                      ),
-                      //This to clear the search value when you close the menu
-                      onMenuStateChange: (isOpen) {
-                        if (!isOpen) {
-                          textEditingController.clear();
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: defaultPadding),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton2<String>(
-                      isExpanded: true,
-                      hint: Text(
-                        'Select State',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).hintColor,
-                        ),
-                      ),
-                      items: statelist.map((item) {
-                        return DropdownMenuItem(
-                          value: item['id'].toString(),
-                          child: Text(item['name'].toString()),
-                        );
-                      }).toList(),
-                      value: _stateval,
-                      onChanged: (value) {
-                        _cityfromstate(value.toString());
-                        setState(() {
-                          _stateval = value;
-                        });
-                      },
-                      buttonStyleData: ButtonStyleData(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          height: 55,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            color: kPrimaryLightColor,
-                          )
-                      ),
-                      dropdownStyleData: const DropdownStyleData(
-                        maxHeight: 200,
-                      ),
-                      menuItemStyleData: const MenuItemStyleData(
-                        height: 40,
-                      ),
-                      dropdownSearchData: DropdownSearchData(
-                        searchController: textEditingControllerstate,
-                        searchInnerWidgetHeight: 50,
-                        searchInnerWidget: Container(
-                          height: 50,
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                            bottom: 4,
-                            right: 8,
-                            left: 8,
-                          ),
-                          child: TextFormField(
-                            expands: true,
-                            maxLines: null,
-                            controller: textEditingControllerstate,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 8,
-                              ),
-                              hintText: 'Search for an item...',
-                              hintStyle: const TextStyle(fontSize: 12),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
-                        ),
-                        searchMatchFn: (item, searchValue) {
-                          return item.child
-                              .toString()
-                              .toLowerCase()
-                              .contains(searchValue);
-                        },
-                      ),
-                      //This to clear the search value when you close the menu
-                      onMenuStateChange: (isOpen) {
-                        if (!isOpen) {
-                          textEditingControllerstate.clear();
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                Padding(
+                Stack(
+                  children: [
+                    Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: defaultPadding),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton2<String>(
                         isExpanded: true,
                         hint: Text(
-                          'Select City',
+                          'Select Country',
                           style: TextStyle(
                             fontSize: 14,
                             color: Theme.of(context).hintColor,
                           ),
                         ),
-                        items: citylist.map((item) {
+                        items: countylist.map((item) {
                           return DropdownMenuItem(
                             value: item['id'].toString(),
                             child: Text(item['name'].toString()),
                           );
                         }).toList(),
-                        value: _cityval,
+                        value: _countryval,
                         onChanged: (value) {
                           setState(() {
-                            _cityval = value;
+                            _countryval = value;
+                            _statefromcountry(value.toString());
                           });
+
                         },
-                        buttonStyleData: ButtonStyleData(
+                        buttonStyleData:  ButtonStyleData(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             height: 55,
                             width: MediaQuery.of(context).size.width,
@@ -1043,7 +876,7 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                           height: 40,
                         ),
                         dropdownSearchData: DropdownSearchData(
-                          searchController: textEditingControllercity,
+                          searchController: textEditingController,
                           searchInnerWidgetHeight: 50,
                           searchInnerWidget: Container(
                             height: 50,
@@ -1056,11 +889,10 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                             child: TextFormField(
                               expands: true,
                               maxLines: null,
-                              controller: textEditingControllercity,
+                              controller: textEditingController,
                               decoration: InputDecoration(
                                 isDense: true,
-                                contentPadding:
-                                const EdgeInsets.symmetric(
+                                contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 10,
                                   vertical: 8,
                                 ),
@@ -1082,11 +914,207 @@ class _basicinfoscreenState extends State<basicinfoscreen> {
                         //This to clear the search value when you close the menu
                         onMenuStateChange: (isOpen) {
                           if (!isOpen) {
-                            textEditingControllercity.clear();
+                            textEditingController.clear();
                           }
                         },
                       ),
-                    )),
+                    ),
+                  ),
+                    Positioned(
+                        left: 50,
+                        bottom: 58,
+                        child: Chip(label: Text('Country'),labelStyle: TextStyle(fontSize: 12),)
+                    )
+          ]
+                ),
+                Stack(
+                  children: [Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: defaultPadding),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton2<String>(
+                        isExpanded: true,
+                        hint: Text(
+                          'Select State',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).hintColor,
+                          ),
+                        ),
+                        items: statelist.map((item) {
+                          return DropdownMenuItem(
+                            value: item['id'].toString(),
+                            child: Text(item['name'].toString()),
+                          );
+                        }).toList(),
+                        value: _stateval,
+                        onChanged: (value) {
+                          _cityfromstate(value.toString());
+                          setState(() {
+                            _stateval = value;
+                          });
+                        },
+                        buttonStyleData: ButtonStyleData(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            height: 55,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              color: kPrimaryLightColor,
+                            )
+                        ),
+                        dropdownStyleData: const DropdownStyleData(
+                          maxHeight: 200,
+                        ),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 40,
+                        ),
+                        dropdownSearchData: DropdownSearchData(
+                          searchController: textEditingControllerstate,
+                          searchInnerWidgetHeight: 50,
+                          searchInnerWidget: Container(
+                            height: 50,
+                            padding: const EdgeInsets.only(
+                              top: 8,
+                              bottom: 4,
+                              right: 8,
+                              left: 8,
+                            ),
+                            child: TextFormField(
+                              expands: true,
+                              maxLines: null,
+                              controller: textEditingControllerstate,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 8,
+                                ),
+                                hintText: 'Search for an item...',
+                                hintStyle: const TextStyle(fontSize: 12),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          searchMatchFn: (item, searchValue) {
+                            return item.child
+                                .toString()
+                                .toLowerCase()
+                                .contains(searchValue);
+                          },
+                        ),
+                        //This to clear the search value when you close the menu
+                        onMenuStateChange: (isOpen) {
+                          if (!isOpen) {
+                            textEditingControllerstate.clear();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                    Positioned(
+                        left: 50,
+                        bottom: 52,
+                        child: Chip(label: Text('State'),labelStyle: TextStyle(fontSize: 12),)
+                    )
+          ]
+                ),
+                Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: defaultPadding),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2<String>(
+                          isExpanded: true,
+                          hint: Text(
+                            'Select City',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).hintColor,
+                            ),
+                          ),
+                          items: citylist.map((item) {
+                            return DropdownMenuItem(
+                              value: item['id'].toString(),
+                              child: Text(item['name'].toString()),
+                            );
+                          }).toList(),
+                          value: _cityval,
+                          onChanged: (value) {
+                            setState(() {
+                              _cityval = value;
+                            });
+                          },
+                          buttonStyleData: ButtonStyleData(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              height: 55,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(30)),
+                                color: kPrimaryLightColor,
+                              )
+                          ),
+                          dropdownStyleData: const DropdownStyleData(
+                            maxHeight: 200,
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            height: 40,
+                          ),
+                          dropdownSearchData: DropdownSearchData(
+                            searchController: textEditingControllercity,
+                            searchInnerWidgetHeight: 50,
+                            searchInnerWidget: Container(
+                              height: 50,
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                                bottom: 4,
+                                right: 8,
+                                left: 8,
+                              ),
+                              child: TextFormField(
+                                expands: true,
+                                maxLines: null,
+                                controller: textEditingControllercity,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding:
+                                  const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 8,
+                                  ),
+                                  hintText: 'Search for an item...',
+                                  hintStyle: const TextStyle(fontSize: 12),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            searchMatchFn: (item, searchValue) {
+                              return item.child
+                                  .toString()
+                                  .toLowerCase()
+                                  .contains(searchValue);
+                            },
+                          ),
+                          //This to clear the search value when you close the menu
+                          onMenuStateChange: (isOpen) {
+                            if (!isOpen) {
+                              textEditingControllercity.clear();
+                            }
+                          },
+                        ),
+                      )),
+                    const Positioned(
+                        left: 50,
+                        bottom: 52,
+                        child: Chip(label: Text('City'),labelStyle: TextStyle(fontSize: 12),)
+                    )
+          ],
+                ),
               ],
             ),
           ),

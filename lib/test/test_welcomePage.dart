@@ -31,8 +31,6 @@ int? id=0;
   void _firstLoad() async {
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-
     setState(() {
       _isFirstLoadRunning = true;
       id = prefs.getInt("id")!;

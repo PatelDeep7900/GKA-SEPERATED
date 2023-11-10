@@ -40,7 +40,7 @@ class _SignUpFormState extends State<SignUpForm> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: EdgeInsets.only(
-          top: 50, bottom: MediaQuery.of(context).viewInsets.bottom),
+          top: 10, bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Form(
         key: _globkey,
         child: Column(
@@ -71,7 +71,6 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
 
             const SizedBox(height: defaultPadding / 1),
-
             TextFormField(
               controller: _email,
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -133,8 +132,6 @@ class _SignUpFormState extends State<SignUpForm> {
               ],
             ),
             const SizedBox(height: defaultPadding),
-
-
             ElevatedButton(
               onPressed: agree ? _handleSignup : null,
               child: isLoading? const Row(
@@ -177,23 +174,23 @@ class _SignUpFormState extends State<SignUpForm> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: 250,
-          color: Colors.orangeAccent,
+          height: 320,
           child: SingleChildScrollView(
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Text("[GKA APP]", style: TextStyle(color: Colors.white, fontSize: 20.0),),
+                  const Text("[GKA APP]", style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.bold),),
                   SizedBox(height: 10,),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: RichText(
                       text: const TextSpan(
-                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+                        style: TextStyle(fontSize: 15.0),
                         children: <TextSpan>[
                           TextSpan(
+                            style: TextStyle(color: Colors.black54),
                             text: 'You are encouraged to periodically review this Privacy Policy to stay informed of updates. You will be deemed to have been made aware of, will be subject to, and will be deemed to have accepted the changes in any revised Privacy Policy by your continued use of the Application after the date such revised. Privacy Policy is posted. This Privacy Policy does not apply to the third-party online/mobile store from which you install the Application or make payments, including any in-game virtual items, which may also collect and use data about you. We are not responsible for any of the data collected by any such third party. This privacy policy was created using Termly.',
                           ),
                         ],

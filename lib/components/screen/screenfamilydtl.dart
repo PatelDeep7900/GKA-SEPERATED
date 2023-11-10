@@ -212,15 +212,19 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                 const Divider(),
                 const SizedBox(height: defaultPadding),
 
-                TextFormField(
-                  controller: _F_parents,
-                  textInputAction: TextInputAction.next,
-                  cursorColor: kPrimaryColor,
-                  decoration: const InputDecoration(
-                    hintText: "Parents",
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.all(defaultPadding),
-                      child: Icon(Icons.group),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+                  child: TextFormField(
+                    controller: _F_parents,
+                    textInputAction: TextInputAction.next,
+                    cursorColor: kPrimaryColor,
+                    decoration: const InputDecoration(
+                      hintText: "Parents",
+                      label: Chip(label: Text('Parents')),
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(defaultPadding),
+                        child: Icon(Icons.group),
+                      ),
                     ),
                   ),
                 ),
@@ -233,6 +237,7 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Spouse Parents",
+                      label: Chip(label: Text('Spouse Parents')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.group_outlined),
@@ -251,6 +256,7 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Native:City/Country",
+                      label: Chip(label: Text('Native:City/Country')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.location_on),
@@ -266,6 +272,7 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Name of Samajik Sanstha involved",
+                      label: Chip(label: Text('Name of Samajik Sanstha involved')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.business),
@@ -281,6 +288,7 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "About Family",
+                      label: Chip(label: Text('About Family')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.family_restroom),
@@ -296,6 +304,7 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Extra-1",
+                      label: Chip(label: Text('Extra-1')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.info),
@@ -311,6 +320,7 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Extra-2",
+                      label: Chip(label: Text('Extra-2')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.info),

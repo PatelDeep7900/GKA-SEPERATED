@@ -5,24 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:gka/Screens/Login/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'constants.dart';
 import 'package:http/http.dart' as http;
+
+import '../../constants.dart';
 
 const Color primaryColor = Color(0xFF121212);
 
-class passwordset extends StatefulWidget {
+class forgotpasssetnew extends StatefulWidget {
 
-  const passwordset({super.key});
+  const forgotpasssetnew({super.key});
 
   @override
-  State<passwordset> createState() => _passwordsetState();
+  State<forgotpasssetnew> createState() => _forgotpasssetnew();
 }
 
-class _passwordsetState extends State<passwordset> {
+class _forgotpasssetnew extends State<forgotpasssetnew> {
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _cpass = TextEditingController();
   final _globkey = GlobalKey<FormState>();
-  
+
   bool _obtxt1=true;
   bool _obtxt2=true;
 
@@ -37,18 +38,21 @@ class _passwordsetState extends State<passwordset> {
   void _register()async{
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? _email=prefs.getString("email");
-    String? _fullname=prefs.getString("fullname");
+    String? G_username=prefs.getString("G_username");
+    String? Name=prefs.getString("Name");
+
+
 
     try {
-      String url = 'http://e-gam.com/GKARESTAPI/c_signupregister';
+      String url = 'http://e-gam.com/GKARESTAPI/c_forgotpass';
       final response = await http.post(
           Uri.parse(url),
           body:
           {
-            'email': _email,
-            'fullname': _fullname,
-            'pass':_pass.text
+            'G_username': G_username,
+            'Name': Name,
+            'pass':_pass.text,
+            'cond':'forgotpassset'
 
           }
 
@@ -63,10 +67,12 @@ class _passwordsetState extends State<passwordset> {
           Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
 
         }else{
-          var errmsg=data['error'];
+          var errmsg=data['msg'];
 
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(errmsg)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+
 
         }
 
@@ -100,7 +106,7 @@ class _passwordsetState extends State<passwordset> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Spacer(flex: 1,),
-              const Center(child: Text('Set password')),
+              const Center(child: Text('Set Forgot password')),
 
 
               Divider(),
@@ -121,20 +127,20 @@ class _passwordsetState extends State<passwordset> {
                   }
                 },
                 decoration:  InputDecoration(
-                  hintText: "New Password",
-                  prefixIcon: const Padding(
-                    padding: EdgeInsets.all(defaultPadding),
-                    child: Icon(Icons.lock),
-                  ),
-                  suffixIcon:IconButton(onPressed: () {
-                    setState(() {
+                    hintText: "New Password",
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.all(defaultPadding),
+                      child: Icon(Icons.lock),
+                    ),
+                    suffixIcon:IconButton(onPressed: () {
                       setState(() {
-                        _obtxt1 = !_obtxt1;
+                        setState(() {
+                          _obtxt1 = !_obtxt1;
+                        });
                       });
-                    });
-                  }, icon: Icon( _obtxt1
-                      ? Icons.visibility
-                      : Icons.visibility_off,))
+                    }, icon: Icon( _obtxt1
+                        ? Icons.visibility
+                        : Icons.visibility_off,))
                 ),
               ),
               const SizedBox(height: defaultPadding / 1),
@@ -158,11 +164,11 @@ class _passwordsetState extends State<passwordset> {
 
                 },
                 decoration:  InputDecoration(
-                  hintText: "confirm Password",
-                  prefixIcon: const Padding(
-                    padding: EdgeInsets.all(defaultPadding),
-                    child: Icon(Icons.lock_reset),
-                  ),
+                    hintText: "confirm Password",
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.all(defaultPadding),
+                      child: Icon(Icons.lock_reset),
+                    ),
                     suffixIcon:IconButton(onPressed: () {
                       setState(() {
                         setState(() {
@@ -188,7 +194,7 @@ class _passwordsetState extends State<passwordset> {
                   ),
                 ),
               ),
-              const Spacer(flex: 2,),
+              Spacer(flex: 2,),
             ],
           ),
         ),

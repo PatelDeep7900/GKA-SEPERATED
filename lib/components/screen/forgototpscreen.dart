@@ -2,19 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gka/components/screen/forgotpasssetnew.dart';
+import 'package:gka/components/screen/screen_forgotpass.dart';
 import 'package:gka/passset.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 
-class OTPPage extends StatefulWidget {
-  const OTPPage({Key? key}) : super(key: key);
+class forgototppass extends StatefulWidget {
+  const forgototppass({Key? key}) : super(key: key);
 
   @override
-  State<OTPPage> createState() => _OTPPageState();
+  State<forgototppass> createState() => _forgototppass();
 }
 
-class _OTPPageState extends State<OTPPage> {
+class _forgototppass extends State<forgototppass> {
 
   bool invalidOtp = false;
   int resendTime = 60;
@@ -35,16 +37,17 @@ class _OTPPageState extends State<OTPPage> {
 
   Future<void> _resendotp() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? _email=prefs.getString("email");
-    String? _fullname=prefs.getString("fullname");
+    String? _email=prefs.getString("G_username");
     try {
-      String url = 'http://e-gam.com/GKARESTAPI/c_signup';
+      String url = 'http://e-gam.com/GKARESTAPI/c_forgotpass';
       final response = await http.post(
           Uri.parse(url),
           body:
           {
-            'email': _email,
-            'fullname': _fullname,
+            'cond':'resendotp',
+            'G_username': _email,
+
+
           }
       );
       if (response.statusCode == 200) {
@@ -53,29 +56,18 @@ class _OTPPageState extends State<OTPPage> {
         invalidOtp = false;
         resendTime = 60;
         startTimer();
-        bool mailexists = data['mailexists'];
-        if (mailexists) {
+        bool checkmail = data['checkmail'];
+        bool result = data['result'];
+
+        if(checkmail==true && result==true) {
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('This Email Adress Already Exists...')));
-        } else {
-          bool result = data['result'];
-          if (result == true) {
-            bool checkmail=data['checkmail'];
-            if(checkmail==true){
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('otp send')));
-
-            }else{
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('retry')));
-            }
-
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Failed To Register')));
-          }
-
+              SnackBar(content: Text('Please Check Your   Email')));
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Failed To Send Verification Code Retry..')));
         }
+
+
 
       }else{
         invalidOtp = false;
@@ -96,32 +88,32 @@ class _OTPPageState extends State<OTPPage> {
   void varificationotp()async{
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? _email=prefs.getString("email");
-    String? _fullname=prefs.getString("fullname");
-    print(_fullname);
+    String? _email=prefs.getString("G_username");
+    String? _fullname=prefs.getString("Name");
 
     try {
-      String url = 'http://e-gam.com/GKARESTAPI/c_verificationotp';
+      String url = 'http://e-gam.com/GKARESTAPI/c_forgotpass';
       final response = await http.post(
           Uri.parse(url),
           body:
           {
-            'email': _email,
+            'G_username': _email,
             'fullname': _fullname,
-            'otp':_otp
+            'otp':_otp,
+            'cond':'optcheck'
           }
 
       );
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
 
-        bool otpcheck = data['otpcheck'];
-        if(otpcheck==true){
+
+        if(data['optmatch']==true){
           stopTimer();
           setState(() {
             invalidOtp =false;
           });
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => passwordset(),));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => forgotpasssetnew(),));
 
 
         }else{
@@ -129,11 +121,8 @@ class _OTPPageState extends State<OTPPage> {
             invalidOtp =true;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Otp not matched')));
+              const SnackBar(content: Text('Otp not matched')));
         }
-
-
-
 
       }
     }on Exception catch (e) {
@@ -164,6 +153,8 @@ class _OTPPageState extends State<OTPPage> {
     }
   }
 
+
+
   String strFormatting(n) => n.toString().padLeft(2, '0');
   @override
   Widget build(BuildContext context) {
@@ -171,7 +162,7 @@ class _OTPPageState extends State<OTPPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.orange,
-        title: Text('OTP Verification'),
+        title: Text('OTP Verification For Forgot Password'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -185,7 +176,7 @@ class _OTPPageState extends State<OTPPage> {
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'Enter the 4 digit verification code received',
+                  'Enter the Otp verification code received',
                   style: TextStyle(fontSize: 20),
                 ),
                 const SizedBox(height: 20),
@@ -236,17 +227,17 @@ class _OTPPageState extends State<OTPPage> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                     setState(() {
-                       _otp = txt1.text + txt2.text + txt3.text + txt4.text;
-                     });
-                     varificationotp();
+                    setState(() {
+                      _otp = txt1.text + txt2.text + txt3.text + txt4.text;
+                    });
+                    varificationotp();
                   },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                  ),
                   child: const Text(
                     'Verify',
                     style: TextStyle(fontSize: 20),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
                   ),
                 ),
               ],

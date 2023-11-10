@@ -5,6 +5,7 @@ import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:gka/Screens/Welcome/welcome_screen.dart';
 import 'package:gka/components/screen/approve_list.dart';
 import 'package:gka/components/screen/basicinfoscreen.dart';
+import 'package:gka/components/screen/passchange.dart';
 import 'package:gka/components/screen/sceenfamilyinfo.dart';
 import 'package:gka/components/screen/screenbusiness.dart';
 import 'package:gka/components/screen/screencontact.dart';
@@ -146,6 +147,7 @@ class _mainwelcomeState extends State<mainwelcome> {
     DataPage(),
     familydtlsscreen(),
     familyinfoscreen(),
+    passchange()
 
   ];
 
@@ -301,77 +303,100 @@ class _mainwelcomeState extends State<mainwelcome> {
               Card(
                 child: ExpansionTile(
                   backgroundColor: Colors.white30,
-                  title: const Text("setting & privacy"),
+                  title: const Text("Setting & Privacy"),
                   leading: const Icon(Icons.settings),
                   onExpansionChanged: (value) async {
                     addprefs();
                   },
                   children: [
-                    ListTile(
-                      leading: const Icon(Icons.phone_disabled),
-                      trailing: Switch(
-                          value: _hphone,
-                          onChanged: (val) async {
-                            SharedPreferences prefs =
+                    ExpansionTile(
+                      title: const Text("Hide information"),
+                      leading: const Icon(Icons.hide_source),
+                      backgroundColor: Colors.white30,
+                      children: [
+                        ListTile(
+                          leading: const Icon(Icons.phone_disabled),
+                          trailing: Switch(
+                              value: _hphone,
+                              onChanged: (val) async {
+                                SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
-                            prefs.setString("h_phone", val.toString());
-                            setState(() {
-                              _hphone = !_hphone;
-                            });
-                            addsecurity(_hphone, "h_phone");
-                          }),
-                      title: const Text('Hide Phone'),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.mobile_off),
-                      title: const Text('Hide Mobile'),
-                      trailing: Switch(
-                          value: _hmobile,
-                          onChanged: (val) async {
-                            SharedPreferences prefs =
+                                prefs.setString("h_phone", val.toString());
+                                setState(() {
+                                  _hphone = !_hphone;
+                                });
+                                addsecurity(_hphone, "h_phone");
+                              }),
+                          title: const Text('Hide Phone'),
+                          onTap: () {},
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.mobile_off),
+                          title: const Text('Hide Mobile'),
+                          trailing: Switch(
+                              value: _hmobile,
+                              onChanged: (val) async {
+                                SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
-                            prefs.setString("h_mobile", val.toString());
-                            setState(() {
-                              _hmobile = !_hmobile;
-                            });
-                            addsecurity(_hmobile, "h_mobile");
-                          }),
-                      onTap: () {
+                                prefs.setString("h_mobile", val.toString());
+                                setState(() {
+                                  _hmobile = !_hmobile;
+                                });
+                                addsecurity(_hmobile, "h_mobile");
+                              }),
+                          onTap: () {
 
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.email),
-                      title: const Text('Hide Email'),
-                      trailing: Switch(
-                          value: _hemail,
-                          onChanged: (val) async {
-                            SharedPreferences prefs =
+                          },
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.email),
+                          title: const Text('Hide Email'),
+                          trailing: Switch(
+                              value: _hemail,
+                              onChanged: (val) async {
+                                SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
-                            prefs.setString("h_email", val.toString());
-                            setState(() {
-                              _hemail = !_hemail;
-                            });
-                            addsecurity(_hemail, "h_email");
-                          }),
-                      onTap: () {},
+                                prefs.setString("h_email", val.toString());
+                                setState(() {
+                                  _hemail = !_hemail;
+                                });
+                                addsecurity(_hemail, "h_email");
+                              }),
+                          onTap: () {},
+                        ),
+                      ],
                     ),
+                     ExpansionTile(
+                      title: Text('Account Setting'),
+                      leading:  const Icon(Icons.account_circle_rounded),
+                      children: [
+                        ListTile(
+                          leading: const Icon(Icons.password_rounded),
+                          title: const Text('Passowrd Change'),
+                          onTap: () {
+                            _onItemTapped(10);
+                            Navigator.pop(context);
+                          },
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.delete),
+                          title: const Text('Account Delete'),
+                          onTap: () async {
+                            SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                            prefs.clear();
+                            if(!mounted)return;
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (ctx) => WelcomeScreen()));
+                          },
+                        ),
+                      ],
+                    ),
+
                   ],
-                ),
-              ),
-              Card(
-                child: ListTile(
-                  leading: const Icon(Icons.delete),
-                  title: const Text('Account Delete'),
-                  onTap: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    prefs.clear();
-                    if(!mounted)return;
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (ctx) => WelcomeScreen()));
-                  },
+
+
+
                 ),
               ),
               Card(
@@ -387,7 +412,11 @@ class _mainwelcomeState extends State<mainwelcome> {
                         MaterialPageRoute(builder: (ctx) => WelcomeScreen()));
                   },
                 ),
+
+
               ),
+
+
             ],
           ),
         ),

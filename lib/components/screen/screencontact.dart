@@ -86,7 +86,6 @@ class _contactscreenState extends State<contactscreen> {
     int? id=prefs.getInt("id");
     try {
       String url = 'http://e-gam.com/GKARESTAPI/c_cscpicker';
-      print(url);
       final response = await http.post(
           Uri.parse(url),
           body:
@@ -185,22 +184,23 @@ class _contactscreenState extends State<contactscreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: defaultPadding),
-
                 const Center(child: Text("Contact Information",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
-
                 const Divider(),
                 const SizedBox(height: defaultPadding),
-
-                TextFormField(
-                  controller: _C_code,
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.next,
-                  cursorColor: kPrimaryColor,
-                  decoration: const InputDecoration(
-                    hintText: "Country Code",
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.all(defaultPadding),
-                      child: Icon(Icons.numbers),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+                  child: TextFormField(
+                    controller: _C_code,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    cursorColor: kPrimaryColor,
+                    decoration: const InputDecoration(
+                      hintText: "Country Code",
+                      label: Chip(label: Text('Country Code')),
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(defaultPadding),
+                        child: Icon(Icons.numbers),
+                      ),
                     ),
                   ),
                 ),
@@ -213,6 +213,7 @@ class _contactscreenState extends State<contactscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Home Phone",
+                      label: Chip(label: Text('Home Phone')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.phone),
@@ -229,6 +230,7 @@ class _contactscreenState extends State<contactscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Mobile Number",
+                      label: Chip(label: Text('Mobile Number')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.mobile_friendly),
@@ -245,6 +247,7 @@ class _contactscreenState extends State<contactscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Email Address",
+                      label: Chip(label: Text('Email Address')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.email),

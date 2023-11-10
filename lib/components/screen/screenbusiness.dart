@@ -182,15 +182,19 @@ class _businessscreenState extends State<businessscreen> {
                 const Center(child: Text("Business Information Edit",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
                 const Divider(),
                 const SizedBox(height: defaultPadding),
-                TextFormField(
-                  controller: _B_Website,
-                  textInputAction: TextInputAction.next,
-                  cursorColor: kPrimaryColor,
-                  decoration: const InputDecoration(
-                    hintText: "Business Website",
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.all(defaultPadding),
-                      child: Icon(Icons.link),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+                  child: TextFormField(
+                    controller: _B_Website,
+                    textInputAction: TextInputAction.next,
+                    cursorColor: kPrimaryColor,
+                    decoration: const InputDecoration(
+                      hintText: "Business Website",
+                      label: Chip(label: Text('Business Website')),
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(defaultPadding),
+                        child: Icon(Icons.link),
+                      ),
                     ),
                   ),
                 ),
@@ -203,6 +207,7 @@ class _businessscreenState extends State<businessscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Type Of Business",
+                      label: Chip(label: Text('Type Of Business')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.business),
@@ -221,6 +226,7 @@ class _businessscreenState extends State<businessscreen> {
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Business Location",
+                      label: Chip(label: Text('Business Location')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.map),

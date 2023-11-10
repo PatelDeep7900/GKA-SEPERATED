@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gka/components/screen/splashscreen.dart';
+import 'cardswiper/example_card.dart';
 import 'components/screen/sceenfamilyinfo.dart';
 import 'constants.dart';
 
@@ -30,17 +31,21 @@ class MyApp extends StatelessWidget {
             fillColor: kPrimaryLightColor,
             iconColor: kPrimaryColor,
             prefixIconColor: kPrimaryColor,
+            floatingLabelBehavior: FloatingLabelBehavior.auto,
             contentPadding: EdgeInsets.symmetric(
                 horizontal: defaultPadding, vertical: defaultPadding),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(30)),
               borderSide: BorderSide.none,
             ),
-          )),
-      home:  SplashScreen()
+          ),
+        chipTheme: const ChipThemeData(
+          backgroundColor: kPrimaryLightColor,
+          labelStyle: TextStyle(color: Colors.black54)
+        )
+      ),
+      home: SplashScreen()
       // home: familyinfoscreen(),
-
-      
     );
   }
 }

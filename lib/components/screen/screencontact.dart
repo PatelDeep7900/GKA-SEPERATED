@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 
 import '../../constants.dart';
+import '../../popupbutton.dart';
 
 
 class contactscreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class contactscreen extends StatefulWidget {
 }
 
 class _contactscreenState extends State<contactscreen> {
-
+  final _formkey = GlobalKey<FormState>();
   final TextEditingController _C_code = TextEditingController();
   final TextEditingController _Phone = TextEditingController();
   final TextEditingController _Mob = TextEditingController();
@@ -104,15 +105,13 @@ class _contactscreenState extends State<contactscreen> {
         bool result = data['result'];
         if (result== true) {
           if(!mounted)return;
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Data Saved SuccessFully...')));
+          sucesspopup(context, 'Data Saved SuccessFully');
           setState(() {
             _isLoadingbtn1=false;
           });
         } else {
           if(!mounted)return;
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(data['msg'])));
+          warningpopup(context, data['msg']);
           setState(() {
             _isLoadingbtn1=false;
           });
@@ -120,8 +119,7 @@ class _contactscreenState extends State<contactscreen> {
       }
     }on Exception catch (e) {
       if(!mounted)return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Server not Responding')));
-      print('error caught: $e');
+      errorpopup(context, e.toString());
       rethrow;
     }
   }
@@ -180,6 +178,7 @@ class _contactscreenState extends State<contactscreen> {
           :SingleChildScrollView(
         child: Card(
           child:Form(
+            key: _formkey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -191,10 +190,12 @@ class _contactscreenState extends State<contactscreen> {
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
                     controller: _C_code,
+                    maxLength: 10,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
+                      counterText: "",
                       hintText: "Country Code",
                       label: Chip(label: Text('Country Code')),
                       prefixIcon: Padding(
@@ -209,9 +210,12 @@ class _contactscreenState extends State<contactscreen> {
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
                     controller: _Phone,
-                    textInputAction: TextInputAction.done,
+                    maxLength: 30,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
+                      counterText: "",
                       hintText: "Home Phone",
                       label: Chip(label: Text('Home Phone')),
                       prefixIcon: Padding(
@@ -225,11 +229,13 @@ class _contactscreenState extends State<contactscreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
+                    maxLength: 30,
                     controller: _Mob,
-                    textInputAction: TextInputAction.done,
+                    textInputAction: TextInputAction.next,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Mobile Number",
+                      counterText: "",
                       label: Chip(label: Text('Mobile Number')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
@@ -245,8 +251,10 @@ class _contactscreenState extends State<contactscreen> {
                     controller: _Email,
                     textInputAction: TextInputAction.done,
                     cursorColor: kPrimaryColor,
+                    maxLength: 100,
                     decoration: const InputDecoration(
                       hintText: "Email Address",
+                      counterText: "",
                       label: Chip(label: Text('Email Address')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),

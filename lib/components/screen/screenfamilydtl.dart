@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 
 import '../../constants.dart';
+import '../../popupbutton.dart';
 class familydtlsscreen extends StatefulWidget {
   const familydtlsscreen({super.key});
 
@@ -124,15 +125,13 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
         bool result = data['result'];
         if (result== true) {
           if(!mounted)return;
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Data Saved SuccessFully...')));
+          sucesspopup(context, 'Data Saved SuccessFully');
           setState(() {
             _isLoadingbtn1=false;
           });
         } else {
           if(!mounted)return;
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(data['msg'])));
+          warningpopup(context, data['msg']);
           setState(() {
             _isLoadingbtn1=false;
           });
@@ -140,8 +139,7 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
       }
     }on Exception catch (e) {
       if(!mounted)return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Server not Responding')));
-      print('error caught: $e');
+      errorpopup(context, e.toString());
      setState(() {
        _isLoadingbtn1=false;
      });
@@ -215,11 +213,13 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
+                    maxLength: 60,
                     controller: _F_parents,
                     textInputAction: TextInputAction.next,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Parents",
+                      counterText: "",
                       label: Chip(label: Text('Parents')),
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
@@ -232,10 +232,12 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
+                    maxLength: 60,
                     controller: _F_Spouse,
                     textInputAction: TextInputAction.done,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
+                      counterText: "",
                       hintText: "Spouse Parents",
                       label: Chip(label: Text('Spouse Parents')),
                       prefixIcon: Padding(
@@ -251,10 +253,12 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
+                    maxLength: 50,
                     controller: _F_Native,
                     textInputAction: TextInputAction.done,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
+                      counterText: "",
                       hintText: "Native:City/Country",
                       label: Chip(label: Text('Native:City/Country')),
                       prefixIcon: Padding(
@@ -267,10 +271,12 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
+                    maxLength: 60,
                     controller: _F_samajik,
                     textInputAction: TextInputAction.done,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
+                      counterText: "",
                       hintText: "Name of Samajik Sanstha involved",
                       label: Chip(label: Text('Name of Samajik Sanstha involved')),
                       prefixIcon: Padding(
@@ -283,10 +289,12 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
+                    maxLength: 100,
                     controller: _F_abtfamily,
                     textInputAction: TextInputAction.done,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
+                      counterText: "",
                       hintText: "About Family",
                       label: Chip(label: Text('About Family')),
                       prefixIcon: Padding(
@@ -299,10 +307,12 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
+                    maxLength: 60,
                     controller: _F_ext1,
                     textInputAction: TextInputAction.done,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
+                      counterText: "",
                       hintText: "Extra-1",
                       label: Chip(label: Text('Extra-1')),
                       prefixIcon: Padding(
@@ -316,9 +326,11 @@ class _familydtlsscreenState extends State<familydtlsscreen> {
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
                     controller: _F_ext2,
+                    maxLength: 60,
                     textInputAction: TextInputAction.done,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
+                      counterText: "",
                       hintText: "Extra-2",
                       label: Chip(label: Text('Extra-2')),
                       prefixIcon: Padding(

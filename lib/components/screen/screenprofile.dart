@@ -337,7 +337,11 @@ class _profilescreenState extends State<profilescreen> {
                                                     const DataCell(Text(":")),
                                                     DataCell(Text(result[0].familyinfo![index].name.toString(),style: TextStyle(fontSize: 13),)),
                                                   ]),
-
+                                                  DataRow(cells: [
+                                                    DataCell( Container(width:72,child: const Text('Relation',style: TextStyle(fontSize: 13),)),),
+                                                    const DataCell(Text(":")),
+                                                    DataCell(Text(result[0].familyinfo![index].relation.toString(),style: TextStyle(fontSize: 13),)),
+                                                  ]),
                                                   DataRow(cells: [
                                                     DataCell(Container(width:72,child: const Text('Date Of Birth',style: TextStyle(fontSize: 13)))),
                                                     const DataCell(Text(":")),

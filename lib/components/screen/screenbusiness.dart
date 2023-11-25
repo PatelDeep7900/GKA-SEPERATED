@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 
 import '../../constants.dart';
+import '../../popupbutton.dart';
 class businessscreen extends StatefulWidget {
   const businessscreen({super.key});
 
@@ -100,15 +101,13 @@ class _businessscreenState extends State<businessscreen> {
         bool result = data['result'];
         if (result== true) {
           if(!mounted)return;
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Data Saved SuccessFully...')));
+          sucesspopup(context, 'Data Saved SuccessFully');
           setState(() {
             _isLoadingbtn1=false;
           });
         } else {
           if(!mounted)return;
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(data['msg'])));
+          warningpopup(context, data['msg']);
           setState(() {
             _isLoadingbtn1=false;
           });
@@ -116,8 +115,7 @@ class _businessscreenState extends State<businessscreen> {
       }
     }on Exception catch (e) {
       if(!mounted)return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Server not Responding')));
-      print('error caught: $e');
+      errorpopup(context, e.toString());
       rethrow;
     }
   }
@@ -187,10 +185,12 @@ class _businessscreenState extends State<businessscreen> {
                   child: TextFormField(
                     controller: _B_Website,
                     textInputAction: TextInputAction.next,
+                    maxLength: 60,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Business Website",
                       label: Chip(label: Text('Business Website')),
+                      counterText: "",
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.link),
@@ -202,29 +202,31 @@ class _businessscreenState extends State<businessscreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
+                    maxLength: 60,
                     controller: _B_Detail,
                     textInputAction: TextInputAction.done,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
                       hintText: "Type Of Business",
                       label: Chip(label: Text('Type Of Business')),
+                      counterText: "",
                       prefixIcon: Padding(
                         padding: EdgeInsets.all(defaultPadding),
                         child: Icon(Icons.business),
                       ),
-
                     ),
-
                   ),
                 ),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                   child: TextFormField(
+                    maxLength: 60,
                     controller: _B_location,
                     textInputAction: TextInputAction.done,
                     cursorColor: kPrimaryColor,
                     decoration: const InputDecoration(
+                      counterText: "",
                       hintText: "Business Location",
                       label: Chip(label: Text('Business Location')),
                       prefixIcon: Padding(

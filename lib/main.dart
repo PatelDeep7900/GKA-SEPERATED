@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gka/components/screen/splashscreen.dart';
-import 'cardswiper/example_card.dart';
+import 'package:gka/gv.dart';
 import 'components/screen/sceenfamilyinfo.dart';
 import 'constants.dart';
 
@@ -44,8 +44,8 @@ class MyApp extends StatelessWidget {
           labelStyle: TextStyle(color: Colors.black54)
         )
       ),
-      home: SplashScreen()
-      // home: familyinfoscreen(),
+      //  home: gview()
+      home: SplashScreen(),
     );
   }
 }

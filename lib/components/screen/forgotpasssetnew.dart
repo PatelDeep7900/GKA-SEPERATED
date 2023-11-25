@@ -64,14 +64,13 @@ class _forgotpasssetnew extends State<forgotpasssetnew> {
         if(result){
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("SuccessFully done..")));
-          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
 
         }else{
           var errmsg=data['msg'];
-
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(errmsg)));
-          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
 
 
         }
@@ -107,8 +106,6 @@ class _forgotpasssetnew extends State<forgotpasssetnew> {
             children: [
               Spacer(flex: 1,),
               const Center(child: Text('Set Forgot password')),
-
-
               Divider(),
               const SizedBox(height: defaultPadding / 1),
               TextFormField(
@@ -165,7 +162,7 @@ class _forgotpasssetnew extends State<forgotpasssetnew> {
                 },
                 decoration:  InputDecoration(
                     hintText: "confirm Password",
-                    prefixIcon: Padding(
+                    prefixIcon: const Padding(
                       padding: EdgeInsets.all(defaultPadding),
                       child: Icon(Icons.lock_reset),
                     ),

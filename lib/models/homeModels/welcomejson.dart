@@ -39,8 +39,7 @@ class Results {
   String? userApprov;
   bool? cimgpathexists1;
   String? img1;
-
-
+  String? img2;
   String? strcities;
   String? mob;
   String? bDetail;
@@ -69,6 +68,7 @@ class Results {
       {this.userApprov,
         this.cimgpathexists1,
         this.img1,
+        this.img2,
         this.strcities,
         this.mob,
         this.bDetail,
@@ -98,6 +98,7 @@ class Results {
     userApprov = json['User_Approv'];
     cimgpathexists1=json['cimgpathexists1'];
     img1=json['img1'];
+    img2=json['img2'];
     strcities = json['strcities'];
     mob = json['Mob'];
     bDetail = json['B_Detail'];
@@ -133,6 +134,7 @@ class Results {
     data['User_Approv'] = this.userApprov;
     data['cimgpathexists1']=this.cimgpathexists1;
     data['img1']=this.img1;
+    data['img2']=this.img2;
     data['strcities'] = this.strcities;
     data['Mob'] = this.mob;
     data['B_Detail'] = this.bDetail;

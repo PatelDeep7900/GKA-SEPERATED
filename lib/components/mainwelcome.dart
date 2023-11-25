@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:gka/Screens/Welcome/welcome_screen.dart';
-import 'package:gka/components/screen/approve_list.dart';
 import 'package:gka/components/screen/basicinfoscreen.dart';
 import 'package:gka/components/screen/passchange.dart';
 import 'package:gka/components/screen/sceenfamilyinfo.dart';
@@ -11,6 +10,7 @@ import 'package:gka/components/screen/screenbusiness.dart';
 import 'package:gka/components/screen/screencontact.dart';
 import 'package:gka/components/screen/screenfamilydtl.dart';
 import 'package:gka/components/screen/screenprofile.dart';
+import 'package:gka/gv.dart';
 import 'package:gka/imagepicker/image1.dart';
 import 'package:gka/imagepicker/image2.dart';
 import 'package:gka/test/test_welcomePage.dart';
@@ -25,7 +25,7 @@ class mainwelcome extends StatefulWidget {
 }
 
 class _mainwelcomeState extends State<mainwelcome> {
-  bool _adm = false;
+  bool _adm = true;
   bool _hphone = false;
   bool _hmobile = false;
   bool _hemail = false;
@@ -144,11 +144,10 @@ class _mainwelcomeState extends State<mainwelcome> {
     businessscreen(),
     SetPhotoScreen(),
     SetPhotoScreen2(),
-    DataPage(),
+    gview(),
     familydtlsscreen(),
     familyinfoscreen(),
-    passchange()
-
+    passchange(),
   ];
 
   void _onItemTapped(int index) {
@@ -287,11 +286,12 @@ class _mainwelcomeState extends State<mainwelcome> {
               Visibility(
                 visible: _adm,
                 child: Card(
+                  color: status == 7 ? const Color(0xff233743) : null,
                   child: ListTile(
-                    leading: const Icon(Icons.admin_panel_settings),
-                    title: const Text(
+                    leading:  Icon(Icons.admin_panel_settings,color: status == 7 ? Colors.white : null),
+                    title:  Text(
                       'Approved List',
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: status == 7 ? Colors.red : Colors.red),
                     ),
                     onTap: () async {
                       _onItemTapped(7);
@@ -412,8 +412,6 @@ class _mainwelcomeState extends State<mainwelcome> {
                         MaterialPageRoute(builder: (ctx) => WelcomeScreen()));
                   },
                 ),
-
-
               ),
 
 

@@ -6,6 +6,8 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../zoomimage.dart';
+
 class test_welcomepage extends StatefulWidget {
   const test_welcomepage({super.key});
   @override
@@ -13,9 +15,15 @@ class test_welcomepage extends StatefulWidget {
 }
 
 class _test_welcomepageState extends State<test_welcomepage> {
+
+
   ScrollController scrollController = ScrollController();
   List<Results> result = [];
+
+
   List<Results> searchresult = [];
+
+
   int _page = 0;
   int _len = 0;
   final int _limit = 10;
@@ -36,7 +44,11 @@ int? id=0;
       id = prefs.getInt("id")!;
     });
     try {
-      var url ="http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
+
+      var url ="http://192.168.10.141:8084/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
+
+      //var url ="http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
+      print(url);
       var uri = Uri.parse(url);
       final response = await http.get(uri);
       setState(() {
@@ -65,7 +77,6 @@ int? id=0;
       id = prefs.getInt("id")!;
     });
 
-
     if (_hashNextPage == true &&
         _isFirstLoadRunning == false &&
         _isLoadMoreRunning == false &&
@@ -80,12 +91,19 @@ int? id=0;
       });
 
       try {
+
         var url =
-            "http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
+            "http://192.168.10.141:8084/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
+
+       // var url ="http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
         var uri = Uri.parse(url);
+        print(uri);
         final response = await http.get(uri);
-        var a = jsonDecode(response.body);
-        if (a['datafound'] == true) {
+
+
+        var abc = jsonDecode(response.body);
+
+        if (abc['datafound'] == true) {
           Welcome welcome = Welcome.fromJson(json.decode(response.body));
           if (result.isNotEmpty) {
             setState(() {
@@ -197,7 +215,9 @@ int? id=0;
           _isFirstLoadRunning
               ? const Expanded(
                   child: Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+
+                    ),
                   ),
                 )
               : Expanded(
@@ -272,15 +292,25 @@ int? id=0;
               radius: 30,
               backgroundImage: AssetImage(
                   "assets/images/nopic.png"),
+            ) : data[index].img1 == ""
+                ? const CircleAvatar(
+              radius: 30,
+              backgroundImage: AssetImage(
+                  "assets/images/nopic.png"),
             )
-                : CircleAvatar(
+                : InkWell(
+                  onLongPress: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HeroPhotoViewRouteWrapper(imageProvider: NetworkImage(data[index].img1.toString()),),));
+                  },
+                  child: CircleAvatar(
               radius: 30,
               backgroundImage:
               NetworkImage(
-                  data[index]
-                      .img1
-                      .toString()),
+                    data[index]
+                        .img1
+                        .toString()),
             ),
+                ),
             title: Text(
               '${index + 1}',
             ),

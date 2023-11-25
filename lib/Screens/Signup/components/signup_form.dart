@@ -149,7 +149,7 @@ class _SignUpFormState extends State<SignUpForm> {
             AlreadyHaveAnAccountCheck(
               login: false,
               press: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) {

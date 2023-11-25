@@ -70,8 +70,6 @@ class _forgotpasssetnew extends State<forgotpasssetnew> {
           var errmsg=data['msg'];
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(errmsg)));
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
-
 
         }
 
@@ -125,7 +123,7 @@ class _forgotpasssetnew extends State<forgotpasssetnew> {
                 },
                 decoration:  InputDecoration(
                     hintText: "New Password",
-                    prefixIcon: Padding(
+                    prefixIcon: const Padding(
                       padding: EdgeInsets.all(defaultPadding),
                       child: Icon(Icons.lock),
                     ),

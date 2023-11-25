@@ -113,8 +113,7 @@ class _forgototppass extends State<forgototppass> {
           setState(() {
             invalidOtp =false;
           });
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => forgotpasssetnew(),));
-
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => forgotpasssetnew()));
 
         }else{
           setState(() {
@@ -162,7 +161,7 @@ class _forgototppass extends State<forgototppass> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.orange,
-        title: Text('OTP Verification For Forgot Password'),
+        title: const Text('OTP Verification(Forgot Password)'),
       ),
       body: Center(
         child: SingleChildScrollView(

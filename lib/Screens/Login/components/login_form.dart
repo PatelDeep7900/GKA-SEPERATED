@@ -204,7 +204,7 @@ bool _isLoadingbtn1=false;
               tag: "forgot_btn",
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) {

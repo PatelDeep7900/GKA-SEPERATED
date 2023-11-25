@@ -55,7 +55,7 @@ class _forgotpassState extends State<forgotpass> {
             await prefs.setString('G_username', data['G_username']);
             await prefs.setString('Name', data['Name']);
 
-            Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => forgototppass()));
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => forgototppass()));
 
           }else{
             ScaffoldMessenger.of(context).showSnackBar(

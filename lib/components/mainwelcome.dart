@@ -17,6 +17,8 @@ import 'package:gka/test/test_welcomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import '../zoomimage.dart';
+
 class mainwelcome extends StatefulWidget {
   const mainwelcome({super.key});
 
@@ -177,11 +179,21 @@ class _mainwelcomeState extends State<mainwelcome> {
                 accountName: Text("$Name"),
                 accountEmail: Text("$user_Email"),
                 currentAccountPictureSize: const Size.fromRadius(43),
-                currentAccountPicture: CircleAvatar(
+                currentAccountPicture: imgupload1!=""?
+                InkWell(
+                  onLongPress: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HeroPhotoViewRouteWrapper(imageProvider: NetworkImage(
+                        "http://e-gam.com/img/GKAPROFILE/$id/$imgupload1"),),));
+                  },
                   child: CircleAvatar(
                       radius: 43,
                       backgroundImage: NetworkImage(
                           "http://e-gam.com/img/GKAPROFILE/$id/$imgupload1")),
+                )
+                    :  const CircleAvatar(
+                  radius: 80,
+                  backgroundImage: AssetImage("assets/images/nopic.png"),
+
                 ),
                 decoration: const BoxDecoration(color: Color(0xd9fd6d0c)),
               ),

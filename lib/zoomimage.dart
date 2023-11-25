@@ -12,12 +12,13 @@ class HeroPhotoViewRouteWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: const Color(0xd9fd6d0c),),
       body: Container(
         constraints: BoxConstraints.expand(
           height: MediaQuery.of(context).size.height,
         ),
         child: PhotoView(
+          backgroundDecoration: BoxDecoration(color:  Colors.white),
           imageProvider: imageProvider,
           heroAttributes: const PhotoViewHeroAttributes(tag: "someTag"),
         ),

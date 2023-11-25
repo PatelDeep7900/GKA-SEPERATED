@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gka/models/homeModels/welcomejson.dart';
+import 'package:gka/popupbutton.dart';
 import 'package:http/http.dart' as http;
 import 'package:icons_plus/icons_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,21 +20,16 @@ class _test_welcomepageState extends State<test_welcomepage> {
 
   ScrollController scrollController = ScrollController();
   List<Results> result = [];
-
-
   List<Results> searchresult = [];
-
-
   int _page = 0;
   int _len = 0;
   final int _limit = 10;
   bool _isFirstLoadRunning = false;
   bool _hashNextPage = true;
   bool _isLoadMoreRunning = false;
-
   int? aproveornot=0;
   bool _vbSearch=false;
-int? id=0;
+  int? id=0;
 
 
   void _firstLoad() async {
@@ -45,9 +41,9 @@ int? id=0;
     });
     try {
 
-      var url ="http://192.168.10.141:8084/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
+      //  var url ="http://192.168.10.141:8084/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
 
-      //var url ="http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
+      var url ="http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
       print(url);
       var uri = Uri.parse(url);
       final response = await http.get(uri);
@@ -92,12 +88,12 @@ int? id=0;
 
       try {
 
-        var url =
+        //var url =
             "http://192.168.10.141:8084/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
 
-       // var url ="http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
+          var url ="http://e-gam.com/GKARESTAPI/welcomePage?off=$_page&lim=$_limit&id=$id";
         var uri = Uri.parse(url);
-        print(uri);
+
         final response = await http.get(uri);
 
 
@@ -105,6 +101,8 @@ int? id=0;
 
         if (abc['datafound'] == true) {
           Welcome welcome = Welcome.fromJson(json.decode(response.body));
+
+
           if (result.isNotEmpty) {
             setState(() {
               result = result + welcome.results!;
@@ -292,25 +290,25 @@ int? id=0;
               radius: 30,
               backgroundImage: AssetImage(
                   "assets/images/nopic.png"),
-            ) : data[index].img1 == ""
-                ? const CircleAvatar(
-              radius: 30,
-              backgroundImage: AssetImage(
-                  "assets/images/nopic.png"),
-            )
-                : InkWell(
-                  onLongPress: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HeroPhotoViewRouteWrapper(imageProvider: NetworkImage(data[index].img1.toString()),),));
-                  },
-                  child: CircleAvatar(
-              radius: 30,
-              backgroundImage:
-              NetworkImage(
+            ) : data[index].img1!=""
+                ? InkWell(
+              onLongPress: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => HeroPhotoViewRouteWrapper(imageProvider: NetworkImage(data[index].img1.toString()),),));
+              },
+              child: CircleAvatar(
+                radius: 30,
+                backgroundImage:
+                NetworkImage(
                     data[index]
                         .img1
                         .toString()),
-            ),
-                ),
+              ),
+            )
+                : const CircleAvatar(
+              radius: 30,
+              backgroundImage: AssetImage(
+                  "assets/images/nopic.png"),
+            ) ,
             title: Text(
               '${index + 1}',
             ),

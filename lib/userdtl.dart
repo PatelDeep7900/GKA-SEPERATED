@@ -65,8 +65,6 @@ class _userdtlState extends State<userdtl> {
        rethrow;
      }
    }
-
-
   Future<void> _reject(String id,BuildContext context,dynamic result ) async{
 
 
@@ -93,10 +91,11 @@ class _userdtlState extends State<userdtl> {
             result[widget.index].imgapprove="N";
             _apprejbtn=true;
           });
-
+          if(!mounted)return;
           sucesspopup(context, "This Profile Reject");
 
         } else {
+          if(!mounted)return;
           errorpopup(context, "Something Wrong");
         }
       }
@@ -105,8 +104,6 @@ class _userdtlState extends State<userdtl> {
       rethrow;
     }
   }
-
-
 
   void _approvereject(){
 
@@ -153,13 +150,13 @@ class _userdtlState extends State<userdtl> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),onPressed: (){
                 _approve(widget.result[widget.index].id,context,widget.result);
-              }, child: Text('Approve')),
+              }, child: const Text('Approve')),
             )),
             Expanded(child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),onPressed: (){
                 _reject(widget.result[widget.index].id,context,widget.result);
-              }, child: Text('Reject')),
+              }, child: const Text('Reject')),
             ))
           ],
         ),
@@ -167,6 +164,7 @@ class _userdtlState extends State<userdtl> {
       appBar: AppBar(
         title: Text('User Full Details'),
         centerTitle: true,
+        backgroundColor: const Color(0xd9fd6d0c),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -181,82 +179,78 @@ class _userdtlState extends State<userdtl> {
               ),
               items: [
                 Container(
-                  child: Container(
-                    margin: EdgeInsets.all(5.0),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        child: Stack(
-                          children: <Widget>[
-                            widget.result[widget.index].img1=="" ? Image.asset("assets/images/nopic.png")   : Image.network(widget.result[widget.index].img1, fit: BoxFit.cover, width: 1000.0),
-                            Positioned(
-                              bottom: 0.0,
-                              left: 0.0,
-                              right: 0.0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color.fromARGB(200, 0, 0, 0),
-                                      Color.fromARGB(0, 0, 0, 0)
-                                    ],
-                                    begin: Alignment.bottomCenter,
-                                    end: Alignment.topCenter,
-                                  ),
+                  margin: EdgeInsets.all(5.0),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      child: Stack(
+                        children: <Widget>[
+                          widget.result[widget.index].img1=="" ? Image.asset("assets/images/nopic.png")   : Image.network(widget.result[widget.index].img1, fit: BoxFit.cover, width: 1000.0),
+                          Positioned(
+                            bottom: 0.0,
+                            left: 0.0,
+                            right: 0.0,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(200, 0, 0, 0),
+                                    Color.fromARGB(0, 0, 0, 0)
+                                  ],
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
                                 ),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 20.0),
-                                child: Text(
-                                  'Profile',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 20.0),
+                              child: const Text(
+                                'Profile',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                          ],
-                        )),
-                  ),
+                          ),
+                        ],
+                      )),
                 ),
                 Container(
-                  child: Container(
-                    margin: EdgeInsets.all(5.0),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        child: Stack(
-                          children: <Widget>[
-                            widget.result[widget.index].img1=="" ? Image.asset("assets/images/nopic.png") :    Image.network(widget.result[widget.index].img2, fit: BoxFit.cover, width: 1000.0),
-                            Positioned(
-                              bottom: 0.0,
-                              left: 0.0,
-                              right: 0.0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color.fromARGB(200, 0, 0, 0),
-                                      Color.fromARGB(0, 0, 0, 0)
-                                    ],
-                                    begin: Alignment.bottomCenter,
-                                    end: Alignment.topCenter,
-                                  ),
+                  margin: EdgeInsets.all(5.0),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      child: Stack(
+                        children: <Widget>[
+                          widget.result[widget.index].img2=="" ? Image.asset("assets/images/nopic.png") :    Image.network(widget.result[widget.index].img2, fit: BoxFit.cover, width: 1000.0),
+                          Positioned(
+                            bottom: 0.0,
+                            left: 0.0,
+                            right: 0.0,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(200, 0, 0, 0),
+                                    Color.fromARGB(0, 0, 0, 0)
+                                  ],
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
                                 ),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 20.0),
-                                child: Text(
-                                  'Extra ',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 20.0),
+                              child: const Text(
+                                'Extra ',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                          ],
-                        )),
-                  ),
+                          ),
+                        ],
+                      )),
                 )],
             ),
 
@@ -270,12 +264,6 @@ class _userdtlState extends State<userdtl> {
             widget.result[widget.index].imgapprove==  "A" ?
             const Text("Image Approved",style:TextStyle(color: Colors.green),)
             : const  Text("Image Approval Pending",style:TextStyle(color: Colors.red),),
-
-
-
-
-
-
 
             const Divider(),
             SizedBox(

@@ -59,12 +59,21 @@ class _profilescreenState extends State<profilescreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                           CircleAvatar(
+                          _img1!="" ?  CircleAvatar(
                             backgroundColor: Colors.black,
                             radius: 80,
                             child:  CircleAvatar(
                               radius: 80,
                               backgroundImage: NetworkImage(_img1!),
+                            ) ,
+                          )
+                         :
+                          const CircleAvatar(
+                            backgroundColor: Colors.black,
+                            radius: 80,
+                            child:  CircleAvatar(
+                              radius: 80,
+                              backgroundImage: AssetImage("assets/images/nopic.png"),
 
                             ) ,
                           ),

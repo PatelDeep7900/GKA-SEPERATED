@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void biomatriccheck()  async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int id = prefs.getInt('id') ?? 0;
-    await Future.delayed(Duration(seconds: 3), () {
+    await Future.delayed(const Duration(seconds: 3), () {
       if(id>0){
         if (!mounted) return;
         NavigationPushreplace(context,mainwelcome());

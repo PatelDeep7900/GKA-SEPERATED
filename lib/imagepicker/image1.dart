@@ -7,6 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../popupbutton.dart';
 import '../widgets/common_buttons.dart';
 import '../constants.dart';
 import 'select_photo_options_screen.dart';
@@ -62,7 +63,6 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
 
         String dirPath =
             '${directory?.path}/gkaimg/$_id/1';
-
 
         String filePath = '$dirPath/$_imgupload1';
         File f1 = File(filePath);
@@ -165,9 +165,8 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
           saveNetworkImage("$mainurl/$_id", _imgupload1);
           isLoading = false;
         });
-        var snackBar =
-            const SnackBar(content: Text('Successfully Uploaded...'));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        sucesspopup(context, "Image Successfully Uploaded");
+
       } else {
         setState(() {
           _imgavl=false;
@@ -176,17 +175,10 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
           prefs.setString("imgupload1", _imgupload1);
 
         });
-        var snackBar =
-            const SnackBar(content: Text('Something Wrong Please try Again'));
-        if(!mounted)return;
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-
+        errorpopup(context, "Something Wrong Please try Again");
       }
     } else {
-      var snackBar = const SnackBar(content: Text('Error Please Try Again.....'));
-      if(!mounted)return;
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      errorpopup(context, "Error Please Try Again");
 
       setState(() {
         _imgavl=false;

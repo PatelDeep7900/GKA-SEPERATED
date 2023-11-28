@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         )
       ),
       //  home: gview()
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }

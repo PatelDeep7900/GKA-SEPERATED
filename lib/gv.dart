@@ -55,29 +55,20 @@ class _gviewState extends State<gview> {
   }
   void _loadMore() async {
 
-
     if (_hashNextPage == true &&
         _isFirstLoadRunning == false &&
         _isLoadMoreRunning == false &&
         scrollController.position.extentAfter < 300) {
       setState(() {
-
-
-
         _isLoadMoreRunning = true;
       });
-
-      print(_isLoadMoreRunning);
 
       setState(() {
         _page = _page + _limit;
       });
 
-      print(_page);
-
       try {
-
-        var url ="http://192.168.10.141:8084/GKARESTAPI/c_pendinglist?off=$_page&lim=$_limit";
+        var url ="http://e-gam.com/GKARESTAPI/c_pendinglist?off=$_page&lim=$_limit";
         var uri = Uri.parse(url);
         final response = await http.get(uri);
         var a = jsonDecode(response.body);
@@ -120,9 +111,9 @@ class _gviewState extends State<gview> {
           )
           :   Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: const Text("User Approve,Reject & Pending List",style: TextStyle(fontSize: 18),),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text("User Approve,Reject & Pending List",style: TextStyle(fontSize: 18),),
           ),
           Divider(),
           Expanded(
@@ -134,7 +125,7 @@ class _gviewState extends State<gview> {
                   return InkWell(
                     onTap: () {
 
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => userdtl( index: index, result: result,),));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => userdtl( index: index, result: result),));
                     },
                     child: Card(
                       color: (index % 2 == 0) ? Colors.white70 : Colors.white,
@@ -147,10 +138,10 @@ class _gviewState extends State<gview> {
                                 child: Image.asset('assets/images/logo.png')),
                           ),
                           trailing:  result[index].userApprov=="1"&&result[index].imgapprove=="A"?
-                          Text(
+                          const Text(
                             "Approved",
                             style: TextStyle(color: Colors.green, fontSize: 15),
-                          ):Text(
+                          ):const Text(
                             "Pending",
                             style: TextStyle(color: Colors.red, fontSize: 15),
                           ),
@@ -171,7 +162,6 @@ class _gviewState extends State<gview> {
                 child: Text("All Record Fatched SuccessFully"),
               ),
             )
-
         ],
       ),
     );

@@ -27,7 +27,7 @@ class mainwelcome extends StatefulWidget {
 }
 
 class _mainwelcomeState extends State<mainwelcome> {
-  bool _adm = true;
+  bool _adm = false;
   bool _hphone = false;
   bool _hmobile = false;
   bool _hemail = false;
@@ -138,7 +138,7 @@ class _mainwelcomeState extends State<mainwelcome> {
   }
 
 
-  static  List<Widget> _widgetOption = <Widget>[
+  static  final List<Widget> _widgetOption = <Widget>[
     test_welcomepage(),
     profilescreen(),
     basicinfoscreen(),
@@ -404,11 +404,7 @@ class _mainwelcomeState extends State<mainwelcome> {
                         ),
                       ],
                     ),
-
                   ],
-
-
-
                 ),
               ),
               Card(
@@ -425,8 +421,6 @@ class _mainwelcomeState extends State<mainwelcome> {
                   },
                 ),
               ),
-
-
             ],
           ),
         ),

@@ -22,9 +22,8 @@ class userdtl extends StatefulWidget {
 class _userdtlState extends State<userdtl> {
 
   bool _apprejbtn=true;
-  String _apprej="Rejected";
 
-   Future<void> _approve(String id,BuildContext context,dynamic result ) async{
+  Future<void> _approve(String id,BuildContext context,dynamic result ) async{
 
 
      try {
@@ -112,12 +111,10 @@ class _userdtlState extends State<userdtl> {
          widget.result[widget.index].imgapprove=="A"){
 
        setState(() {
-         _apprej="Approved";
        });
 
      }else{
        setState(() {
-         _apprej="Rejected";
        });
      }
    }

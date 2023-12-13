@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gka/components/screen/splashscreen.dart';
-import 'package:gka/gv.dart';
-import 'components/screen/sceenfamilyinfo.dart';
+import 'package:gka/screens/splashscreen.dart';
 import 'constants.dart';
+import 'fullimagetest.dart';
 
 
-void main() => runApp( MyApp());
+void main() => runApp( const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -42,9 +41,12 @@ class MyApp extends StatelessWidget {
         chipTheme: const ChipThemeData(
           backgroundColor: kPrimaryLightColor,
           labelStyle: TextStyle(color: Colors.black54)
-        )
+        ),
+          appBarTheme: const AppBarTheme(
+              backgroundColor:Colors.orange,
+              centerTitle: true
+          )
       ),
-      //  home: gview()
       home: const SplashScreen(),
     );
   }
